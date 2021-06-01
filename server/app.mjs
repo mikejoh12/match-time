@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
     res.send('Calendar-booking API is running.')
   })
 
-  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 app.use('/api', router)
 
 app.listen(port, () => {
