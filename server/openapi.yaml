@@ -1,0 +1,48 @@
+openapi: 3.0.1
+info:
+  title: Calendar-Booking API
+  description: A platform for managing/reserving items such as sports courts, meeting rooms, and other resources.
+  version: 1.0.0
+servers:
+- url: http://localhost:5000
+tags:
+- name: bookings
+  description: Bookings
+paths:
+  /api/bookings/{facilityId}:
+    get:
+      tags:
+      - bookings
+      description: Access all bookings for a facility
+      parameters:
+        - in: path
+          name: facilityId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the facility
+      responses:
+        200:
+          description: An object containing all bookings for a facility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+
+components:
+  schemas:
+    Bookings:
+      type: object
+      properties:
+        id:
+          type: integer
+        facility_id:
+          type: integer
+        resource_id:
+          type: integer
+        user_id:
+          type: integer
+        start_time:
+          type: string
+        end_time:
+          type: string
