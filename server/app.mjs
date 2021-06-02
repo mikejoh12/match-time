@@ -7,7 +7,7 @@ import swaggerUI from 'swagger-ui-express'
 const swaggerDocument = YAML.load('./openapi.yaml')
 
 const app = express()
-const port = 5000
+import { port } from './config/config.mjs'
 
 // Todo: secure cors settings
 app.use(cors())
