@@ -6,9 +6,31 @@ info:
 servers:
 - url: http://localhost:5000
 tags:
+- name: facilities
+  description: Facilities
 - name: bookings
   description: Bookings
 paths:
+  /api/facilities/{facilityId}:
+    get:
+      tags:
+      - facilities
+      description: Gets information about a facility
+      parameters:
+        - in: path
+          name: facilityId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the facility
+      responses:
+        200:
+          description: An object containing info about the facility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+
   /api/bookings/{facilityId}:
     get:
       tags:
@@ -31,6 +53,15 @@ paths:
 
 components:
   schemas:
+    Facility:
+      type: object
+      properties:
+        facilities_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
     Bookings:
       type: object
       properties:
