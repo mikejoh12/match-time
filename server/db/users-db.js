@@ -10,10 +10,8 @@ const createUserDb = async ({email, pwd_hash, user_role}) => {
     const text = `INSERT INTO users(email, pwd_hash, user_role)
                   VALUES($1, $2, $3) RETURNING *`
     const values = [email, pwd_hash, user_role]
-    
-      const res = await pool.query(text, values)
-      console.log(res.rows[0])
-      return res.rows[0]
+    const res = await pool.query(text, values)
+    return res.rows[0]
 }
 
 module.exports = { fetchUserByEmailDb, createUserDb }

@@ -4,7 +4,6 @@ const { pool } = require('../config/config.js')
 
 describe('GET /api/facilities/{id}', () => {
   before(async() => {
-    console.log('Setting up test table in db.')
     await pool.query(
       `CREATE TABLE "facilities" (
       "id" SERIAL PRIMARY KEY,
@@ -17,7 +16,6 @@ describe('GET /api/facilities/{id}', () => {
   })
 
   after(async () => {
-    console.log('Dropping test table in db.')
     await pool.query(`DROP TABLE facilities`)
   })
 
