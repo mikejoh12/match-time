@@ -8,8 +8,8 @@ servers:
 tags:
 - name: facilities
   description: Facilities
-- name: bookings
-  description: Bookings
+- name: auth
+  description: Authentication / Authorization
 paths:
   /api/facilities/{id}:
     get:
@@ -31,25 +31,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/Facility'
 
-  /api/bookings/{id}:
-    get:
+  /api/auth/signup:
+    post:
       tags:
-      - bookings
-      description: Access all bookings for a facility
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: Numeric ID of the facility
+      - auth
+      description: Creates a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+        required: true
       responses:
-        200:
-          description: An object containing all bookings for a facility
+        201:
+          description: Returns the new user_id.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bookings'
+                $ref: '#/components/schemas/NewUser'
 
 components:
   schemas:
@@ -62,18 +68,8 @@ components:
           type: string
         description:
           type: string
-    Bookings:
+    NewUser:
       type: object
       properties:
-        id:
-          type: integer
-        facility_id:
-          type: integer
-        resource_id:
-          type: integer
         user_id:
           type: integer
-        start_time:
-          type: string
-        end_time:
-          type: string
