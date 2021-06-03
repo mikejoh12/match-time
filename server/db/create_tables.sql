@@ -14,14 +14,10 @@ CREATE TABLE "resources" (
   "description" varchar(100)
 );
 
-CREATE TABLE "users_bookings" (
-  "users_id" int,
-  "bookings_id" int
-);
-
 CREATE TABLE "bookings" (
   "id" SERIAL PRIMARY KEY,
   "resources_id" int,
+  "organizer_id" int,
   "start_time" timestamp,
   "end_time" timestamp
 );
@@ -44,11 +40,9 @@ CREATE TABLE "users_facilities_admin" (
 
 ALTER TABLE "resources" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
 
-ALTER TABLE "users_bookings" ADD FOREIGN KEY ("users_id") REFERENCES "users" ("id");
-
-ALTER TABLE "users_bookings" ADD FOREIGN KEY ("bookings_id") REFERENCES "bookings" ("id");
-
 ALTER TABLE "bookings" ADD FOREIGN KEY ("resources_id") REFERENCES "resources" ("id");
+
+ALTER TABLE "bookings" ADD FOREIGN KEY ("organizer_id") REFERENCES "users" ("id");
 
 ALTER TABLE "users_facilities_member" ADD FOREIGN KEY ("users_id") REFERENCES "users" ("id");
 
