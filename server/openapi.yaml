@@ -10,6 +10,8 @@ tags:
   description: Facilities
 - name: auth
   description: Authentication / Authorization
+- name: bookings
+  description: Bookings
 paths:
   /api/facilities/{id}:
     get:
@@ -57,6 +59,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/NewUser'
 
+  /api/bookings/by_facility/{id}:
+    get:
+      tags:
+      - bookings
+      description: Gets all bookings for a facility
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the facility
+      responses:
+        200:
+          description: An object containing info about the facility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+
 components:
   schemas:
     Facility:
@@ -73,3 +95,20 @@ components:
       properties:
         user_id:
           type: integer
+    Bookings:
+      type: object
+      properties:
+        bookings_id:
+          type: integer
+        resources_id:
+          type: integer
+        start_time:
+          type: string
+          description: ISO 8601 date string. Use .toISOString()
+        end_time:
+          type: string
+          description: ISO 8601 date string. Use .toISOString()
+        facilities_id:
+          type: integer
+        resources_name:
+          type: string
