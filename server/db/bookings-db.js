@@ -11,4 +11,12 @@ const fetchBookingsByFacilityDb = async id => {
     return res.rows
 }
 
-module.exports = { fetchBookingsByFacilityDb }
+const createBookingDb = async ({resources_id, organizer_id, start_time, end_time}) => {
+    const text = `INSERT INTO bookings(resources_id, organizer_id, start_time, end_time)
+                  VALUES($1, $2, $3, $4) RETURNING *`
+    const values = [resources_id, organizer_id, start_time, end_time]
+    const res = await pool.query(text, values)
+    return res.rows[0]
+}
+
+module.exports = { fetchBookingsByFacilityDb, createBookingDb }

@@ -2,7 +2,7 @@ const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
 
-describe('POST /api/auth/signup', () => {
+describe('/api/auth/signup', () => {
   
   before(async() => {
     await pool.query(

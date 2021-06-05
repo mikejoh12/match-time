@@ -2,7 +2,7 @@ const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
 
-describe('GET /api/facilities/{id}', () => {
+describe('/api/facilities/{id}', () => {
   before(async() => {
     await pool.query(
       `CREATE TABLE "facilities" (

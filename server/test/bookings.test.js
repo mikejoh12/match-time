@@ -2,7 +2,7 @@ const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
 
-describe('GET /api/bookings/by_facility/{id}', () => {
+describe('/api/bookings', () => {
   before(async() => {
     await pool.query(
         `CREATE TABLE "facilities" (
@@ -39,17 +39,30 @@ describe('GET /api/bookings/by_facility/{id}', () => {
     await pool.query(`DROP TABLE resources`)
   })
 
-  it('should respond with JSON and a 200 status code for a valid facility id', done => {
-    request(app)
-      .get('/api/bookings/by_facility/1')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, done);
+  describe('GET /api/bookings/by_facility/{id}', () => {
+    it('should respond with JSON and a 200 status code for a valid facility id', done => {
+      request(app)
+        .get('/api/bookings/by_facility/1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    })
+
+    it('should respond with a 404 status code for an invalid facility id', done => {
+      request(app)
+        .get('/api/bookings/by_facility/999')
+        .expect(404, done);
+    })
   })
 
-  it('should respond with a 404 status code for an invalid facility id', done => {
-    request(app)
-      .get('/api/bookings/by_facility/999')
-      .expect(404, done);
+  describe('POST /api/bookings', () => {
+    it('should respond with a 201 status code when creating a new booking', done => {
+      request(app)
+        .post('/api/bookings')
+        .send({resources_id: 1, organizer_id: 1, start_time: '2021-06-02T20:00:00.000Z', end_time: '2021-06-02T22:00:00.000Z'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201, done);
+    })
   })
 })

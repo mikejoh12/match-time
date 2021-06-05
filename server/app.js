@@ -1,7 +1,7 @@
 const express = require('express')
 const YAML = require('yamljs')
 const swaggerUI = require('swagger-ui-express')
-const config = require('./config/config')
+require('./config/config')
 const routes = require('./routes')
 const morgan = require('morgan')
 
@@ -16,6 +16,5 @@ app.use('/api', routes);
 // Document API with Swagger
 const swaggerDocument = YAML.load('./openapi.yaml');
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
 
 module.exports = app

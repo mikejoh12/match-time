@@ -73,11 +73,43 @@ paths:
           description: Numeric ID of the facility
       responses:
         200:
-          description: An object containing info about the facility
+          description: Returns an array of booking objects for a facility
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Bookings'
+
+  /api/bookings:
+    post:
+      tags:
+      - bookings
+      description: Creates a new booking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - resources_id
+              - organizer_id
+              - start_time
+              - end_time
+              properties:
+                resources_id:
+                  type: integer
+                organizer_id:
+                  type: integer
+                start_time:
+                  type: string
+                end_timme:
+                  type: string 
+        required: true
+      responses:
+        201:
+          description: Returns the new booking_id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewBooking'
 
 components:
   schemas:
@@ -112,3 +144,8 @@ components:
           type: integer
         resources_name:
           type: string
+    NewBooking:
+      type: object
+      properties:
+        booking_id:
+          type: integer

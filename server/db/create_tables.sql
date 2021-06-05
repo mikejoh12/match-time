@@ -16,10 +16,10 @@ CREATE TABLE "resources" (
 
 CREATE TABLE "bookings" (
   "id" SERIAL PRIMARY KEY,
-  "resources_id" int,
-  "organizer_id" int,
-  "start_time" timestamp,
-  "end_time" timestamp
+  "resources_id" int NOT NULL,
+  "organizer_id" int NOT NULL,
+  "start_time" timestamp NOT NULL,
+  "end_time" timestamp NOT NULL
 );
 
 CREATE TABLE "facilities" (

@@ -1,5 +1,5 @@
 const { fetchFacilityInfo } = require('../services/facilities-service.js')
-const { fetchBookingsByFacility } = require('../services/bookings-service.js')
+const { fetchBookingsByFacility, createBooking } = require('../services/bookings-service.js')
 
 const getBookings = async (req, res) => {
     const { id } = req.params
@@ -12,4 +12,16 @@ const getBookings = async (req, res) => {
     res.status(200).json(bookings)
 }
 
-module.exports = { getBookings }
+const postBooking = async (req, res, next) => {
+    const { resources_id, organizer_id, start_time, end_time } = req.body
+    const booking = {
+        resources_id,
+        organizer_id,
+        start_time,
+        end_time
+    }
+    const newBooking = await createBooking(booking)
+    res.status(201).json({booking_id: newBooking.id})
+}
+
+module.exports = { getBookings, postBooking }
