@@ -28,14 +28,10 @@ CREATE TABLE "facilities" (
   "description" varchar(1000)
 );
 
-CREATE TABLE "users_facilities_member" (
+CREATE TABLE "users_facilities" (
   "users_id" int,
-  "facilities_id" int
-);
-
-CREATE TABLE "users_facilities_admin" (
-  "users_id" int,
-  "facilities_id" int
+  "facilities_id" int,
+  "is_admin" boolean NOT NULL
 );
 
 ALTER TABLE "resources" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
@@ -44,10 +40,6 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("resources_id") REFERENCES "resources" (
 
 ALTER TABLE "bookings" ADD FOREIGN KEY ("organizer_id") REFERENCES "users" ("id");
 
-ALTER TABLE "users_facilities_member" ADD FOREIGN KEY ("users_id") REFERENCES "users" ("id");
+ALTER TABLE "users_facilities" ADD FOREIGN KEY ("users_id") REFERENCES "users" ("id");
 
-ALTER TABLE "users_facilities_member" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
-
-ALTER TABLE "users_facilities_admin" ADD FOREIGN KEY ("users_id") REFERENCES "users" ("id");
-
-ALTER TABLE "users_facilities_admin" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
+ALTER TABLE "users_facilities" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");

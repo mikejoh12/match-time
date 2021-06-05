@@ -27,9 +27,15 @@ describe('/api/facilities/{id}', () => {
       .expect(200, done);
   })
 
-  it('should respond with a 404 status code for an invalid facility id', done => {
+  it('should respond with a 422 status code for an invalid facility id', done => {
     request(app)
       .get('/api/facilities/999')
-      .expect(404, done);
+      .expect(422, done);
+  })
+
+  it('should respond with a 422 status code for a non-integer id', done => {
+    request(app)
+      .get('/api/facilities/test')
+      .expect(422, done);
   })
 })

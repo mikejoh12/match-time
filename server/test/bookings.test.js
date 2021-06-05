@@ -48,10 +48,10 @@ describe('/api/bookings', () => {
         .expect(200, done);
     })
 
-    it('should respond with a 404 status code for an invalid facility id', done => {
+    it('should respond with a 422 status code for an invalid facility id', done => {
       request(app)
         .get('/api/bookings/by_facility/999')
-        .expect(404, done);
+        .expect(422, done);
     })
   })
 
