@@ -1,11 +1,19 @@
-const { fetchBookingsByFacilityDb, createBookingDb } = require('../db/bookings-db.js')
+const { fetchBookingsByFacilityDb,
+        createBookingDb,
+        removeBookingDb,
+        fetchBookingByIdDb
+    } = require('../db/bookings-db.js')
 
-const fetchBookingsByFacility = async id => {
-    return await fetchBookingsByFacilityDb(id)
-}
+const fetchBookingsByFacility = async id => await fetchBookingsByFacilityDb(id)
 
-const createBooking = async booking => {
-    return await createBookingDb(booking)
-}
+const fetchBookingById = async id => await fetchBookingByIdDb(id)
 
-module.exports = { fetchBookingsByFacility, createBooking }
+const createBooking = async booking => await createBookingDb(booking)
+
+const removeBooking = async id => await removeBookingDb(id)
+
+module.exports = {  fetchBookingsByFacility,
+                    createBooking,
+                    removeBooking,
+                    fetchBookingById
+                }

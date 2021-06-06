@@ -111,6 +111,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/NewBooking'
 
+  /api/bookings/{id}:
+    delete:
+      tags:
+      - bookings
+      description: Deletes a booking for a facility
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the booking
+      responses:
+        204:
+          description: Returns a 204 response on successful delete
+
 components:
   schemas:
     Facility:
@@ -128,22 +144,24 @@ components:
         user_id:
           type: integer
     Bookings:
-      type: object
-      properties:
-        bookings_id:
-          type: integer
-        resources_id:
-          type: integer
-        start_time:
-          type: string
-          description: ISO 8601 date string. Use .toISOString()
-        end_time:
-          type: string
-          description: ISO 8601 date string. Use .toISOString()
-        facilities_id:
-          type: integer
-        resources_name:
-          type: string
+      type: array
+      items:
+        type: object
+        properties:
+          bookings_id:
+            type: integer
+          resources_id:
+            type: integer
+          start_time:
+            type: string
+            description: ISO 8601 date string. Use .toISOString()
+          end_time:
+            type: string
+            description: ISO 8601 date string. Use .toISOString()
+          facilities_id:
+            type: integer
+          resources_name:
+            type: string
     NewBooking:
       type: object
       properties:

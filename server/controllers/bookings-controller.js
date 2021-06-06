@@ -1,5 +1,5 @@
 const { fetchFacilityInfo } = require('../services/facilities-service.js')
-const { fetchBookingsByFacility, createBooking } = require('../services/bookings-service.js')
+const { fetchBookingsByFacility, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
 
 const getBookings = async (req, res) => {
     const { id } = req.params
@@ -24,4 +24,14 @@ const postBooking = async (req, res, next) => {
     res.status(201).json({booking_id: newBooking.id})
 }
 
-module.exports = { getBookings, postBooking }
+const deleteBooking = async (req, res) => {
+    const { id } = req.params
+    const booking = await fetchBookingById(id)
+    if (!booking) {
+        return res.status(422).json({error: "Invalid booking id."})
+    }
+    await removeBooking(id)
+    res.status(204).send()
+}
+
+module.exports = { getBookings, postBooking, deleteBooking }
