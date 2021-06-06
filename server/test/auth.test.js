@@ -34,12 +34,21 @@ describe('/api/auth/signup', () => {
       .expect(201, done);
   })
 
-  it('should respond with a 403 status code for an already taken email', done => {
+  it('should respond with a 422 status code for an already taken email', done => {
     request(app)
       .post('/api/auth/signup')
       .send({email: 'mikejoh12@gmail.com', password: 'test-password'})
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(403, done);
+      .expect(422, done);
+  })
+
+  it('should respond with a 422 status code for incorrect email format', done => {
+    request(app)
+      .post('/api/auth/signup')
+      .send({email: 'not_an_email_address', password: 'test-password'})
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(422, done);
   })
 })

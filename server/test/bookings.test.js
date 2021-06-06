@@ -53,6 +53,12 @@ describe('/api/bookings', () => {
         .get('/api/bookings/by_facility/999')
         .expect(422, done);
     })
+
+    it('should respond with a 422 status code for a non-integer facility id', done => {
+      request(app)
+        .get('/api/bookings/by_facility/wrong_id')
+        .expect(422, done);
+    })
   })
 
   describe('POST /api/bookings', () => {
@@ -63,6 +69,15 @@ describe('/api/bookings', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201, done);
+    })
+
+    it('should respond with a 422 status code when creating booking without required req-body data', done => {
+      request(app)
+        .post('/api/bookings')
+        .send({test_data: "test"})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422, done);
     })
   })
 })
