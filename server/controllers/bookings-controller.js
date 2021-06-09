@@ -21,7 +21,7 @@ const postBooking = async (req, res, next) => {
         end_time
     }
     const newBooking = await createBooking(booking)
-    res.status(201).json({booking_id: newBooking.id})
+    res.status(201).json({bookings_id: newBooking.id})
 }
 
 const deleteBooking = async (req, res) => {

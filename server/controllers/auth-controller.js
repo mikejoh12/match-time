@@ -17,7 +17,7 @@ const signUpUser = async (req, res, next) => {
         user_role: "customer"
     }
     const newUser = await createUser(user)
-    res.status(201).json({user_id: newUser.id})
+    res.status(201).json({users_id: newUser.id})
 }
 
 module.exports = { signUpUser }

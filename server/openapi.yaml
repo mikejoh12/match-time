@@ -13,6 +13,43 @@ tags:
 - name: bookings
   description: Bookings
 paths:
+  /api/facilities:
+    get:
+      tags:
+      - facilities
+      description: Gets all facilities
+      responses:
+        200:
+          description: An array containing all facilities as objects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facilities'
+    post:
+      tags:
+      - facilities
+      description: Creates a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - description
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Returns the new facilities_id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewFacility'
+                
   /api/facilities/{id}:
     get:
       tags:
@@ -129,6 +166,11 @@ paths:
 
 components:
   schemas:
+    Facilities:
+      type: array
+      items:
+        type: object
+        $ref: '#/components/schemas/Facility'
     Facility:
       type: object
       properties:
@@ -138,10 +180,15 @@ components:
           type: string
         description:
           type: string
+    NewFacility:
+      type: object
+      properties:
+        facilities_id:
+          type: integer
     NewUser:
       type: object
       properties:
-        user_id:
+        users_id:
           type: integer
     Bookings:
       type: array
@@ -165,5 +212,5 @@ components:
     NewBooking:
       type: object
       properties:
-        booking_id:
+        bookings_id:
           type: integer

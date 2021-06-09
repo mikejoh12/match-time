@@ -9,6 +9,16 @@ const validateGetFacilityInfo = [
         } else next();
     }]
 
+    const validatePostFacility = [
+        check('name').not().isEmpty(),
+        check('description').not().isEmpty(),
+        (req, res, next) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() })
+            } else next();
+        }]
+
 const validateSignUpUser = [
     check('password').not().isEmpty().isLength({min: 6, max: 100}),
     check('email').not().isEmpty().isEmail().isLength({max: 100}),
@@ -51,6 +61,7 @@ const validateDeleteBooking = [
 
 module.exports = {
     validateGetFacilityInfo,
+    validatePostFacility,
     validateSignUpUser,
     validateGetBookings,
     validatePostBooking,
