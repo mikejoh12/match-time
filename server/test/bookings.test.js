@@ -3,7 +3,7 @@ const app = require('../app')
 const { pool } = require('../config/config.js')
 
 describe('/api/bookings', () => {
-  before(async() => {
+  beforeEach(async() => {
     await pool.query(
         `CREATE TABLE "facilities" (
             "id" SERIAL PRIMARY KEY,
@@ -33,7 +33,7 @@ describe('/api/bookings', () => {
     )
   })
 
-  after(async () => {
+  afterEach(async () => {
     await pool.query(`DROP TABLE facilities`)
     await pool.query(`DROP TABLE bookings`)
     await pool.query(`DROP TABLE resources`)
@@ -77,6 +77,22 @@ describe('/api/bookings', () => {
         .send({test_data: "test"})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
+        .expect(422, done);
+    })
+  })
+
+  describe('DELETE /api/bookings/{id}', () => {
+    it('should respond with a 204 status code when deleting booking', done => {
+      request(app)
+        .delete(`/api/bookings/1`)
+        .expect(204, done);
+    })
+  })
+
+  describe('DELETE /api/bookings/{id}', () => {
+    it('should respond with 422 status code when given an invalid booking id', done => {
+      request(app)
+        .delete(`/api/bookings/999`)
         .expect(422, done);
     })
   })
