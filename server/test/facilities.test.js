@@ -24,7 +24,7 @@ describe('/api/facilities', () => {
 
     it('should respond with JSON and a 200 status code', done => {
       request(app)
-        .get('/api/facilities/1')
+        .get('/api/facilities')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);
