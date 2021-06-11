@@ -23,18 +23,16 @@ export const Landing = () => {
 
     return (
                 <div>
-                    <h1>Welcome to Calendar-Booking</h1>
-                    <form onSubmit={handleSubmit}>
-                <label>
-
-                Choose a club:
-                <select value={clubId} onChange={handleChange}>
-                    {
-                        facilities.map(facility =>
-                            <option value={facility.id} key={facility.id}>{facility.name}</option>)
-                    }
-                </select>
-                </label>
+                <form onSubmit={handleSubmit}>
+                    <label>
+                    Choose a club:
+                    <select value={clubId} onChange={handleChange}>
+                        {
+                            facilities.map(facility =>
+                                <option value={facility.id} key={facility.id}>{facility.name}</option>)
+                        }
+                    </select>
+                    </label>
                 <input type="submit" value="Submit" />
             </form>
                 </div>
