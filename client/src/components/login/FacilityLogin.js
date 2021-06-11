@@ -13,9 +13,7 @@ export const FacilityLogin = () => {
         dispatch(fetchFacility(id))
     }, [id, dispatch])
 
-    const handleLogin = () => {
-        history.push('/dashboard')
-    }
+    const handleLogin = () => history.push('/dashboard')
 
     return (
         <div>

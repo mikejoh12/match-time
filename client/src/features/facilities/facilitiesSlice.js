@@ -7,10 +7,17 @@ export const fetchFacility = createAsyncThunk('facilities/fetchFacility',
         return response.data
 })
 
+export const fetchAllFacilities = createAsyncThunk('facilities/fetchAllFacilities',
+    async () => {
+        const response = await apiAxios.get(`/facilities`)
+        return response.data
+})
+
 export const facilitiesSlice = createSlice({
     name: 'facilities',
     initialState: {
         fetchFacilityStatus: 'idle',
+        fetchAllFacilitiesStatus: 'idle',
         facility: {},
         allFacilities: []
     },
@@ -25,10 +32,20 @@ export const facilitiesSlice = createSlice({
           [fetchFacility.rejected]: (state, action) => {
             state.fetchFacilityStatus = 'failed'
           },
+        [fetchAllFacilities.pending]: (state, action) => {
+            state.fetchAllFacilitiesStatus = 'loading'
+          },
+          [fetchAllFacilities.fulfilled]: (state, action) => {
+            state.fetchAllFacilitiesStatus = 'succeeded'
+            state.allFacilities = action.payload
+          },
+          [fetchAllFacilities.rejected]: (state, action) => {
+            state.fetchAllFacilitiesStatus = 'failed'
+          },
     }
 })
 
 export const selectFacility = state => state.facilities.facility
-export const selectFacilities = state => state.facilities.allFacilities
+export const selectAllFacilities = state => state.facilities.allFacilities
 
 export default facilitiesSlice.reducer

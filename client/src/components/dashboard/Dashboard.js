@@ -16,10 +16,10 @@ export const Dashboard = () => {
     return (
               <div>
                   <h1>Dashboard Page</h1>
-                    {bookings && bookings.map(booking => {
-                        return <div>
-                                {booking.start_time} / {booking.end_time} / {booking.resources_id}
-                                </div>
+                    {bookings.map(booking => {
+                        return <p key={booking.bookings_id}>
+                                {booking.start_time} / {booking.end_time} / {booking.resources_name} / Club id: {booking.facilities_id}
+                                </p>
                     })
                         }
               </div>
