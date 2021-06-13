@@ -13,14 +13,18 @@ export const FacilityLogin = () => {
         dispatch(fetchFacility(id))
     }, [id, dispatch])
 
-    const handleLogin = () => history.push('/dashboard')
+    const handleUserLogin = () => history.push('/user-dashboard')
+    const handleManagerLogin = () => history.push('/manager-dashboard')
 
     return (
         <div>
             <h1>{facility.name}</h1>
             <p>{facility.description}</p>
-            <button onClick={handleLogin}>
-                Login
+            <button onClick={handleUserLogin}>
+                User Login
+            </button>
+            <button onClick={handleManagerLogin}>
+                Manager Login
             </button>
         </div>
     )

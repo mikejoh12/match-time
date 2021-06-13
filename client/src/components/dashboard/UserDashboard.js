@@ -4,7 +4,7 @@ import { fetchBookings, selectBookings } from "../../features/bookings/bookingsS
 import { selectFacility } from "../../features/facilities/facilitiesSlice"
 import { fetchResources, selectResources } from '../../features/resources/resourcesSlice'
 
-export const Dashboard = () => {
+export const UserDashboard = () => {
 
     const dispatch = useDispatch()
     const facility = useSelector(selectFacility)
@@ -18,18 +18,18 @@ export const Dashboard = () => {
 
     return (
               <div>
-                    <h1>Dashboard</h1>
+                    <h2>Dashboard</h2>
 
-                    <h2>Courts</h2>
+                    <h3>Courts</h3>
                         {resources.map(resource => {
                             return <p key={resource.id}>
                                     {resource.name} / {resource.description}
                                     </p>
                         })}
-                    <h2>Bookings</h2>
+                    <h3>Bookings</h3>
                         {bookings.map(booking => {
                             return <p key={booking.bookings_id}>
-                                    {booking.start_time} / {booking.end_time} / {booking.resources_name} / Club id: {booking.facilities_id}
+                                    Start: {booking.start_time} / End: {booking.end_time} / Court: {booking.resources_name} / Organizer Id: {booking.organizer_id}
                                     </p>
                         })}
               </div>

@@ -1,7 +1,8 @@
 import { Header } from './components/header/Header'
 import { FacilityLogin } from './components/login/FacilityLogin'
 import { Landing } from './components/landing/Landing'
-import { Dashboard } from './components/dashboard/Dashboard';
+import { UserDashboard } from './components/dashboard/UserDashboard'
+import { ManagerDashboard } from './components/dashboard/ManagerDashboard'
 import { BrowserRouter as Router,
   Switch,
   Route
@@ -14,7 +15,8 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/user-dashboard" component={UserDashboard} />
+        <Route exact path="/manager-dashboard" component={ManagerDashboard} />
         <Route path="/:id" component={FacilityLogin} />
       </Switch>
     </Router>
