@@ -8,6 +8,8 @@ servers:
 tags:
 - name: facilities
   description: Facilities
+- name: resources
+  description: Resources (such as tennis courts)
 - name: auth
   description: Authentication / Authorization
 - name: bookings
@@ -69,6 +71,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Facility'
+
+  /api/resources/by_facility/{id}:
+    get:
+      tags:
+      - resources
+      description: Gets information about a facility
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the facility
+      responses:
+        200:
+          description: An array of objects describing the resources for a facility.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resources'
 
   /api/auth/signup:
     post:
@@ -185,6 +207,23 @@ components:
       properties:
         facilities_id:
           type: integer
+    Resources:
+      type: array
+      items:
+        type: object
+        $ref: '#/components/schemas/Resource'
+        Facility:
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+        facilities_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
     NewUser:
       type: object
       properties:
