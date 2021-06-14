@@ -22,7 +22,6 @@ export const UserDashboard = () => {
 
     return (
               <div>
-                    <h2>Dashboard</h2>
                     { cal === 'big' ?
                     <BigCal resources={resources} bookings={bookings}/>
                     :

@@ -1,19 +1,12 @@
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
-const locales = {
-  'en-US': require('date-fns/locale/en-US'),
-}
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-})
+import FullCalendar from '@fullcalendar/react' // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import timeGridPlugin from '@fullcalendar/timegrid'
+
+const renderEventContent = eventInfo => (
+    <>
+      <b>Reserved</b>
+      <i>By user: {eventInfo.organizer_id}</i>
+    </>)
 
 export const FullCal = ({resources, bookings}) => {
   
@@ -27,23 +20,26 @@ export const FullCal = ({resources, bookings}) => {
         title: `User id: ${booking.organizer_id}`,
         start: new Date(booking.start_time),
         end: new Date(booking.end_time),
-        resourceId: booking.resources_id
     }))
 
-    return ( 
-    <div>
-        <Calendar
-        localizer={localizer}
-        events={events}
-        defaultView="day"
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 1400 }}
-        defaultDate={new Date(2011, 9, 5)}
-        resources={resourceMap}
-        resourceIdAccessor="resourceId"
-        resourceTitleAccessor="resourceTitle"
-        />
-    </div>
+    const calendars = resourceMap.map(resource => 
+      <FullCalendar
+        key={resource.resourceId}
+        plugins={[dayGridPlugin, timeGridPlugin ]}
+        headerToolbar={{
+          left: '',
+          center: 'title',
+          right: ''
+        }}
+        initialView="timeGridDay"
+        height="auto"
+        initialDate="2011-10-05"
+        events={events} />
+        )
+
+    return (
+      <div style={{width: "300px", margin: "auto"}}>
+        {calendars}
+      </div>
     )
 }
