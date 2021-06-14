@@ -13,15 +13,19 @@ export const FacilityLogin = () => {
         dispatch(fetchFacility(id))
     }, [id, dispatch])
 
-    const handleUserLogin = () => history.push('/user-dashboard')
+    const handleBigCalLogin = () => history.push('/user-dashboard/big')
+    const handleFullCalLogin = () => history.push('/user-dashboard/full')
     const handleManagerLogin = () => history.push('/manager-dashboard')
 
     return (
         <div>
             <h1>{facility.name}</h1>
             <p>{facility.description}</p>
-            <button onClick={handleUserLogin}>
-                User Login
+            <button onClick={handleBigCalLogin}>
+                User Login - React Big Calendar
+            </button>
+            <button onClick={handleFullCalLogin}>
+                User Login - Full Calendar
             </button>
             <button onClick={handleManagerLogin}>
                 Manager Login

@@ -15,7 +15,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route exact path="/user-dashboard" component={UserDashboard} />
+        <Route exact path="/user-dashboard/:cal" component={UserDashboard} />
         <Route exact path="/manager-dashboard" component={ManagerDashboard} />
         <Route path="/:id" component={FacilityLogin} />
       </Switch>
