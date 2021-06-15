@@ -4,14 +4,22 @@ import apiAxios from '../../config/axiosConfig'
 export const fetchBookings = createAsyncThunk('facilities/fetchBookings',
     async id => {
         const response = await apiAxios.get(`/bookings/by_facility/${id}`)
-        return response.data
+        // Normalize bookings as arrays in an object stored using resources keys
+        const bookings = {}
+        response.data.forEach(booking => {
+          if (!bookings[booking.resources_id]) {
+            bookings[booking.resources_id] = []
+        }
+          bookings[booking.resources_id].push(booking)
+        });
+        return bookings
 })
 
 export const bookingsSlice = createSlice({
     name: 'bookings',
     initialState: {
         fetchBookingsStatus: 'idle',
-        bookings: []
+        bookings: {}
     },
     extraReducers: {
         [fetchBookings.pending]: (state, action) => {

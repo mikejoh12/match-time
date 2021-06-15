@@ -1,14 +1,11 @@
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 import { fetchBookings, selectBookings } from "../../features/bookings/bookingsSlice"
 import { selectFacility } from "../../features/facilities/facilitiesSlice"
 import { fetchResources, selectResources } from '../../features/resources/resourcesSlice'
-import { BigCal } from '../calendar/BigCal'
 import { FullCal } from '../calendar/FullCal'
 
 export const UserDashboard = () => {
-    const { cal } = useParams()
 
     const dispatch = useDispatch()
     const facility = useSelector(selectFacility)
@@ -21,13 +18,7 @@ export const UserDashboard = () => {
     }, [facility, dispatch])
 
     return (
-              <div>
-                    { cal === 'big' ?
-                    <BigCal resources={resources} bookings={bookings}/>
-                    :
-                    <FullCal resources={resources} bookings={bookings}/>
-                    }
-              </div>
+            <FullCal resources={resources} bookings={bookings}/>
       )
   }
   
