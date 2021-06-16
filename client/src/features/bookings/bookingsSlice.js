@@ -36,5 +36,6 @@ export const bookingsSlice = createSlice({
 })
 
 export const selectBookings = state => state.bookings.bookings
+export const selectFetchBookingsStatus = state => state.bookings.fetchBookingsStatus
 
 export default bookingsSlice.reducer
