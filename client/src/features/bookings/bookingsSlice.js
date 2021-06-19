@@ -19,8 +19,14 @@ export const bookingsSlice = createSlice({
     name: 'bookings',
     initialState: {
         fetchBookingsStatus: 'idle',
-        bookings: {}
+        bookings: {},
+        calViewDate: new Date().toISOString()
     },
+    reducers: {
+      calViewDateUpdated(state, action) {
+          state.calViewDate = action.payload
+      }
+      }, 
     extraReducers: {
         [fetchBookings.pending]: (state, action) => {
             state.fetchBookingsStatus = 'loading'
@@ -35,7 +41,9 @@ export const bookingsSlice = createSlice({
     }
 })
 
+export const { calViewDateUpdated } = bookingsSlice.actions
 export const selectBookings = state => state.bookings.bookings
 export const selectFetchBookingsStatus = state => state.bookings.fetchBookingsStatus
+export const selectCalViewDate = state => state.bookings.calViewDate
 
 export default bookingsSlice.reducer

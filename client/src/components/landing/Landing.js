@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom'
-import { selectAllFacilities, fetchAllFacilities } from '../../features/facilities/facilitiesSlice'
+import { selectAllFacilities, fetchAllFacilities, selectFetchAllFacilitiesStatus } from '../../features/facilities/facilitiesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -25,6 +25,7 @@ export const Landing = () => {
     const [clubId, setClubId] = useState(1)
     const facilities = useSelector(selectAllFacilities)
     const history = useHistory()
+    const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus)
 
     useEffect(() => {
         dispatch(fetchAllFacilities())
@@ -39,6 +40,8 @@ export const Landing = () => {
 
     return (
         <div>
+            {fetchAllFacilitiesStatus === 'succeeded' ?
+
             <form onSubmit={handleSubmit}>
                 <FormControl className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
@@ -56,6 +59,9 @@ export const Landing = () => {
                 </FormControl>
                 <Button variant="contained" color="primary" type="submit">Submit</Button>
             </form>
-                </div>
+            :
+            <h1>Loading..</h1>
+            }
+        </div>
         )
 }

@@ -47,5 +47,6 @@ export const facilitiesSlice = createSlice({
 
 export const selectFacility = state => state.facilities.facility
 export const selectAllFacilities = state => state.facilities.allFacilities
+export const selectFetchAllFacilitiesStatus = state => state.facilities.fetchAllFacilitiesStatus
 
 export default facilitiesSlice.reducer

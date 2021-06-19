@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { fetchBookings, selectBookings, selectFetchBookingsStatus } from "../../features/bookings/bookingsSlice"
+import { fetchBookings, selectBookings, selectFetchBookingsStatus, selectCalViewDate, calViewDateUpdated } from "../../features/bookings/bookingsSlice"
 import { selectFacility } from "../../features/facilities/facilitiesSlice"
 import { fetchResources, selectResources } from '../../features/resources/resourcesSlice'
 
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid'
+import { CalDatePicker } from './CalDatePicker'
 
 export const FullCal = () => {
     const dispatch = useDispatch()
@@ -13,6 +14,7 @@ export const FullCal = () => {
     const resources = useSelector(selectResources)
     const bookings = useSelector(selectBookings)
     const fetchBookingsStatus = useSelector(selectFetchBookingsStatus)
+    const calViewDate = useSelector(selectCalViewDate)
 
     useEffect(() => {
       dispatch(fetchBookings(facility.id))
@@ -33,7 +35,7 @@ export const FullCal = () => {
         slotMinTime="06:00:00"
         slotMaxTime="22:00:00"
         height="auto"
-        initialDate="2021-06-02"
+        initialDate={calViewDate.split('T', 1)[0]}
         events={ 
           bookings[resource.id]?.map(booking => ({
           id: booking.bookings_id,
@@ -42,9 +44,10 @@ export const FullCal = () => {
           end: new Date(booking.end_time)
         }))} />
         )
-
+ 
     return (
       <div style={{width: "300px", margin: "auto"}}>
+        <CalDatePicker />
         {fetchBookingsStatus === 'succeeded' ?
           calendars
           :
