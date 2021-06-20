@@ -22,15 +22,15 @@ export const FullCal = () => {
     const calViewDate = useSelector(selectCalViewDate)
 
     // Create a React ref to be able to access Full Calendar API to set dates from external code
-    const calendarsRefs = useRef([])
+    const calendarsRefs = useRef({})
 
     const handleDateChange = (date) => {
       dispatch(calViewDateUpdated(date.toISOString()))
-      console.log(`Selected date: ${date.toISOString()}`)
-      for (const cal of calendarsRefs.current) {
-        let calendarApi = cal.getApi()
+      // Use Full Calendar API to set date from external date picker for all rendered calendars
+      Object.keys(calendarsRefs.current).forEach(key => {
+        let calendarApi = calendarsRefs.current[key].getApi()
         calendarApi.gotoDate(date)
-      }
+      })
     }
 
     useEffect(() => {
@@ -38,9 +38,9 @@ export const FullCal = () => {
       dispatch(fetchResources(facility.id))
     }, [facility, dispatch])
 
-    const calendars = resources.map(resource => 
+    const calendars = resources.map((resource, idx) => 
       <FullCalendar
-        ref={el => (calendarsRefs.current.push(el))}
+        ref={element => (calendarsRefs.current[idx] = element)}
         key={resource.id}
         plugins={[ timeGridPlugin ]}
         headerToolbar={{
