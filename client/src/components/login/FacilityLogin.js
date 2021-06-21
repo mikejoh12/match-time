@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectFacility, fetchFacility } from '../../features/facilities/facilitiesSlice'
 import Grid from "@material-ui/core/Grid";
+import Button from '@material-ui/core/Button';
 
 export const FacilityLogin = () => {
     const { id } = useParams()
@@ -22,7 +23,8 @@ export const FacilityLogin = () => {
             <Grid   container
                     justify="center"
                     direction="column"
-                    alignItems="center">
+                    alignItems="center"
+                    spacing={2}>
                 <Grid item>
                     <h1>{facility.name}</h1>
                 </Grid>
@@ -30,13 +32,11 @@ export const FacilityLogin = () => {
                     <p>{facility.description}</p>
                 </Grid>
                 <Grid item>
-                    <button onClick={handleUserLogin}>
-                        User Login
-                    </button>
+                    <Button variant="contained" color="primary" onClick={handleUserLogin}>User Login</Button>
                 </Grid>
-                <button onClick={handleManagerLogin}>
-                    Manager Login
-                </button>
+                <Grid item>
+                    <Button variant="contained" color="primary" onClick={handleManagerLogin}>Manager Login</Button>
+                </Grid>
             </Grid>
         </div>
     )

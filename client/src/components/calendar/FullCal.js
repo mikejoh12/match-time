@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { fetchBookings, selectBookings, selectFetchBookingsStatus, selectCalViewDate, calViewDateUpdated } from "../../features/bookings/bookingsSlice"
+import { fetchBookings, selectBookings, selectFetchBookingsStatus, selectCalViewDate, calViewDateUpdated, selectCourt, courtUpdated } from "../../features/bookings/bookingsSlice"
 import { selectFacility } from "../../features/facilities/facilitiesSlice"
 import { fetchResources, selectResources } from '../../features/resources/resourcesSlice'
 import 'date-fns';
@@ -12,6 +12,22 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 export const FullCal = () => {
     const dispatch = useDispatch()
@@ -20,6 +36,8 @@ export const FullCal = () => {
     const bookings = useSelector(selectBookings)
     const fetchBookingsStatus = useSelector(selectFetchBookingsStatus)
     const calViewDate = useSelector(selectCalViewDate)
+    const classes = useStyles()
+    const court = useSelector(selectCourt)
 
     // Create a React ref to be able to access Full Calendar API to set dates from external code
     const calendarsRefs = useRef({})
@@ -38,56 +56,94 @@ export const FullCal = () => {
       dispatch(fetchResources(facility.id))
     }, [facility, dispatch])
 
-    const calendars = resources.map((resource, idx) => 
-      <FullCalendar
-        ref={element => (calendarsRefs.current[idx] = element)}
-        key={resource.id}
-        plugins={[ timeGridPlugin ]}
-        headerToolbar={{
-          left: '',
-          center: 'title',
-          right: ''
-        }}
-        allDaySlot={false}
-        initialView="timeGridDay"
-        slotMinTime="06:00:00"
-        slotMaxTime="22:00:00"
-        height="auto"
-        initialDate={calViewDate.split('T', 1)[0]}
-        events={ 
-          bookings[resource.id]?.map(booking => ({
-          id: booking.bookings_id,
-          title: `Booked by user: ${booking.organizer_id}`,
-          start: new Date(booking.start_time),
-          end: new Date(booking.end_time)
-        }))} />
+    const handleChange = event => dispatch(courtUpdated(event.target.value))
+
+    const calendars = resources.filter(resource => resource.id === court).map((resource, idx) => 
+      <Grid container item
+      xs={8}
+      md={4}
+      xl={2}
+      direction="column"
+      alignItems="center"
+      key={resource.id}>
+        <Grid item>
+          <Typography variant="h5" >
+          {resource.name}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <FullCalendar
+            ref={element => (calendarsRefs.current[idx] = element)}
+            plugins={[ timeGridPlugin ]}
+            headerToolbar={{
+              left: '',
+              center: 'title',
+              right: ''
+            }}
+            allDaySlot={false}
+            initialView="timeGridDay"
+            slotMinTime="06:00:00"
+            slotMaxTime="22:00:00"
+            height="auto"
+            initialDate={calViewDate.split('T', 1)[0]}
+            events={ 
+              bookings[resource.id]?.map(booking => ({
+              id: booking.bookings_id,
+              title: `Booked by user: ${booking.organizer_id}`,
+              start: new Date(booking.start_time),
+              end: new Date(booking.end_time)
+            }))} />
+          </Grid>
+        </Grid>
         )
  
     return (
-      <div style={{width: "300px", margin: "auto"}}>
-        
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid container justify="space-around">
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="normal"
-            id="date-picker-inline"
-            label="Select date:"
-            value={new Date(useSelector(selectCalViewDate))}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
+        <Grid container
+          direction="column"
+          alignItems="center"
+          justify="center">
+          <Grid item>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Select date:"
+                value={new Date(useSelector(selectCalViewDate))}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
           </Grid>
-        </MuiPickersUtilsProvider>
-
-        {fetchBookingsStatus === 'succeeded' ?
-          calendars
-          :
-          <h1>Loading</h1>}
-      </div>
+          <Grid item>
+                    <form>
+                    <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Choose a court:</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={court}
+                        onChange={handleChange}
+                        >
+                            {
+                                resources.map(resource =>
+                                    <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
+                            }
+                        </Select>
+                    </FormControl>
+                    </form>
+          </Grid>
+          <Grid container
+                justify="center">
+              {fetchBookingsStatus === 'succeeded' ?
+                calendars
+                :
+                <h1>Loading</h1>}
+          </Grid>
+        </Grid>
     )
 }
