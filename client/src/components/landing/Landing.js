@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -42,23 +43,30 @@ export const Landing = () => {
         <div>
             {fetchAllFacilitiesStatus === 'succeeded' ?
 
+        <Grid   container
+                justify="center">
             <form onSubmit={handleSubmit}>
-                <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={clubId}
-                    onChange={handleChange}
-                    >
-                        {
-                            facilities.map(facility =>
-                                <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
-                        }
-                    </Select>
-                </FormControl>
-                <Button variant="contained" color="primary" type="submit">Submit</Button>
+                <Grid item>
+                    <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={clubId}
+                        onChange={handleChange}
+                        >
+                            {
+                                facilities.map(facility =>
+                                    <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
+                            }
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item>
+                    <Button variant="contained" color="primary" type="submit">Submit</Button>
+                </Grid>
             </form>
+        </Grid>
             :
             <h1>Loading..</h1>
             }
