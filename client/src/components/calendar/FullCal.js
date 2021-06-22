@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { fetchBookings, selectBookings, selectFetchBookingsStatus, selectCalViewDate, calViewDateUpdated, selectCourt, courtUpdated } from "../../features/bookings/bookingsSlice"
 import { selectFacility } from "../../features/facilities/facilitiesSlice"
-import { fetchResources, selectResources } from '../../features/resources/resourcesSlice'
+import { fetchResources, selectResources, selectFetchResourcesStatus } from '../../features/resources/resourcesSlice'
 import 'date-fns';
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -18,6 +18,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { BookDialog } from './BookDialog'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -38,17 +39,22 @@ export const FullCal = () => {
     const calViewDate = useSelector(selectCalViewDate)
     const classes = useStyles()
     const court = useSelector(selectCourt)
+    const fetchResourcesStatus = useSelector(selectFetchResourcesStatus)
 
     // Create a React ref to be able to access Full Calendar API to set dates from external code
     const calendarsRefs = useRef({})
 
     const handleDateChange = (date) => {
-      dispatch(calViewDateUpdated(date.toISOString()))
-      // Use Full Calendar API to set date from external date picker for all rendered calendars
-      Object.keys(calendarsRefs.current).forEach(key => {
-        let calendarApi = calendarsRefs.current[key].getApi()
-        calendarApi.gotoDate(date)
-      })
+        // Validates the date object
+        // Comparing date.getTime() with itself returns NaN for invalid date. NaN cannot be equal to NaN.
+        if (date && date.getTime() === date.getTime()) {
+          dispatch(calViewDateUpdated(date.toISOString()))
+          // Use Full Calendar API to set date from external date picker for all rendered calendars
+          Object.keys(calendarsRefs.current).forEach(key => {
+            let calendarApi = calendarsRefs.current[key].getApi()
+            calendarApi.gotoDate(date)
+          })
+      }
     }
 
     useEffect(() => {
@@ -98,52 +104,62 @@ export const FullCal = () => {
         )
  
     return (
-        <Grid container
-          direction="column"
-          alignItems="center"
-          justify="center">
-          <Grid item>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Select date:"
-                value={new Date(useSelector(selectCalViewDate))}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </MuiPickersUtilsProvider>
+      <div>
+        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded') ?  
+            <Grid container
+            direction="column"
+            spacing
+            alignItems="center"
+            justify="center">
+
+            <Grid item>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Select date:"
+                  value={calViewDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item>
+                      <form>
+                      <FormControl className={classes.formControl}>
+                      <InputLabel id="demo-simple-select-label">Choose a court:</InputLabel>
+                          <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={court}
+                          onChange={handleChange}
+                          >
+                              {
+                                  resources.map(resource =>
+                                      <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
+                              }
+                          </Select>
+                      </FormControl>
+                      </form>
+            </Grid>
+            <Grid item>
+              <BookDialog />
+            </Grid>
+            <Grid container
+                  justify="center">
+                  {calendars}
+            </Grid>
           </Grid>
-          <Grid item>
-                    <form>
-                    <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Choose a court:</InputLabel>
-                        <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={court}
-                        onChange={handleChange}
-                        >
-                            {
-                                resources.map(resource =>
-                                    <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
-                            }
-                        </Select>
-                    </FormControl>
-                    </form>
-          </Grid>
-          <Grid container
-                justify="center">
-              {fetchBookingsStatus === 'succeeded' ?
-                calendars
-                :
-                <h1>Loading</h1>}
-          </Grid>
-        </Grid>
+              :
+            <Grid container>
+                  <h1>Loading</h1>
+            </Grid>
+          }
+      </div>
     )
 }

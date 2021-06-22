@@ -44,8 +44,10 @@ export const Landing = () => {
             {fetchAllFacilitiesStatus === 'succeeded' ?
 
         <Grid   container
+                direction="column"
+                alignItems="center"
                 justify="center">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} align="center">
                 <Grid item>
                     <FormControl className={classes.formControl}>
                     <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
@@ -68,7 +70,9 @@ export const Landing = () => {
             </form>
         </Grid>
             :
-            <h1>Loading..</h1>
+            <Grid item>
+                <h1>Loading..</h1>
+            </Grid>
             }
         </div>
         )

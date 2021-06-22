@@ -28,5 +28,6 @@ export const resourcesSlice = createSlice({
 })
 
 export const selectResources = state => state.resources.resources
+export const selectFetchResourcesStatus = state => state.resources.fetchResourcesStatus
 
 export default resourcesSlice.reducer

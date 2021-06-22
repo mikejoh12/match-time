@@ -1,0 +1,99 @@
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DateFnsUtils from "@date-io/date-fns";
+import { 
+    MuiPickersUtilsProvider,
+    KeyboardTimePicker } from "@material-ui/pickers";
+import { DatePicker } from "@material-ui/pickers";
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  }));
+
+export const BookDialog = () => {
+  const [open, setOpen] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'))
+  const classes = useStyles()
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleResourceChange = () => console.log('Resource change')
+
+  const handleDateChange = date => setSelectedDate(date)
+
+  return (
+    <div>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        Book a Court
+      </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title" align="center">Book a Court</DialogTitle>
+        <DialogContent>
+            <Grid container
+                direction="column"
+                alignItems="center">
+                <FormControl className={classes.formControl}>
+        <InputLabel id="court-label">Select Court:</InputLabel>
+            <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={1}
+            onChange={handleResourceChange}
+            >
+                <MenuItem value={1}>Court 1</MenuItem>
+                <MenuItem value={2}>Court 2</MenuItem>
+                <MenuItem value={3}>Court 3</MenuItem>
+            </Select>
+        </FormControl>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <InputLabel id="date-label">Select Date:</InputLabel>
+            <DatePicker
+                value={selectedDate}
+                onChange={handleDateChange}/>
+            <KeyboardTimePicker
+                margin="normal"
+                id="time-picker"
+                label="Time"
+                minutesStep={30}
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                }}
+            />
+        </MuiPickersUtilsProvider>
+            </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Book Court
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
