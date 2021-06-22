@@ -15,6 +15,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { useSelector, useDispatch } from "react-redux";
+import { selectResources } from '../../features/resources/resourcesSlice'
+
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -26,21 +29,26 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const BookDialog = () => {
+export const BookDialog = props => {
+  const resources = useSelector(selectResources)
   const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'))
+  const [selectedDate, setSelectedDate] = React.useState(props.calViewDate)
+  const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
+  const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
+
   const handleClickOpen = () => {
-    setOpen(true);
-  };
-
+    setSelectedResource(props.resourceInView)
+    setOpen(true)
+  }
+  
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const handleResourceChange = () => console.log('Resource change')
-
+  const handleResourceChange = event => setSelectedResource(event.target.value)
   const handleDateChange = date => setSelectedDate(date)
+  const handleDurationChange = event => setDuration(event.target.value)
 
   return (
     <div>
@@ -50,39 +58,55 @@ export const BookDialog = () => {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" align="center">Book a Court</DialogTitle>
         <DialogContent>
-            <Grid container
-                direction="column"
-                alignItems="center">
-                <FormControl className={classes.formControl}>
-        <InputLabel id="court-label">Select Court:</InputLabel>
-            <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={1}
-            onChange={handleResourceChange}
-            >
-                <MenuItem value={1}>Court 1</MenuItem>
-                <MenuItem value={2}>Court 2</MenuItem>
-                <MenuItem value={3}>Court 3</MenuItem>
-            </Select>
-        </FormControl>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <InputLabel id="date-label">Select Date:</InputLabel>
-            <DatePicker
-                value={selectedDate}
-                onChange={handleDateChange}/>
-            <KeyboardTimePicker
-                margin="normal"
-                id="time-picker"
-                label="Time"
-                minutesStep={30}
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                    'aria-label': 'change time',
-                }}
-            />
-        </MuiPickersUtilsProvider>
+            <Grid     container
+                      direction="column"
+                      alignItems="center">
+              <FormControl className={classes.formControl}>
+              <InputLabel id="court-label">Select Court:</InputLabel>
+                  <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedResource}
+                  onChange={handleResourceChange}
+                  >
+                      {
+                          resources.map(resource =>
+                              <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
+                      }
+                  </Select>
+              </FormControl>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <InputLabel id="date-label">Select Date:</InputLabel>
+                  <DatePicker
+                      disableToolbar
+                      variant="inline"
+                      value={selectedDate}
+                      onChange={handleDateChange}/>
+                  <KeyboardTimePicker
+                      margin="normal"
+                      id="time-picker"
+                      label="Time"
+                      minutesStep={30}
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                          'aria-label': 'change time',
+                      }}
+                  />
+              </MuiPickersUtilsProvider>
+              <InputLabel id="court-label">Duration:</InputLabel>
+                  <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={duration}
+                  onChange={handleDurationChange}
+                  >
+
+                              <MenuItem value={30} key={30}>30 min</MenuItem>
+                              <MenuItem value={60} key={30}>1 hr</MenuItem>
+                              <MenuItem value={90} key={30}>1 hr 30 min</MenuItem>
+                              <MenuItem value={120} key={30}>2 hrs</MenuItem>
+                </Select>
             </Grid>
         </DialogContent>
         <DialogActions>

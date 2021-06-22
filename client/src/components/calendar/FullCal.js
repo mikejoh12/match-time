@@ -148,7 +148,7 @@ export const FullCal = () => {
                       </form>
             </Grid>
             <Grid item>
-              <BookDialog />
+              <BookDialog resourceInView={court} date={calViewDate} />
             </Grid>
             <Grid container
                   justify="center">
