@@ -108,7 +108,6 @@ export const FullCal = () => {
         {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded') ?  
             <Grid container
             direction="column"
-            spacing
             alignItems="center"
             justify="center">
 

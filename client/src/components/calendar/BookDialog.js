@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from "@date-io/date-fns";
+import { zonedTimeToUtc } from 'date-fns-tz'
 import { 
     MuiPickersUtilsProvider,
     KeyboardTimePicker } from "@material-ui/pickers";
@@ -16,8 +17,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { useSelector, useDispatch } from "react-redux";
-import { selectResources } from '../../features/resources/resourcesSlice'
-
+import { selectResources } from '../../features/resources/resourcesSlice';
+import { createBooking } from '../../features/bookings/bookingsSlice';
+import addMinutes from 'date-fns/addMinutes'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const BookDialog = props => {
+  const dispatch = useDispatch()
   const resources = useSelector(selectResources)
   const [open, setOpen] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(props.calViewDate)
@@ -43,6 +46,19 @@ export const BookDialog = props => {
   }
   
   const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleCloseBook = () => {
+    const endTime = addMinutes(new Date(selectedDate), duration)
+    const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
+    const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
+    dispatch(createBooking({
+        resources_id: selectedResource,
+        organizer_id: 1, // TODO: Connect to logged in User
+        start_time: utcStartTime,
+        end_time: utcEndTime
+    }))
     setOpen(false)
   }
 
@@ -113,7 +129,7 @@ export const BookDialog = props => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleCloseBook} color="primary">
             Book Court
           </Button>
         </DialogActions>

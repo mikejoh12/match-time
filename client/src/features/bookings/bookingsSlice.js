@@ -15,6 +15,19 @@ export const fetchBookings = createAsyncThunk('facilities/fetchBookings',
         return bookings
 })
 
+export const createBooking = createAsyncThunk('bookings/createBooking',
+    async ({resources_id, organizer_id, start_time, end_time}) => {
+        const response = await apiAxios.post(
+          '/bookings',
+          {
+              resources_id,
+              organizer_id,
+              start_time,
+              end_time
+          })
+          return response.data
+})
+
 export const bookingsSlice = createSlice({
     name: 'bookings',
     initialState: {
@@ -32,7 +45,7 @@ export const bookingsSlice = createSlice({
       },
     }, 
     extraReducers: {
-        [fetchBookings.pending]: (state, action) => {
+          [fetchBookings.pending]: (state, action) => {
             state.fetchBookingsStatus = 'loading'
           },
           [fetchBookings.fulfilled]: (state, action) => {
@@ -41,6 +54,15 @@ export const bookingsSlice = createSlice({
           },
           [fetchBookings.rejected]: (state, action) => {
             state.fetchBookingsStatus = 'failed'
+          },
+          [createBooking.pending]: (state, action) => {
+            state.createBookingStatus = 'loading'
+          },
+          [createBooking.fulfilled]: (state, action) => {
+            state.createBookingStatus = 'succeeded'
+          },
+          [createBooking.rejected]: (state, action) => {
+            state.createBookingStatus = 'failed'
           },
     }
 })
