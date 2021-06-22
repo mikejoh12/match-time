@@ -35,7 +35,7 @@ export const BookDialog = props => {
   const dispatch = useDispatch()
   const resources = useSelector(selectResources)
   const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(props.calViewDate)
+  const [selectedDate, setSelectedDate] = React.useState(new Date(props.calViewDate))
   const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
@@ -50,7 +50,7 @@ export const BookDialog = props => {
   }
 
   const handleCloseBook = () => {
-    const endTime = addMinutes(new Date(selectedDate), duration)
+    const endTime = addMinutes(selectedDate, duration)
     const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     dispatch(createBooking({
