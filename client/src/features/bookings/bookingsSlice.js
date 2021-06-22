@@ -25,6 +25,7 @@ export const createBooking = createAsyncThunk('bookings/createBooking',
               start_time,
               end_time
           })
+          console.log(response.data)
           return response.data
 })
 
@@ -60,6 +61,7 @@ export const bookingsSlice = createSlice({
           },
           [createBooking.fulfilled]: (state, action) => {
             state.createBookingStatus = 'succeeded'
+            state.bookings[action.payload.resources_id].push(action.payload)
           },
           [createBooking.rejected]: (state, action) => {
             state.createBookingStatus = 'failed'
