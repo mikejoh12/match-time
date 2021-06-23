@@ -19,6 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { BookDialog } from './BookDialog'
+import { zonedTimeToUtc } from 'date-fns-tz'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -48,11 +49,12 @@ export const FullCal = () => {
         // Validates the date object
         // Comparing date.getTime() with itself returns NaN for invalid date. NaN cannot be equal to NaN.
         if (date && date.getTime() === date.getTime()) {
-          dispatch(calViewDateUpdated(date.toISOString()))
+          const utcDate = zonedTimeToUtc(date, 'UTC')
+          dispatch(calViewDateUpdated(utcDate.toISOString()))
           // Use Full Calendar API to set date from external date picker for all rendered calendars
           Object.keys(calendarsRefs.current).forEach(key => {
             let calendarApi = calendarsRefs.current[key].getApi()
-            calendarApi.gotoDate(date)
+            calendarApi.gotoDate(utcDate)
           })
       }
     }
@@ -91,7 +93,7 @@ export const FullCal = () => {
             slotMinTime="06:00:00"
             slotMaxTime="22:00:00"
             height="auto"
-            initialDate={calViewDate.split('T', 1)[0]}
+            initialDate={calViewDate}
             events={ 
               bookings[resource.id]?.map(booking => ({
               id: booking.bookings_id,

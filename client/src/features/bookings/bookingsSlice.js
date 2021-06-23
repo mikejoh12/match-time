@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import apiAxios from '../../config/axiosConfig'
+import { zonedTimeToUtc } from 'date-fns-tz'
 
 export const fetchBookings = createAsyncThunk('facilities/fetchBookings',
     async id => {
@@ -34,7 +35,7 @@ export const bookingsSlice = createSlice({
     initialState: {
         fetchBookingsStatus: 'idle',
         bookings: {},
-        calViewDate: new Date().toISOString(),
+        calViewDate:  zonedTimeToUtc(new Date(), 'UTC').toISOString(),
         court: 1
     },
     reducers: {

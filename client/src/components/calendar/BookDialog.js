@@ -35,14 +35,16 @@ export const BookDialog = props => {
   const dispatch = useDispatch()
   const resources = useSelector(selectResources)
   const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(new Date(props.calViewDate))
+  const [selectedDate, setSelectedDate] = React.useState(props.calViewDate)
   const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
 
   const handleClickOpen = () => {
     setSelectedResource(props.resourceInView)
+    setSelectedDate(props.calViewDate)
     setOpen(true)
+    console.log(selectedDate)
   }
   
   const handleClose = () => {
@@ -119,9 +121,9 @@ export const BookDialog = props => {
                   >
 
                               <MenuItem value={30} key={30}>30 min</MenuItem>
-                              <MenuItem value={60} key={30}>1 hr</MenuItem>
-                              <MenuItem value={90} key={30}>1 hr 30 min</MenuItem>
-                              <MenuItem value={120} key={30}>2 hrs</MenuItem>
+                              <MenuItem value={60} key={60}>1 hr</MenuItem>
+                              <MenuItem value={90} key={90}>1 hr 30 min</MenuItem>
+                              <MenuItem value={120} key={120}>2 hrs</MenuItem>
                 </Select>
             </Grid>
         </DialogContent>
