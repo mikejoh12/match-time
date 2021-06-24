@@ -2,6 +2,7 @@ import { Header } from './components/header/Header'
 import { FacilityLogin } from './components/login/FacilityLogin'
 import { Landing } from './components/landing/Landing'
 import { UserDashboard } from './components/dashboard/UserDashboard'
+import { Settings } from './components/settings/Settings'
 import { ManagerDashboard } from './components/dashboard/ManagerDashboard'
 import { BrowserRouter as Router,
   Switch,
@@ -17,6 +18,7 @@ function App() {
         <Route exact path="/" component={Landing} />
         <Route exact path="/user-dashboard" component={UserDashboard} />
         <Route exact path="/manager-dashboard" component={ManagerDashboard} />
+        <Route exact path="/settings" component={Settings} />
         <Route path="/:id" component={FacilityLogin} />
       </Switch>
     </Router>
