@@ -6,6 +6,12 @@ const fetchUserByEmailDb = async (email) => {
     return res.rows[0]
 }
 
+const fetchUserByIdDb = async id => {
+    const res = await pool.query(`SELECT id, email, date_joined, user_role, active
+                                  FROM users WHERE id = $1`, [id])
+    return res.rows[0]
+}
+
 const createUserDb = async ({email, pwd_hash, user_role}) => {
     const text = `INSERT INTO users(email, pwd_hash, user_role)
                   VALUES($1, $2, $3) RETURNING *`
@@ -14,4 +20,4 @@ const createUserDb = async ({email, pwd_hash, user_role}) => {
     return res.rows[0]
 }
 
-module.exports = { fetchUserByEmailDb, createUserDb }
+module.exports = { fetchUserByEmailDb, fetchUserByIdDb, createUserDb }

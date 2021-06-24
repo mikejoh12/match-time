@@ -1,10 +1,13 @@
 const { fetchBookingsByFacilityDb,
+        fetchBookingsByUserDb,
         createBookingDb,
         removeBookingDb,
         fetchBookingByIdDb
     } = require('../db/bookings-db.js')
 
 const fetchBookingsByFacility = async id => await fetchBookingsByFacilityDb(id)
+
+const fetchBookingsByUser = async id => await fetchBookingsByUserDb(id)
 
 const fetchBookingById = async id => await fetchBookingByIdDb(id)
 
@@ -13,6 +16,7 @@ const createBooking = async booking => await createBookingDb(booking)
 const removeBooking = async id => await removeBookingDb(id)
 
 module.exports = {  fetchBookingsByFacility,
+                    fetchBookingsByUser,
                     createBooking,
                     removeBooking,
                     fetchBookingById

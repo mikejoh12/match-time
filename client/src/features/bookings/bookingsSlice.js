@@ -36,7 +36,8 @@ export const bookingsSlice = createSlice({
         fetchBookingsStatus: 'idle',
         bookings: {},
         calViewDate:  zonedTimeToUtc(new Date(), 'UTC').toISOString(),
-        court: 1
+        court: 1,
+        bookingsByUser: []
     },
     reducers: {
       calViewDateUpdated(state, action) {

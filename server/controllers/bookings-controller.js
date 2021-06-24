@@ -1,7 +1,8 @@
 const { fetchFacilityInfo } = require('../services/facilities-service.js')
-const { fetchBookingsByFacility, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
+const { fetchBookingsByFacility, fetchBookingsByUser, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
+const { fetchUserById } = require('../services/users-service')
 
-const getBookings = async (req, res) => {
+const getBookingsByFacility = async (req, res) => {
     const { id } = req.params
     const facilityInfo = await fetchFacilityInfo(id)
     if (!facilityInfo) {
@@ -9,6 +10,17 @@ const getBookings = async (req, res) => {
     }
 
     const bookings = await fetchBookingsByFacility(id)
+    res.status(200).json(bookings)
+}
+
+const getBookingsByUser = async (req, res) => {
+    const { id } = req.params
+    const user = await fetchUserById(id)
+    console.log(user)
+    if (!user) {
+        return res.status(422).json({error: "Invalid user id."})
+    }
+    const bookings = await fetchBookingsByUser(id)
     res.status(200).json(bookings)
 }
 
@@ -34,4 +46,4 @@ const deleteBooking = async (req, res) => {
     res.status(204).send()
 }
 
-module.exports = { getBookings, postBooking, deleteBooking }
+module.exports = { getBookingsByFacility, getBookingsByUser, postBooking, deleteBooking }

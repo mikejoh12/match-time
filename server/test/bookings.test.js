@@ -26,10 +26,22 @@ describe('/api/bookings', () => {
             "description" varchar(100)
             );`)
     await pool.query(
+      `CREATE TABLE "users" (
+        "id" SERIAL PRIMARY KEY,
+        "email" varchar(100) UNIQUE NOT NULL,
+        "pwd_hash" varchar(100),
+        "date_joined" timestamp DEFAULT (now()),
+        "active" boolean DEFAULT true,
+        "user_role" varchar(100)
+      );`)
+    await pool.query(
         `INSERT INTO facilities (name, description) VALUES ('Smash Tennis Club', 'A private tennis club with well maintened indoor courts, hard courts, clay courts, and padel courts.')`
     )
     await pool.query(
         `INSERT INTO bookings (resources_id, organizer_id, start_time, end_time) VALUES (1, 1, '2021-06-02T10:00:00.000Z', '2021-06-02T11:00:00.000Z');`
+    )
+    await pool.query(
+        `INSERT INTO users(email, pwd_hash, user_role) VALUES ('test@testmail.com', 'test-hash', 'customer')`
     )
   })
 
@@ -37,6 +49,7 @@ describe('/api/bookings', () => {
     await pool.query(`DROP TABLE facilities`)
     await pool.query(`DROP TABLE bookings`)
     await pool.query(`DROP TABLE resources`)
+    await pool.query('DROP TABLE users')
   })
 
   describe('GET /api/bookings/by_facility/{id}', () => {
@@ -57,6 +70,28 @@ describe('/api/bookings', () => {
     it('should respond with a 422 status code for a non-integer facility id', done => {
       request(app)
         .get('/api/bookings/by_facility/wrong_id')
+        .expect(422, done);
+    })
+  })
+
+  describe('GET /api/bookings/by_user/{id}', () => {
+    it('should respond with JSON and a 200 status code for a valid user id', done => {
+      request(app)
+        .get('/api/bookings/by_user/1')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    })
+
+    it('should respond with a 422 status code for an invalid userid', done => {
+      request(app)
+        .get('/api/bookings/by_user/999')
+        .expect(422, done);
+    })
+
+    it('should respond with a 422 status code for a non-integer user id', done => {
+      request(app)
+        .get('/api/bookings/by_user/wrong_id')
         .expect(422, done);
     })
   })
