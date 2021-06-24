@@ -5,20 +5,29 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
-import { selectBookings } from '../../features/bookings/bookingsSlice';
-import { useSelector } from 'react-redux';
+import { selectBookingsByUser, fetchBookingsByUser, deleteBooking } from '../../features/bookings/bookingsSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 
-export const Settings = () => {
-    const bookings = useSelector(selectBookings);
 
-    const userBookings = bookings[1].concat(bookings[2]).concat(bookings[3]).concat(bookings[4])
-                        .filter(booking => booking.organizer_id === 1)
-                        .map(booking =>
+export const Settings = () => {
+    const dispatch = useDispatch();
+    const bookings = useSelector(selectBookingsByUser);
+
+    React.useEffect(() => {
+        dispatch(fetchBookingsByUser(1))
+      }, [dispatch])
+
+    const handleDeleteClick = (event) => {
+        console.log(event.currentTarget.value)
+        dispatch(deleteBooking(event.currentTarget.value))
+    }
+
+    const userBookings = bookings.map(booking =>
                             <ListItem key={booking.bookings_id}>
-                                <ListItemText primary={`Court: ${booking.resources_id} Start time: ${booking.start_time}` }/>
+                                <ListItemText primary={`Id: ${booking.bookings_id} Court: ${booking.resources_id} Start time: ${booking.start_time}` }/>
                                 <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete" onClick={() => console.log('Delete')}>
+                                    <IconButton edge="end" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </ListItemSecondaryAction>
@@ -32,7 +41,7 @@ export const Settings = () => {
                     alignItems="center"
                     spacing={2}>
                 <Grid item>
-                    <List component="nav" aria-label="main mailbox folders">
+                    <List component="nav" aria-label="user bookings">
                         {userBookings}
                     </List>
                 </Grid>
