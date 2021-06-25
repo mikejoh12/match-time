@@ -46,17 +46,13 @@ export const FullCal = () => {
     const calendarsRefs = useRef({})
 
     const handleDateChange = (date) => {
-        // Validates the date object
-        // Comparing date.getTime() with itself returns NaN for invalid date. NaN cannot be equal to NaN.
-        if (date && date.getTime() === date.getTime()) {
-          const utcDate = zonedTimeToUtc(date, 'UTC')
-          dispatch(calViewDateUpdated(utcDate.toISOString()))
+
+          dispatch(calViewDateUpdated(date.toISOString()))
           // Use Full Calendar API to set date from external date picker for all rendered calendars
           Object.keys(calendarsRefs.current).forEach(key => {
             let calendarApi = calendarsRefs.current[key].getApi()
-            calendarApi.gotoDate(utcDate)
+            calendarApi.gotoDate(date)
           })
-      }
     }
 
     useEffect(() => {
@@ -98,8 +94,8 @@ export const FullCal = () => {
               bookings[resource.id]?.map(booking => ({
               id: booking.bookings_id,
               title: `Booked by user: ${booking.organizer_id}`,
-              start: new Date(booking.start_time),
-              end: new Date(booking.end_time)
+              start: booking.start_time,
+              end: booking.end_time
             }))} />
           </Grid>
         </Grid>

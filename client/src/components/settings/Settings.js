@@ -19,7 +19,6 @@ export const Settings = () => {
       }, [dispatch])
 
     const handleDeleteClick = (event) => {
-        console.log(event.currentTarget.value)
         dispatch(deleteBooking(event.currentTarget.value))
     }
 

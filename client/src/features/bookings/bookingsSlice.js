@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import apiAxios from '../../config/axiosConfig'
-import { zonedTimeToUtc } from 'date-fns-tz'
 
 export const fetchBookings = createAsyncThunk('facilities/fetchBookings',
     async id => {
@@ -39,7 +38,6 @@ export const createBooking = createAsyncThunk('bookings/createBooking',
 export const deleteBooking = createAsyncThunk('bookings/deleteBooking',
     async bookingId => {
         await apiAxios.delete(`/bookings/${bookingId}`)
-        console.log('Id in thunk:', bookingId)
         return bookingId
 })
 
@@ -50,7 +48,7 @@ export const bookingsSlice = createSlice({
         fetchBookingsByUser: 'idle',
         deleteBookingStatus: 'idle',
         bookings: {},
-        calViewDate:  zonedTimeToUtc(new Date(), 'UTC').toISOString(),
+        calViewDate: new Date().toISOString(),
         court: 1,
         bookingsByUser: []
     },
@@ -88,7 +86,12 @@ export const bookingsSlice = createSlice({
           },
           [createBooking.fulfilled]: (state, action) => {
             state.createBookingStatus = 'succeeded'
-            state.bookings[action.payload.resources_id].push(action.payload)
+            // Determine if a resource key exists in bookings store, otherwise we create a key and store a new array
+            if (state.bookings[action.payload.resources_id]) {
+              state.bookings[action.payload.resources_id].push(action.payload)
+            } else {
+              state.bookings[action.payload.resources_id] = [action.payload]
+            }
           },
           [createBooking.rejected]: (state, action) => {
             state.createBookingStatus = 'failed'
@@ -97,10 +100,9 @@ export const bookingsSlice = createSlice({
             state.deleteBookingStatus = 'loading'
           },
           [deleteBooking.fulfilled]: (state, action) => {
-            state.deleteBookingStatus = 'succeeded'
             // Update user bookings after delete of booking from db
-            console.log(typeof action.payload)
             state.bookingsByUser = state.bookingsByUser.filter(booking => booking.bookings_id !== parseInt(action.payload, 10))
+            state.deleteBookingStatus = 'succeeded'
           },
           [deleteBooking.rejected]: (state, action) => {
             state.deleteBookingStatus = 'failed'

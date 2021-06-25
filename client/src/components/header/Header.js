@@ -24,6 +24,7 @@ export const Header = () => {
     const classes = useStyles()
     const history = useHistory()
 
+    const handleUserDashBoardClick = () => history.push('/user-dashboard')
     const handleSettingsClick = () => history.push('/settings')
     const handleLoginClick = () => history.push('/login')
 
@@ -37,6 +38,7 @@ export const Header = () => {
             <Typography variant="h6" className={classes.title}>
               Calendar Booking App
             </Typography>
+            <Button color="inherit" onClick={handleUserDashBoardClick}>Dash Board</Button>
             <Button color="inherit" onClick={handleSettingsClick}>Settings</Button>
             <Button color="inherit" onClick={handleLoginClick}>Login</Button>
           </Toolbar>
