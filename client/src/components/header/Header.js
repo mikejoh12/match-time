@@ -24,6 +24,7 @@ export const Header = () => {
     const classes = useStyles()
     const history = useHistory()
 
+    const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
     const handleSettingsClick = () => history.push('/settings')
     const handleLoginClick = () => history.push('/login')
@@ -35,8 +36,8 @@ export const Header = () => {
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Calendar Booking App
+            <Typography variant="h6" className={classes.title} onClick={handleLogoClick}>
+                Calendar Booking App
             </Typography>
             <Button color="inherit" onClick={handleUserDashBoardClick}>Dash Board</Button>
             <Button color="inherit" onClick={handleSettingsClick}>Settings</Button>

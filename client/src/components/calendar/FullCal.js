@@ -19,7 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { BookDialog } from './BookDialog'
-import { zonedTimeToUtc } from 'date-fns-tz'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -154,8 +154,9 @@ export const FullCal = () => {
             </Grid>
           </Grid>
               :
-            <Grid container>
-                  <h1>Loading</h1>
+            <Grid container
+                  justify="center">
+                <CircularProgress />
             </Grid>
           }
       </div>

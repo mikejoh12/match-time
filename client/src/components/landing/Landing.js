@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -39,39 +40,48 @@ export const Landing = () => {
         event.preventDefault()
     }
 
+    const handleRegisterClick = () => history.push('/manager-dashboard')
+
     return (
         <div>
             {fetchAllFacilitiesStatus === 'succeeded' ?
 
         <Grid   container
+                spacing={2}
                 direction="column"
                 alignItems="center"
                 justify="center">
-            <form onSubmit={handleSubmit} align="center">
-                <Grid item>
-                    <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
-                        <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={clubId}
-                        onChange={handleChange}
-                        >
-                            {
-                                facilities.map(facility =>
-                                    <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
-                            }
-                        </Select>
-                    </FormControl>
+                <Grid item container
+                        direction="column"
+                        alignItems="center"
+                        justify="center">
+                    <form onSubmit={handleSubmit} align="center">
+                        <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={clubId}
+                            onChange={handleChange}
+                            >
+                                {
+                                    facilities.map(facility =>
+                                        <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
+                                }
+                            </Select>
+                        </FormControl>
+                        <Grid item>
+                            <Button variant="contained" color="primary" type="submit">Login</Button>
+                        </Grid>
+                    </form>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" color="primary" type="submit">Submit</Button>
+                    <Button variant="contained" color="primary" onClick={handleRegisterClick}>Register a facility</Button>
                 </Grid>
-            </form>
         </Grid>
             :
-            <Grid item>
-                <h1>Loading..</h1>
+            <Grid item container justify="center">
+                <CircularProgress />
             </Grid>
             }
         </div>
