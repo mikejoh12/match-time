@@ -8,9 +8,10 @@ import IconButton from '@material-ui/core/IconButton';
 import { selectBookingsByUser, fetchBookingsByUser, deleteBooking } from '../../features/bookings/bookingsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
+import { format } from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 
-
-export const Settings = () => {
+export const Bookings = () => {
     const dispatch = useDispatch();
     const bookings = useSelector(selectBookingsByUser);
 
@@ -22,15 +23,19 @@ export const Settings = () => {
         dispatch(deleteBooking(event.currentTarget.value))
     }
 
-    const userBookings = bookings.map(booking =>
-                            <ListItem key={booking.bookings_id}>
-                                <ListItemText primary={`Id: ${booking.bookings_id} Court: ${booking.resources_id} Start time: ${booking.start_time}` }/>
-                                <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>)
+    const userBookings = bookings.map(booking => {
+                            const date = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'MM/dd/yyyy')
+                            const startTime = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'p')
+                            const endTime = format(utcToZonedTime(new Date(booking.end_time), 'UTC'), 'p')
+                            return  <ListItem key={booking.bookings_id}>
+                                        <ListItemText primary={`Booking Id: ${booking.bookings_id} Court Nr: ${booking.resources_id} Name: ${booking.resources_name} Date: ${date} Start: ${startTime} End: ${endTime}` }/>
+                                        <ListItemSecondaryAction>
+                                            <IconButton edge="end" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>}
+                            )
 
     return (
         <div>

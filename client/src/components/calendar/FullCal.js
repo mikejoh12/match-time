@@ -109,7 +109,6 @@ export const FullCal = () => {
             direction="column"
             alignItems="center"
             justify="center">
-
             <Grid item>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker

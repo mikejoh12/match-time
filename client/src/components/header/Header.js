@@ -26,7 +26,7 @@ export const Header = () => {
 
     const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
-    const handleSettingsClick = () => history.push('/settings')
+    const handleBookingsClick = () => history.push('/bookings')
     const handleLoginClick = () => history.push('/login')
 
     return (
@@ -40,7 +40,7 @@ export const Header = () => {
                 Calendar Booking App
             </Typography>
             <Button color="inherit" onClick={handleUserDashBoardClick}>Dash Board</Button>
-            <Button color="inherit" onClick={handleSettingsClick}>Settings</Button>
+            <Button color="inherit" onClick={handleBookingsClick}>Bookings</Button>
             <Button color="inherit" onClick={handleLoginClick}>Login</Button>
           </Toolbar>
         </AppBar>
