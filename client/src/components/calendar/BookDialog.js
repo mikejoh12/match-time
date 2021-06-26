@@ -53,8 +53,8 @@ export const BookDialog = props => {
 
   const handleCloseBook = () => {
     const endTime = addMinutes(selectedDate, duration)
-    const utcStartTime = selectedDate.toISOString()
-    const utcEndTime = endTime.toISOString()
+    const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
+    const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     dispatch(createBooking({
         resources_id: selectedResource,
         organizer_id: 1, // TODO: Connect to logged in User

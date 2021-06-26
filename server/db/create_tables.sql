@@ -18,8 +18,8 @@ CREATE TABLE "bookings" (
   "id" SERIAL PRIMARY KEY,
   "resources_id" int NOT NULL,
   "organizer_id" int NOT NULL,
-  "start_time" timestamp NOT NULL,
-  "end_time" timestamp NOT NULL
+  "start_time" timestamptz NOT NULL,
+  "end_time" timestamptz NOT NULL
 );
 
 CREATE TABLE "facilities" (
