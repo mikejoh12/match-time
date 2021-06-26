@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import apiAxios from '../../config/axiosConfig'
+import { zonedTimeToUtc } from 'date-fns-tz'
+import { roundToNearestMinutes } from 'date-fns'
 
 export const fetchBookings = createAsyncThunk('facilities/fetchBookings',
     async id => {
@@ -48,7 +50,7 @@ export const bookingsSlice = createSlice({
         fetchBookingsByUser: 'idle',
         deleteBookingStatus: 'idle',
         bookings: {},
-        calViewDate: new Date().toISOString(),
+        calViewDate: zonedTimeToUtc(roundToNearestMinutes(new Date(), { nearestTo: 30 }), 'UTC').toISOString(),
         court: 1,
         bookingsByUser: []
     },
