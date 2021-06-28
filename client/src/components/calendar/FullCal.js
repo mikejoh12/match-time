@@ -8,6 +8,7 @@ import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid'
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import { utcToZonedTime } from 'date-fns-tz'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -118,7 +119,7 @@ export const FullCal = () => {
                   margin="normal"
                   id="date-picker-inline"
                   label="Select date:"
-                  value={calViewDate}
+                  value={utcToZonedTime(calViewDate,'UTC')}
                   onChange={handleDateChange}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',

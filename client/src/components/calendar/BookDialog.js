@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from "@date-io/date-fns";
-import { zonedTimeToUtc } from 'date-fns-tz'
+import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
 import { 
     MuiPickersUtilsProvider,
     KeyboardTimePicker } from "@material-ui/pickers";
@@ -98,13 +98,13 @@ export const BookDialog = props => {
                   <DatePicker
                       disableToolbar
                       variant="inline"
-                      value={selectedDate}
+                      value={utcToZonedTime(selectedDate, 'UTC')}
                       onChange={handleDateChange}/>
                   <KeyboardTimePicker
                       margin="normal"
                       id="time-picker"
                       label="Time"
-                      value={selectedDate}
+                      value={utcToZonedTime(selectedDate,'UTC')}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                           'aria-label': 'change time',
