@@ -35,16 +35,15 @@ export const BookDialog = props => {
   const dispatch = useDispatch()
   const resources = useSelector(selectResources)
   const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(props.calViewDate)
+  const [selectedDate, setSelectedDate] = React.useState(utcToZonedTime(new Date(props.calViewDate), 'UTC'))
   const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
 
   const handleClickOpen = () => {
     setSelectedResource(props.resourceInView)
-    setSelectedDate(props.calViewDate)
+    //setSelectedDate(utcToZonedTime(new Date(props.calViewDate)))
     setOpen(true)
-    console.log(selectedDate)
   }
   
   const handleClose = () => {
@@ -98,13 +97,13 @@ export const BookDialog = props => {
                   <DatePicker
                       disableToolbar
                       variant="inline"
-                      value={utcToZonedTime(selectedDate, 'UTC')}
+                      value={selectedDate}
                       onChange={handleDateChange}/>
                   <KeyboardTimePicker
                       margin="normal"
                       id="time-picker"
                       label="Time"
-                      value={utcToZonedTime(selectedDate,'UTC')}
+                      value={selectedDate}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                           'aria-label': 'change time',
