@@ -8,7 +8,8 @@ import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid'
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
-import { utcToZonedTime } from 'date-fns-tz'
+import { roundToNearestMinutes, setHours } from 'date-fns'
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -48,7 +49,7 @@ export const FullCal = () => {
 
     const handleDateChange = (date) => {
 
-          dispatch(calViewDateUpdated(date.toISOString()))
+          dispatch(calViewDateUpdated(zonedTimeToUtc(roundToNearestMinutes(setHours(date, 10), { nearestTo: 30}),'UTC').toISOString()))
           // Use Full Calendar API to set date from external date picker for all rendered calendars
           Object.keys(calendarsRefs.current).forEach(key => {
             let calendarApi = calendarsRefs.current[key].getApi()

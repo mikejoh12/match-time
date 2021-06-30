@@ -42,7 +42,7 @@ export const BookDialog = props => {
 
   const handleClickOpen = () => {
     setSelectedResource(props.resourceInView)
-    //setSelectedDate(utcToZonedTime(new Date(props.calViewDate)))
+    setSelectedDate(utcToZonedTime(new Date(props.calViewDate)))
     setOpen(true)
   }
   
