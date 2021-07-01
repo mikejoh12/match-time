@@ -51,7 +51,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewFacility'
-                
+
   /api/facilities/{id}:
     get:
       tags:
@@ -71,6 +71,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Facility'
+
+  /api/resources:
+    post:
+      tags:
+      - resources
+      description: Creates a new resource associated with a facility
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - facilites_id
+              - name
+              - description
+              properties:
+                facilities_id:
+                  type: integer
+                name:
+                  type: string
+                description:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Returns the new resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
 
   /api/resources/by_facility/{id}:
     get:

@@ -7,6 +7,15 @@ const fetchResourcesDb = async (id) => {
     return res.rows
 }
 
+const createResourceDb = async ({facilities_id, name, description}) => {
+    const text = `INSERT INTO resources(facilities_id, name, description)
+                  VALUES($1, $2, $3) RETURNING *`
+    const values = [facilities_id, name, description]
+    const res = await pool.query(text, values)
+    return res.rows[0]
+}
+
 module.exports = {
-    fetchResourcesDb
+    fetchResourcesDb,
+    createResourceDb
  }

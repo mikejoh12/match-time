@@ -1,4 +1,4 @@
-const { fetchResources } = require("../services/resources-service")
+const { fetchResources, createResource } = require("../services/resources-service")
 const { fetchFacilityInfo } = require('../services/facilities-service')
 
 const getResources = async (req, res) => {
@@ -11,6 +11,17 @@ const getResources = async (req, res) => {
     res.status(200).json(resources)
 }
 
+const postResource = async (req, res) => {
+    const { facilities_id } = req.body
+    const facilityInfo = await fetchFacilityInfo(facilities_id);
+    if (!facilityInfo) {
+        return res.status(422).json({error: "Invalid facility id."})
+    }
+    const newResource = await createResource(req.body)
+    res.status(201).json(newResource)
+}
+
 module.exports = {
-    getResources
+    getResources,
+    postResource
 }

@@ -3,8 +3,9 @@ const { getFacilityInfo, postFacility, getFacilites } = require('../controllers/
 const { signUpUser } = require('../controllers/auth-controller.js')
 const { getBookingsByFacility, getBookingsByUser, postBooking, deleteBooking } = require('../controllers/bookings-controller.js')
 const { validateGetFacilityInfo, validatePostFacility, validateGetResources, validateSignUpUser, validateGetBookings, validatePostBooking,
-        validateDeleteBooking } = require('./validation')
-const { getResources } = require('../controllers/resources-controller.js')
+        validateDeleteBooking, 
+        validatePostResource} = require('./validation')
+const { getResources, postResource } = require('../controllers/resources-controller.js')
 
 const router = new Router()
 
@@ -14,6 +15,7 @@ router
     .post('/facilities', validatePostFacility, postFacility)
 
     .get('/resources/by_facility/:id', validateGetResources, getResources)
+    .post('/resources', validatePostResource, postResource)
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
 
