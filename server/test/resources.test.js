@@ -53,4 +53,25 @@ describe('/api/resources', () => {
         .expect(422, done);
     })
   })
+
+  describe('POST /api/resources', () => {
+
+    it('should respond with a 201 status code when creating new resource', done => {
+      request(app)
+        .post('/api/resources')
+        .send({facilities_id: 1, name: 'Test Court 1', description: 'Test'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201, done);
+    })
+
+    it('should respond with a 422 status code for missing resource info in request body', done => {
+      request(app)
+        .post('/api/resources')
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422, done);
+    })
+  })
 })
