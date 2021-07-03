@@ -21,7 +21,7 @@ const postFacility = async (req, res) => {
         description
     }
     const newFacility = await createFacility(facility)
-    res.status(201).json({facilities_id: newFacility.id})
+    res.status(201).json(newFacility)
 }
 
 module.exports = { getFacilites, getFacilityInfo, postFacility }

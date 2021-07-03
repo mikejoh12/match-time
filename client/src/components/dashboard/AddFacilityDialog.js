@@ -12,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { useSelector, useDispatch } from "react-redux";
+import { createFacility } from '../../features/facilities/facilitiesSlice';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -39,10 +40,15 @@ export const AddFacilityDialog = () => {
   }
 
   const handleAddFacility = () => {
+    dispatch(createFacility({
+      name: facilityName,
+      description: facilityDescription
+    }))
     setOpen(false)
   }
 
-  const handleDurationChange = event => setFacilityName(event.target.value)
+  const handleFacilityNameChange = event => setFacilityName(event.target.value)
+  const handleFacilityDescriptionChange = event => setFacilityDescription(event.target.value)
 
   return (
     <div>
@@ -53,6 +59,7 @@ export const AddFacilityDialog = () => {
         <DialogTitle id="form-dialog-title">Add a Facility</DialogTitle>
         <DialogContent>
             <TextField
+                onChange={handleFacilityNameChange}
                 autoFocus
                 margin="dense"
                 id="facility-name"
@@ -60,6 +67,7 @@ export const AddFacilityDialog = () => {
                 fullWidth
             />
             <TextField
+                onChange={handleFacilityDescriptionChange}
                 autoFocus
                 margin="dense"
                 id="facility-description"

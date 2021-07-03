@@ -13,11 +13,19 @@ export const fetchAllFacilities = createAsyncThunk('facilities/fetchAllFacilitie
         return response.data
 })
 
+export const createFacility = createAsyncThunk('facilities/createFacility',
+    async facility => {
+        const response = await apiAxios.post(
+          '/facilities', facility)
+        return response.data
+})
+
 export const facilitiesSlice = createSlice({
     name: 'facilities',
     initialState: {
         fetchFacilityStatus: 'idle',
         fetchAllFacilitiesStatus: 'idle',
+        createFacilityStatus:'idle',
         facility: {},
         allFacilities: []
     },
@@ -41,6 +49,16 @@ export const facilitiesSlice = createSlice({
           },
           [fetchAllFacilities.rejected]: (state, action) => {
             state.fetchAllFacilitiesStatus = 'failed'
+          },
+        [createFacility.pending]: (state, action) => {
+            state.createFacilityStatus = 'loading'
+          },
+          [createFacility.fulfilled]: (state, action) => {
+            state.createFacilityStatus = 'succeeded'
+            state.allFacilities.push(action.payload)
+          },
+          [createFacility.rejected]: (state, action) => {
+            state.createFacilityStatus = 'failed'
           },
     }
 })

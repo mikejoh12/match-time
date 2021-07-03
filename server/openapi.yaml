@@ -46,11 +46,11 @@ paths:
         required: true
       responses:
         201:
-          description: Returns the new facilities_id.
+          description: Returns the new facility.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NewFacility'
+                $ref: '#/components/schemas/Facility'
 
   /api/facilities/{id}:
     get:
@@ -251,11 +251,6 @@ components:
           type: string
         description:
           type: string
-    NewFacility:
-      type: object
-      properties:
-        facilities_id:
-          type: integer
     Resources:
       type: array
       items:
