@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { selectAllFacilities } from '../../features/facilities/facilitiesSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { AddFacilityDialog } from './AddFacilityDialog'
 
 export const ManagerDashboard = () => {
     const dispatch = useDispatch()
@@ -14,13 +15,14 @@ export const ManagerDashboard = () => {
 
     
     const handleFacilityClick = () => history.push('/manager-facility-edit')
+    const handleAddFacilityClick= () => console.log('Add facility')
 
     useEffect(() => {
         console.log('Fetch facilities for user') // TODO
       }, [dispatch])
 
     const managerFacilities = facilities.map(facility => 
-        <ListItem onClick={handleFacilityClick}>
+        <ListItem key={facility.id} onClick={handleFacilityClick}>
             {facility.name}
         </ListItem>)
 
@@ -39,6 +41,9 @@ export const ManagerDashboard = () => {
                     <List component="nav" aria-label="user bookings">
                         {managerFacilities}
                     </List>
+            </Grid>
+            <Grid item>
+              <AddFacilityDialog />
             </Grid>
         </Grid>
       )

@@ -14,8 +14,8 @@ export const ManagerFacilityEdit = () => {
         dispatch(fetchResources(1)) // TODO Remove hardcoded id
       }, [dispatch])
 
-    const facilityResources = resources.map(resource => <ListItem>
-        {resource.name}
+    const facilityResources = resources.map(resource => <ListItem key={resource.id}>
+        {resource.name} - {resource.description}
         </ListItem>)
 
     return (
