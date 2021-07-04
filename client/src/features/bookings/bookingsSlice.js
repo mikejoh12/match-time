@@ -43,17 +43,19 @@ export const deleteBooking = createAsyncThunk('bookings/deleteBooking',
         return bookingId
 })
 
+const initialState = {
+  fetchBookingsStatus: 'idle',
+  fetchBookingsByUser: 'idle',
+  deleteBookingStatus: 'idle',
+  bookings: {},
+  calViewDate: zonedTimeToUtc(roundToNearestMinutes(new Date(), { nearestTo: 30 }), 'UTC').toISOString(),
+  court: '',
+  bookingsByUser: []
+}
+
 export const bookingsSlice = createSlice({
     name: 'bookings',
-    initialState: {
-        fetchBookingsStatus: 'idle',
-        fetchBookingsByUser: 'idle',
-        deleteBookingStatus: 'idle',
-        bookings: {},
-        calViewDate: zonedTimeToUtc(roundToNearestMinutes(new Date(), { nearestTo: 30 }), 'UTC').toISOString(),
-        court: 1,
-        bookingsByUser: []
-    },
+    initialState,
     reducers: {
       calViewDateUpdated(state, action) {
           state.calViewDate = action.payload
@@ -61,6 +63,7 @@ export const bookingsSlice = createSlice({
       courtUpdated(state, action) {
         state.court = action.payload
       },
+      bookingsReset: state => initialState
     }, 
     extraReducers: {
           [fetchBookings.pending]: (state, action) => {
@@ -112,7 +115,7 @@ export const bookingsSlice = createSlice({
     }
 })
 
-export const { calViewDateUpdated, courtUpdated } = bookingsSlice.actions
+export const { calViewDateUpdated, courtUpdated, bookingsReset } = bookingsSlice.actions
 export const selectBookings = state => state.bookings.bookings
 export const selectBookingsByUser = state => state.bookings.bookingsByUser
 export const selectFetchBookingsStatus = state => state.bookings.fetchBookingsStatus

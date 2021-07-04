@@ -62,6 +62,13 @@ export const FullCal = () => {
       dispatch(fetchResources(facility.id))
     }, [facility, dispatch])
 
+    // Set default calendar resource to view once resources are loaded
+    useEffect(() => {
+      if (resources.length) {
+      dispatch(courtUpdated(resources[0].id))
+      }
+    }, [resources, dispatch])
+
     const handleChange = event => dispatch(courtUpdated(event.target.value))
 
     const calendars = resources.filter(resource => resource.id === court).map((resource, idx) => 
@@ -106,7 +113,7 @@ export const FullCal = () => {
  
     return (
       <div>
-        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded') ?  
+        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && court) ?  
             <Grid container
             direction="column"
             alignItems="center"

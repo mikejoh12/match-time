@@ -20,14 +20,19 @@ export const createFacility = createAsyncThunk('facilities/createFacility',
         return response.data
 })
 
+const initialState = {
+  fetchFacilityStatus: 'idle',
+  fetchAllFacilitiesStatus: 'idle',
+  createFacilityStatus:'idle',
+  facility: {},
+  allFacilities: []
+}
+
 export const facilitiesSlice = createSlice({
     name: 'facilities',
-    initialState: {
-        fetchFacilityStatus: 'idle',
-        fetchAllFacilitiesStatus: 'idle',
-        createFacilityStatus:'idle',
-        facility: {},
-        allFacilities: []
+    initialState,
+    reducers: {
+      facilitiesReset: state => initialState
     },
     extraReducers: {
         [fetchFacility.pending]: (state, action) => {
@@ -63,6 +68,7 @@ export const facilitiesSlice = createSlice({
     }
 })
 
+export const { facilitiesReset } = facilitiesSlice.actions
 export const selectFacility = state => state.facilities.facility
 export const selectAllFacilities = state => state.facilities.allFacilities
 export const selectFetchAllFacilitiesStatus = state => state.facilities.fetchAllFacilitiesStatus

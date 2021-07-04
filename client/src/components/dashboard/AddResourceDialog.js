@@ -6,13 +6,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { useDispatch } from "react-redux";
-import { createFacility } from '../../features/facilities/facilitiesSlice';
+import { createResource } from '../../features/resources/resourcesSlice';
 
-export const AddFacilityDialog = () => {
+export const AddResourceDialog = props => {
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
-  const [facilityName, setFacilityName] = React.useState('')
-  const [facilityDescription, setFacilityDescription] = React.useState('')
+  const [resourceName, setResourceName] = React.useState('')
+  const [resourceDescription, setResourceDescription] = React.useState('')
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -22,39 +22,40 @@ export const AddFacilityDialog = () => {
     setOpen(false)
   }
 
-  const handleAddFacility = () => {
-    dispatch(createFacility({
-      name: facilityName,
-      description: facilityDescription
+  const handleAddResource = () => {
+    dispatch(createResource({
+        facilities_id: props.facilityId,
+        name: resourceName,
+        description: resourceDescription
     }))
     setOpen(false)
   }
 
-  const handleFacilityNameChange = event => setFacilityName(event.target.value)
-  const handleFacilityDescriptionChange = event => setFacilityDescription(event.target.value)
+  const handleResourceNameChange = event => setResourceName(event.target.value)
+  const handleResourceDescriptionChange = event => setResourceDescription(event.target.value)
 
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Add a Facility
+        Add a Resource
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add a Facility</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add a Resource</DialogTitle>
         <DialogContent>
             <TextField
-                onChange={handleFacilityNameChange}
+                onChange={handleResourceNameChange}
                 autoFocus
                 margin="dense"
-                id="facility-name"
-                label="Facility name"
+                id="resource-name"
+                label="Resource name"
                 fullWidth
             />
             <TextField
-                onChange={handleFacilityDescriptionChange}
+                onChange={handleResourceDescriptionChange}
                 autoFocus
                 margin="dense"
-                id="facility-description"
-                label="Facility description"
+                id="resource-description"
+                label="Resource description"
                 fullWidth
             />
         </DialogContent>
@@ -62,8 +63,8 @@ export const AddFacilityDialog = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleAddFacility} color="primary">
-            Add Facility
+          <Button onClick={handleAddResource} color="primary">
+            Add Resource
           </Button>
         </DialogActions>
       </Dialog>

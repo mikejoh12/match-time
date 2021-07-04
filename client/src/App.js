@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/" component={Landing} />
         <Route exact path="/user-dashboard" component={UserDashboard} />
         <Route exact path="/manager-dashboard" component={ManagerDashboard} />
-        <Route exact path="/manager-facility-edit" component={ManagerFacilityEdit} />
+        <Route exact path="/manager-facility-edit/:id" component={ManagerFacilityEdit} />
         <Route exact path="/bookings" component={Bookings} />
         <Route path="/:id" component={FacilityLogin} />
       </Switch>

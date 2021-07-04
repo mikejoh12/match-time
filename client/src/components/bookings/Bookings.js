@@ -28,7 +28,7 @@ export const Bookings = () => {
                             const startTime = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'p')
                             const endTime = format(utcToZonedTime(new Date(booking.end_time), 'UTC'), 'p')
                             return  <ListItem key={booking.bookings_id}>
-                                        <ListItemText primary={`Booking Id: ${booking.bookings_id} Court Nr: ${booking.resources_id} Name: ${booking.resources_name} Date: ${date} Start: ${startTime} End: ${endTime}` }/>
+                                        <ListItemText primary={`Facility Id: ${booking.facilities_id} Booking Id: ${booking.bookings_id} Name: ${booking.resources_name} Date: ${date} Start: ${startTime} End: ${endTime}` }/>
                                         <ListItemSecondaryAction>
                                             <IconButton edge="end" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
                                                 <DeleteIcon />

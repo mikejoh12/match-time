@@ -2,27 +2,19 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import { useEffect } from 'react'
 import { selectAllFacilities } from '../../features/facilities/facilitiesSlice';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { AddFacilityDialog } from './AddFacilityDialog'
 
 export const ManagerDashboard = () => {
-    const dispatch = useDispatch()
     const facilities = useSelector(selectAllFacilities)
     const history = useHistory()
-
     
-    const handleFacilityClick = () => history.push('/manager-facility-edit')
-    const handleAddFacilityClick= () => console.log('Add facility')
-
-    useEffect(() => {
-        console.log('Fetch facilities for user') // TODO
-      }, [dispatch])
+    const handleFacilityClick = event => history.push(`/manager-facility-edit/${event.target.value}`)
 
     const managerFacilities = facilities.map(facility => 
-        <ListItem key={facility.id} onClick={handleFacilityClick}>
+        <ListItem key={facility.id} value={facility.id} onClick={handleFacilityClick}>
             {facility.name}
         </ListItem>)
 

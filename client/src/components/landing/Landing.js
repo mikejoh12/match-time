@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom'
-import { selectAllFacilities, fetchAllFacilities, selectFetchAllFacilitiesStatus } from '../../features/facilities/facilitiesSlice'
+import { selectAllFacilities, fetchAllFacilities, selectFetchAllFacilitiesStatus, facilitiesReset } from '../../features/facilities/facilitiesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -10,6 +10,8 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { bookingsReset } from "../../features/bookings/bookingsSlice";
+import { resourcesReset } from "../../features/resources/resourcesSlice";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -27,9 +29,12 @@ export const Landing = () => {
     const [clubId, setClubId] = useState(1)
     const facilities = useSelector(selectAllFacilities)
     const history = useHistory()
-    const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus)
+    const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus) 
 
     useEffect(() => {
+        dispatch(facilitiesReset()) // Clear previous data
+        dispatch(bookingsReset())
+        dispatch(resourcesReset())
         dispatch(fetchAllFacilities())
     }, [dispatch])
 
