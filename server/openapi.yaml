@@ -101,6 +101,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Resource'
 
+  /api/resources/{id}:
+    delete:
+      tags:
+      - resources
+      description: Deletes a resource for a facility and associated bookings
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the resource
+      responses:
+        204:
+          description: Returns a 204 response on successful delete
+
   /api/resources/by_facility/{id}:
     get:
       tags:

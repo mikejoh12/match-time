@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { selectResources, fetchResources } from '../../features/resources/resourcesSlice'
 import { fetchFacility, selectFacility } from '../../features/facilities/facilitiesSlice';
 import { useSelector, useDispatch } from 'react-redux'
@@ -20,8 +21,9 @@ export const ManagerFacilityEdit = () => {
         dispatch(fetchFacility(id))
       }, [id, dispatch])
 
-    const facilityResources = resources.map(resource => <ListItem key={resource.id}>
-        {resource.name} - {resource.description}
+    const facilityResources = resources.map(resource => 
+        <ListItem key={resource.id} divider>
+            <ListItemText primary={`Id: ${resource.id} Name: ${resource.name} Description: ${resource.description}`} />
         </ListItem>)
 
     return (

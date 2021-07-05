@@ -23,12 +23,22 @@ describe('/api/resources', () => {
             );`
         )
         await pool.query(
+          `CREATE TABLE "bookings" (
+            "id" SERIAL PRIMARY KEY,
+            "resources_id" int NOT NULL,
+            "organizer_id" int NOT NULL,
+            "start_time" timestamptz NOT NULL,
+            "end_time" timestamptz NOT NULL
+          );`
+      )
+        await pool.query(
         `INSERT INTO resources (facilities_id, name, description) VALUES (1, 'Court 1', 'Indoor hard-court')`)
     })
 
     afterEach(async () => {
         await pool.query(`DROP TABLE resources`)
         await pool.query(`DROP TABLE facilities`)
+        await pool.query(`DROP TABLE bookings`)
     })
 
   describe('GET /api/resources/by_facility/{id}', () => {
@@ -72,6 +82,21 @@ describe('/api/resources', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(422, done);
+    })
+  })
+
+  describe('DELETE /api/resources/{id}', () => {
+
+    it('should respond with a 204 status code when deleting a resource', done => {
+      request(app)
+      .delete('/api/resources/1')
+      .expect(204, done)
+    })
+
+    it('should respond with a 422 status code when trying to delete a non-integer resource', done => {
+      request(app)
+      .delete('/api/resources/test')
+      .expect(422, done)
     })
   })
 })

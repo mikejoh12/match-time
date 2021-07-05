@@ -1,4 +1,4 @@
-const { fetchResources, createResource } = require("../services/resources-service")
+const { fetchResources, createResource, removeResource } = require("../services/resources-service")
 const { fetchFacilityInfo } = require('../services/facilities-service')
 
 const getResources = async (req, res) => {
@@ -21,7 +21,14 @@ const postResource = async (req, res) => {
     res.status(201).json(newResource)
 }
 
+const deleteResource = async (req, res) => {
+    const { id } = req.params
+    await removeResource(id)
+    res.status(204).send()
+}
+
 module.exports = {
     getResources,
-    postResource
+    postResource,
+    deleteResource
 }

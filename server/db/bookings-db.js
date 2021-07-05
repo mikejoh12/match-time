@@ -35,9 +35,14 @@ const removeBookingDb = async id => {
     return res.rows
 }
 
+const removeBookingsByResourceIdDb = async id => {
+    const res = await pool.query('DELETE FROM bookings WHERE resources_id = $1', [id])
+    return res.rows
+}
+
 const fetchBookingByIdDb = async id => {
     const res = await pool.query('SELECT * FROM bookings WHERE id = $1', [id])
     return res.rows[0]
 }
 
-module.exports = { fetchBookingsByFacilityDb, fetchBookingsByUserDb, createBookingDb, removeBookingDb, fetchBookingByIdDb }
+module.exports = { fetchBookingsByFacilityDb, fetchBookingsByUserDb, createBookingDb, removeBookingDb, removeBookingsByResourceIdDb, fetchBookingByIdDb }
