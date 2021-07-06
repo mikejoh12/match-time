@@ -1,4 +1,5 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -19,9 +20,7 @@ export const Bookings = () => {
         dispatch(fetchBookingsByUser(1))
       }, [dispatch])
 
-    const handleDeleteClick = (event) => {
-        dispatch(deleteBooking(event.currentTarget.value))
-    }
+    const handleDeleteClick = (event) => dispatch(deleteBooking(event.currentTarget.value))
 
     const userBookings = bookings.map(booking => {
                             const date = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'MM/dd/yyyy')
@@ -45,9 +44,15 @@ export const Bookings = () => {
                     alignItems="center"
                     spacing={2}>
                 <Grid item>
+                    { userBookings.length ?
                     <List component="nav" aria-label="user bookings">
                         {userBookings}
                     </List>
+                    :
+                    <Typography variant="h5" >
+                        No bookings found.
+                    </Typography>     
+                    }
                 </Grid>
             </Grid>
         </div>

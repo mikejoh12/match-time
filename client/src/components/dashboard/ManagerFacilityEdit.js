@@ -3,7 +3,10 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { selectResources, fetchResources } from '../../features/resources/resourcesSlice'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import { selectResources, fetchResources, deleteResource } from '../../features/resources/resourcesSlice'
 import { fetchFacility, selectFacility } from '../../features/facilities/facilitiesSlice';
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
@@ -21,9 +24,16 @@ export const ManagerFacilityEdit = () => {
         dispatch(fetchFacility(id))
       }, [id, dispatch])
 
+    const handleDeleteClick = event => dispatch(deleteResource(event.currentTarget.value))
+
     const facilityResources = resources.map(resource => 
         <ListItem key={resource.id} divider>
             <ListItemText primary={`Id: ${resource.id} Name: ${resource.name} Description: ${resource.description}`} />
+            <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete" value={resource.id} onClick={handleDeleteClick}>
+                    <DeleteIcon />
+                </IconButton>
+            </ListItemSecondaryAction>
         </ListItem>)
 
     return (

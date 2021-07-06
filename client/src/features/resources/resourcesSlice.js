@@ -14,9 +14,16 @@ export const createResource = createAsyncThunk('resources/createResource',
         return response.data
 })
 
+export const deleteResource = createAsyncThunk('resources/deleteResource',
+    async resourceId => {
+        await apiAxios.delete(`/resources/${resourceId}`)
+        return resourceId
+})
+
 const initialState = {
     fetchResourcesStatus: 'idle',
     createResourceStatus: 'idle',
+    deleteResourceStatus: 'idle',
     resources: []
 }
 
@@ -46,6 +53,16 @@ export const resourcesSlice = createSlice({
           },
           [createResource.rejected]: (state, action) => {
             state.createResourceStatus = 'failed'
+          },
+        [deleteResource.pending]: (state, action) => {
+            state.deleteResourceStatus = 'loading'
+          },
+          [deleteResource.fulfilled]: (state, action) => {
+            state.deleteResourceStatus = 'succeeded'
+            state.resources = state.resources.filter(resource => resource.id !== parseInt(action.payload, 10))
+          },
+          [deleteResource.rejected]: (state, action) => {
+            state.deleteResourceStatus = 'failed'
           },
     }
 })

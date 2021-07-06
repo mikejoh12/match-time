@@ -81,7 +81,7 @@ export const Landing = () => {
                     </form>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" color="primary" onClick={handleRegisterClick}>Register a facility</Button>
+                    <Button variant="contained" color="primary" onClick={handleRegisterClick}>Manage Facilities</Button>
                 </Grid>
         </Grid>
             :
