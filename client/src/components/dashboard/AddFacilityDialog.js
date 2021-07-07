@@ -51,7 +51,6 @@ export const AddFacilityDialog = () => {
             />
             <TextField
                 onChange={handleFacilityDescriptionChange}
-                autoFocus
                 margin="dense"
                 id="facility-description"
                 label="Facility description"

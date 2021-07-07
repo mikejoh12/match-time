@@ -27,7 +27,7 @@ export const Landing = () => {
     const classes = useStyles()
     const facilities = useSelector(selectAllFacilities)
     const dispatch = useDispatch()
-    const [clubId, setClubId] = useState(0)
+    const [clubId, setClubId] = useState('')
     const history = useHistory()
     const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus) 
 
@@ -62,11 +62,11 @@ export const Landing = () => {
                 spacing={2}
                 direction="column"
                 alignItems="center"
-                justify="center">
+                justifyContent="center">
                 <Grid item container
                         direction="column"
                         alignItems="center"
-                        justify="center">
+                        justifyContent="center">
                     <form onSubmit={handleSubmit} align="center">
                         <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
@@ -92,7 +92,7 @@ export const Landing = () => {
                 </Grid>
         </Grid>
             :
-            <Grid item container justify="center">
+            <Grid item container justifyContent="center">
                 <CircularProgress />
             </Grid>
             }

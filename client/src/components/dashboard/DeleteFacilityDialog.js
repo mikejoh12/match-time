@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,8 +7,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useDispatch } from 'react-redux'
+import { deleteFacility } from '../../features/facilities/facilitiesSlice';
 
-export const DeleteFacilityDialog = () => {
+export const DeleteFacilityDialog = (props) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
   const [open, setOpen] = React.useState(false);
   const [confirmDelete, setConfirmDelete] = React.useState('')
 
@@ -21,8 +26,11 @@ export const DeleteFacilityDialog = () => {
 
   const handleDeleteClick = () => {
       if (confirmDelete === 'DELETE') {
-          console.log('Delete Facility')
+          console.log(`Delete Facility with id ${props.facilityId}`)
+          dispatch(deleteFacility(props.facilityId))
           setOpen(false)
+          history.push('/manager-dashboard')
+
       } else {
           console.log('You did not enter DELETE')
       }

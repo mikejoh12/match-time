@@ -22,7 +22,7 @@ export const FacilityLogin = () => {
     return (
         <div>
             <Grid   container
-                    justify="center"
+                    justifyContent="center"
                     direction="column"
                     alignItems="center"
                     spacing={2}>

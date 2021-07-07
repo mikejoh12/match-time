@@ -71,6 +71,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Facility'
+    delete:
+      tags:
+      - facilities
+      description: Deletes a facility and associated resources/bookings
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of facility
+      responses:
+        204:
+          description: Returns a 204 response on successful delete
 
   /api/resources:
     post:

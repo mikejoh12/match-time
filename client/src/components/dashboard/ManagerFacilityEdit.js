@@ -42,7 +42,7 @@ export const ManagerFacilityEdit = () => {
                 spacing={2}
                 direction="column"
                 alignItems="center"
-                justify="center">
+                justifyContent="center">
             <Grid item>
                 <Typography variant="h5" >
                     Edit Facility

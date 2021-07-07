@@ -113,11 +113,11 @@ export const FullCal = () => {
  
     return (
       <div>
-        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && court) ?  
+        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && court) &&  
             <Grid container
             direction="column"
             alignItems="center"
-            justify="center">
+            justifyContent="center">
             <Grid item>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -157,14 +157,25 @@ export const FullCal = () => {
               <BookDialog resourceInView={court} calViewDate={calViewDate} />
             </Grid>
             <Grid container
-                  justify="center">
+                  justifyContent="center">
                   {calendars}
             </Grid>
           </Grid>
-              :
+          }
+          {
+          (fetchBookingsStatus !== 'succeeded' || fetchResourcesStatus !== 'succeeded') &&
             <Grid container
-                  justify="center">
+                  justifyContent="center">
                 <CircularProgress />
+            </Grid>
+          }
+          {
+            (fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && !court) &&
+            <Grid container
+                  justifyContent="center">
+                    <Typography variant="h6" >
+                      This facility does not have any resources associated with it.
+                    </Typography>  
             </Grid>
           }
       </div>

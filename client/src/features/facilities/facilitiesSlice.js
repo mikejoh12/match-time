@@ -20,10 +20,17 @@ export const createFacility = createAsyncThunk('facilities/createFacility',
         return response.data
 })
 
+export const deleteFacility = createAsyncThunk('facilities/deleteFacility',
+    async facilityId => {
+        await apiAxios.delete(`/facilities/${facilityId}`)
+        return facilityId
+})
+
 const initialState = {
   fetchFacilityStatus: 'idle',
   fetchAllFacilitiesStatus: 'idle',
   createFacilityStatus:'idle',
+  deleteFacilityStatus: 'idle',
   facility: {},
   allFacilities: []
 }
@@ -64,6 +71,17 @@ export const facilitiesSlice = createSlice({
           },
           [createFacility.rejected]: (state, action) => {
             state.createFacilityStatus = 'failed'
+          },
+        [deleteFacility.pending]: (state, action) => {
+            state.deleteFacilityStatus = 'loading'
+          },
+          [deleteFacility.fulfilled]: (state, action) => {
+            state.deleteFacilityStatus = 'succeeded'
+            state.facility = {}
+            state.allFacilities = state.allFacilities.filter(facility => facility.id !== parseInt(action.payload, 10))
+          },
+          [deleteFacility.rejected]: (state, action) => {
+            state.deleteFacilityStatus = 'failed'
           },
     }
 })
