@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const Landing = () => {
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const [clubId, setClubId] = useState(1)
     const facilities = useSelector(selectAllFacilities)
+    const dispatch = useDispatch()
+    const [clubId, setClubId] = useState(0)
     const history = useHistory()
     const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus) 
 
@@ -37,6 +37,13 @@ export const Landing = () => {
         dispatch(resourcesReset())
         dispatch(fetchAllFacilities())
     }, [dispatch])
+
+    // Set default facility to view once facilities are loaded
+    useEffect(() => {
+        if (facilities.length) {
+        setClubId(facilities[0].id)
+        }
+      }, [facilities, dispatch])
 
     const handleChange = event => setClubId(event.target.value)
     

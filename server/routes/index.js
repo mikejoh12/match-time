@@ -1,5 +1,5 @@
 const Router = require('express-promise-router')
-const { getFacilityInfo, postFacility, getFacilites } = require('../controllers/facility-controller.js')
+const { getFacilityInfo, postFacility, getFacilites, deleteFacility } = require('../controllers/facilities-controller.js')
 const { signUpUser } = require('../controllers/auth-controller.js')
 const { getBookingsByFacility, getBookingsByUser, postBooking, deleteBooking } = require('../controllers/bookings-controller.js')
 const { validateGetFacilityInfo, validatePostFacility, validateGetResources, validateSignUpUser, validateGetBookings, validatePostBooking,
@@ -14,6 +14,7 @@ router
     .get('/facilities', getFacilites)
     .get('/facilities/:id', validateGetFacilityInfo, getFacilityInfo)
     .post('/facilities', validatePostFacility, postFacility)
+    .delete('/facilities/:id', deleteFacility)
 
     .get('/resources/by_facility/:id', validateGetResources, getResources)
     .post('/resources', validatePostResource, postResource)

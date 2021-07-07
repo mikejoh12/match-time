@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { AddResourceDialog } from './AddResourceDialog';
+import { DeleteFacilityDialog } from './DeleteFacilityDialog';
 
 export const ManagerFacilityEdit = () => {
     const resources = useSelector(selectResources)
@@ -64,6 +65,9 @@ export const ManagerFacilityEdit = () => {
             </Grid>
             <Grid item>
               <AddResourceDialog facilityId={id} />
+            </Grid>
+            <Grid item>
+              <DeleteFacilityDialog facilityId={id} />
             </Grid>
         </Grid>
       )
