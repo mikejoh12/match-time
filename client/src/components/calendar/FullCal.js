@@ -84,6 +84,9 @@ export const FullCal = () => {
           {resource.name}
           </Typography>
         </Grid>
+        <Typography variant="subtitle1" >
+          {resource.description}
+          </Typography>
         <Grid item>
           <FullCalendar
             ref={element => (calendarsRefs.current[idx] = element)}
@@ -147,7 +150,7 @@ export const FullCal = () => {
                           >
                               {
                                   resources.map(resource =>
-                                      <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
+                                      <MenuItem value={resource.id} key={resource.id}>{resource.name} - {resource.description}</MenuItem>)
                               }
                           </Select>
                       </FormControl>

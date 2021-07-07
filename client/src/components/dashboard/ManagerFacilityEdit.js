@@ -29,7 +29,7 @@ export const ManagerFacilityEdit = () => {
 
     const facilityResources = resources.map(resource => 
         <ListItem key={resource.id} divider>
-            <ListItemText primary={`Id: ${resource.id} Name: ${resource.name} Description: ${resource.description}`} />
+            <ListItemText primary={`Name: ${resource.name} - Description: ${resource.description}`} />
             <ListItemSecondaryAction>
                 <IconButton edge="end" aria-label="delete" value={resource.id} onClick={handleDeleteClick}>
                     <DeleteIcon />
