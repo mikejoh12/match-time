@@ -22,6 +22,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { BookDialog } from './BookDialog'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -43,6 +45,9 @@ export const FullCal = () => {
     const classes = useStyles()
     const court = useSelector(selectCourt)
     const fetchResourcesStatus = useSelector(selectFetchResourcesStatus)
+
+    const theme = useTheme();
+    const nrOfCalendars = [true, useMediaQuery(theme.breakpoints.up('sm')), useMediaQuery(theme.breakpoints.up('lg')), useMediaQuery(theme.breakpoints.up('xl'))];
 
     // Create a React ref to be able to access Full Calendar API to set dates from external code
     const calendarsRefs = useRef({})
@@ -171,6 +176,9 @@ export const FullCal = () => {
                   justifyContent="center">
                 <CircularProgress />
             </Grid>
+          }
+          {
+            nrOfCalendars.filter(cal => cal).map(cal => <h1>Calendar</h1>)
           }
           {
             (fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && !court) &&
