@@ -47,7 +47,7 @@ export const FullCal = () => {
     const fetchResourcesStatus = useSelector(selectFetchResourcesStatus)
 
     const theme = useTheme();
-    const nrOfCalendars = [true, useMediaQuery(theme.breakpoints.up('sm')), useMediaQuery(theme.breakpoints.up('lg')), useMediaQuery(theme.breakpoints.up('xl'))];
+    const nrOfCalendars = [true, useMediaQuery(theme.breakpoints.up('md')), useMediaQuery(theme.breakpoints.up('lg')), useMediaQuery(theme.breakpoints.up('xl'))];
 
     // Create a React ref to be able to access Full Calendar API to set dates from external code
     const calendarsRefs = useRef({})
@@ -76,7 +76,8 @@ export const FullCal = () => {
 
     const handleChange = event => dispatch(courtUpdated(event.target.value))
 
-    const calendars = resources.filter(resource => resource.id === court).map((resource, idx) => 
+    const selectedCourtIdx = resources.findIndex(resource => resource.id === court)
+    const calendars = resources.slice(selectedCourtIdx, selectedCourtIdx + nrOfCalendars.filter(cal => cal).length).map((resource, idx) => 
       <Grid container item
       xs={8}
       md={4}
@@ -176,9 +177,6 @@ export const FullCal = () => {
                   justifyContent="center">
                 <CircularProgress />
             </Grid>
-          }
-          {
-            nrOfCalendars.filter(cal => cal).map(cal => <h1>Calendar</h1>)
           }
           {
             (fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && !court) &&
