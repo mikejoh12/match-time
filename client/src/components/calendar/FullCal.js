@@ -52,8 +52,7 @@ export const FullCal = () => {
     // Create a React ref to be able to access Full Calendar API to set dates from external code
     const calendarsRefs = useRef({})
 
-    const handleDateChange = (date) => {
-
+    const handleDateChange = date => {
           dispatch(calViewDateUpdated(zonedTimeToUtc(roundToNearestMinutes(setHours(date, 10), { nearestTo: 30}),'UTC').toISOString()))
           // Use Full Calendar API to set date from external date picker for all rendered calendars
           Object.keys(calendarsRefs.current).forEach(key => {
