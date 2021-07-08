@@ -26,7 +26,7 @@ export const ManagerDashboard = () => {
                 alignItems="center"
                 justifyContent="center">
             <Grid item>
-                <Typography variant="h2" >
+                <Typography variant="h4" >
                     Manager Dashboard
                 </Typography>
             </Grid>

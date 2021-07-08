@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginLeft: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
@@ -32,14 +32,13 @@ export const Header = () => {
 
 
     const theme = useTheme();
-    const showMenuButtons = useMediaQuery(theme.breakpoints.up('md'))
+    const showMenuButtons = useMediaQuery(theme.breakpoints.up('sm'))
 
 
     const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
     const handleBookingsClick = () => history.push('/bookings')
     const handleLoginClick = () => history.push('/')
-  
     const handleMenu = event => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
@@ -47,10 +46,19 @@ export const Header = () => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
+            <Typography variant="h5" className={classes.title} onClick={handleLogoClick}>
+                Calendar Booking App
+            </Typography>
+            {( showMenuButtons &&
+              <div>
+                <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button>
+                <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button>
+                <Button color="inherit" size="large" onClick={handleLoginClick}>Login</Button>
+              </div> )}
             {( !showMenuButtons &&
             <div>
-              <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
-                <MenuIcon />
+              <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
+                <MenuIcon fontSize="large" />
               </IconButton>
               <Menu
                   id="menu-appbar"
@@ -67,20 +75,11 @@ export const Header = () => {
                   open={open}
                   onClose={handleClose}
               >
+                  <MenuItem onClick={handleLoginClick}>Login</MenuItem>
                   <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem>
                   <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem>
-                  <MenuItem onClick={handleLoginClick}>Login</MenuItem>
               </Menu>
             </div> )}
-            <Typography variant="h6" className={classes.title} onClick={handleLogoClick}>
-                Calendar Booking App
-            </Typography>
-            {( showMenuButtons &&
-              <div>
-                <Button color="inherit" onClick={handleUserDashBoardClick}>Dash Board</Button>
-                <Button color="inherit" onClick={handleBookingsClick}>Bookings</Button>
-                <Button color="inherit" onClick={handleLoginClick}>Login</Button>
-              </div> )}
           </Toolbar>
         </AppBar>
       </div>

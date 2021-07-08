@@ -27,7 +27,7 @@ export const FacilityLogin = () => {
                     alignItems="center"
                     spacing={2}>
                 <Grid item>
-                    <Typography variant="h2">
+                    <Typography variant="h4" >
                         {facility.name}
                     </Typography>
                 </Grid>
