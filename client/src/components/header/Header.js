@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       flexGrow: 1,
-    },
+      cursor: 'pointer'
+     }
   }));
 
 export const Header = () => {
@@ -30,10 +31,8 @@ export const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
-
     const theme = useTheme();
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('sm'))
-
 
     const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
