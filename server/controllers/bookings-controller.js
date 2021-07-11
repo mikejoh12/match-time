@@ -1,5 +1,5 @@
 const { fetchFacilityInfo } = require('../services/facilities-service.js')
-const { fetchBookingsByFacility, fetchBookingsByUser, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
+const { fetchBookingsByFacility, fetchBookingsByUser, checkConflictBooking, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
 const { fetchUserById } = require('../services/users-service')
 
 const getBookingsByFacility = async (req, res) => {
@@ -32,6 +32,10 @@ const postBooking = async (req, res, next) => {
         start_time,
         end_time
     }
+    // TODO For now checks for other bookings on same resource. Update to check time conflict.
+    const conflictBooking = await checkConflictBooking(booking)
+    console.log(conflictBooking)
+    if (conflictBooking.length === 0) { console.log('No bookings on this court') }
     const newBooking = await createBooking(booking)
     res.status(201).json(newBooking)
 }

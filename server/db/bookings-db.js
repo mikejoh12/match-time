@@ -22,6 +22,14 @@ const fetchBookingsByUserDb = async id => {
     return res.rows
 }
 
+const checkConflictBookingDb = async ({resources_id, organizer_id, start_time, end_time}) => {
+    const text =    `SELECT * FROM bookings
+                    WHERE resources_id = $1` 
+    const values = [resources_id]
+    const res = await pool.query(text, values)
+    return res.rows
+}
+
 const createBookingDb = async ({resources_id, organizer_id, start_time, end_time}) => {
     const text = `INSERT INTO bookings(resources_id, organizer_id, start_time, end_time)
                   VALUES($1, $2, $3, $4) RETURNING *`
@@ -45,4 +53,4 @@ const fetchBookingByIdDb = async id => {
     return res.rows[0]
 }
 
-module.exports = { fetchBookingsByFacilityDb, fetchBookingsByUserDb, createBookingDb, removeBookingDb, removeBookingsByResourceIdDb, fetchBookingByIdDb }
+module.exports = { fetchBookingsByFacilityDb, fetchBookingsByUserDb, checkConflictBookingDb, createBookingDb, removeBookingDb, removeBookingsByResourceIdDb, fetchBookingByIdDb }
