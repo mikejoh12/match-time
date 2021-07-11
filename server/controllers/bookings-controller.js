@@ -33,9 +33,10 @@ const postBooking = async (req, res, next) => {
         end_time
     }
     // TODO For now checks for other bookings on same resource. Update to check time conflict.
-    const conflictBooking = await checkConflictBooking(booking)
-    console.log(conflictBooking)
-    if (conflictBooking.length === 0) { console.log('No bookings on this court') }
+    const conflictBookings = await checkConflictBooking(booking)
+    if (conflictBookings.length) {
+        return res.status(409).json({error: "Conflict with other booking/bookings on same resource."})
+    }
     const newBooking = await createBooking(booking)
     res.status(201).json(newBooking)
 }

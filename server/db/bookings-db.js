@@ -22,10 +22,18 @@ const fetchBookingsByUserDb = async id => {
     return res.rows
 }
 
+// Check 3 cases of conflicts:
+// 1. Booking starts before scheduled booking and ends after
+// 2. Start of booking is within time of existing booking
+// 3. End of booking is within time of existing booking
 const checkConflictBookingDb = async ({resources_id, organizer_id, start_time, end_time}) => {
     const text =    `SELECT * FROM bookings
-                    WHERE resources_id = $1` 
-    const values = [resources_id]
+                    WHERE resources_id = $1 AND (
+                    ($2 < start_time AND $3 > end_time) OR
+                    ($2 >= start_time AND $2 < end_time) OR
+                    ($3 > start_time AND $3 <= end_time)
+                    )` 
+    const values = [resources_id, start_time, end_time]
     const res = await pool.query(text, values)
     return res.rows
 }
