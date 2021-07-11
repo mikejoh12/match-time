@@ -24,16 +24,22 @@ export const ManagerDashboard = () => {
                 spacing={2}
                 direction="column"
                 alignItems="center"
-                justify="center">
+                justifyContent="center">
             <Grid item>
-                <Typography variant="h2" >
+                <Typography variant="h4" >
                     Manager Dashboard
                 </Typography>
             </Grid>
             <Grid item>
-                    <List component="nav" aria-label="user bookings">
+                    { managerFacilities.length ?
+                    <List component="nav" aria-label="manager facilities">
                         {managerFacilities}
                     </List>
+                    :
+                    <Typography variant="h6" >
+                    You are not managing any facilities.
+                    </Typography>  
+                    }
             </Grid>
             <Grid item>
               <AddFacilityDialog />

@@ -22,6 +22,14 @@ const createFacilityDb = async ({name, description}) => {
     return res.rows[0]
 }
 
+const removeFacilityDb = async id => {
+    const res = await pool.query(
+        `DELETE FROM facilities WHERE id = $1`, [id]
+    )
+    return res.rows
+}
+
 module.exports = {  fetchFacilitiesDb,
                     fetchFacilityInfoDb,
-                    createFacilityDb }
+                    createFacilityDb,
+                    removeFacilityDb }

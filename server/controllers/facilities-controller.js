@@ -1,4 +1,4 @@
-const { fetchFacilities, fetchFacilityInfo, createFacility } = require('../services/facilities-service.js')
+const { fetchFacilities, fetchFacilityInfo, createFacility, removeFacility } = require('../services/facilities-service.js')
 
 const getFacilites = async (req, res) => {
     const facilities = await fetchFacilities()
@@ -24,4 +24,10 @@ const postFacility = async (req, res) => {
     res.status(201).json(newFacility)
 }
 
-module.exports = { getFacilites, getFacilityInfo, postFacility }
+const deleteFacility = async (req, res) => {
+    const { id } = req.params
+    await removeFacility(id)
+    res.status(204).send()
+}
+
+module.exports = { getFacilites, getFacilityInfo, postFacility, deleteFacility }

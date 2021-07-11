@@ -22,6 +22,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { BookDialog } from './BookDialog'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -44,11 +46,13 @@ export const FullCal = () => {
     const court = useSelector(selectCourt)
     const fetchResourcesStatus = useSelector(selectFetchResourcesStatus)
 
+    const theme = useTheme();
+    const nrOfCalendars = [true, useMediaQuery(theme.breakpoints.up('md')), useMediaQuery(theme.breakpoints.up('lg')), useMediaQuery(theme.breakpoints.up('xl'))];
+
     // Create a React ref to be able to access Full Calendar API to set dates from external code
     const calendarsRefs = useRef({})
 
-    const handleDateChange = (date) => {
-
+    const handleDateChange = date => {
           dispatch(calViewDateUpdated(zonedTimeToUtc(roundToNearestMinutes(setHours(date, 10), { nearestTo: 30}),'UTC').toISOString()))
           // Use Full Calendar API to set date from external date picker for all rendered calendars
           Object.keys(calendarsRefs.current).forEach(key => {
@@ -71,7 +75,8 @@ export const FullCal = () => {
 
     const handleChange = event => dispatch(courtUpdated(event.target.value))
 
-    const calendars = resources.filter(resource => resource.id === court).map((resource, idx) => 
+    const selectedCourtIdx = resources.findIndex(resource => resource.id === court)
+    const calendars = resources.slice(selectedCourtIdx, selectedCourtIdx + nrOfCalendars.filter(cal => cal).length).map((resource, idx) => 
       <Grid container item
       xs={8}
       md={4}
@@ -84,6 +89,9 @@ export const FullCal = () => {
           {resource.name}
           </Typography>
         </Grid>
+        <Typography variant="subtitle1" >
+          {resource.description}
+          </Typography>
         <Grid item>
           <FullCalendar
             ref={element => (calendarsRefs.current[idx] = element)}
@@ -113,11 +121,11 @@ export const FullCal = () => {
  
     return (
       <div>
-        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && court) ?  
+        {(fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && court) &&  
             <Grid container
             direction="column"
             alignItems="center"
-            justify="center">
+            justifyContent="center">
             <Grid item>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -147,7 +155,7 @@ export const FullCal = () => {
                           >
                               {
                                   resources.map(resource =>
-                                      <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
+                                      <MenuItem value={resource.id} key={resource.id}>{resource.name} - {resource.description}</MenuItem>)
                               }
                           </Select>
                       </FormControl>
@@ -157,14 +165,25 @@ export const FullCal = () => {
               <BookDialog resourceInView={court} calViewDate={calViewDate} />
             </Grid>
             <Grid container
-                  justify="center">
+                  justifyContent="center">
                   {calendars}
             </Grid>
           </Grid>
-              :
+          }
+          {
+          (fetchBookingsStatus !== 'succeeded' || fetchResourcesStatus !== 'succeeded') &&
             <Grid container
-                  justify="center">
+                  justifyContent="center">
                 <CircularProgress />
+            </Grid>
+          }
+          {
+            (fetchBookingsStatus === 'succeeded' && fetchResourcesStatus === 'succeeded' && !court) &&
+            <Grid container
+                  justifyContent="center">
+                    <Typography variant="h6" >
+                      This facility does not have any resources associated with it.
+                    </Typography>  
             </Grid>
           }
       </div>

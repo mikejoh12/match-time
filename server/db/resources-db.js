@@ -2,7 +2,7 @@ const { pool } = require('../config/config.js')
 
 const fetchResourcesDb = async id => {
     const res = await pool.query(
-        `SELECT * FROM resources WHERE facilities_id = $1`, [id]
+        `SELECT * FROM resources WHERE facilities_id = $1 ORDER BY name`, [id]
     )
     return res.rows
 }

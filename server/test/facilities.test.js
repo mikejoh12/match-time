@@ -4,6 +4,7 @@ const { pool } = require('../config/config.js')
 
 describe('/api/facilities', () => {
   
+  // Delete functionality requires facilities, resources, and bookings tables to be created
   beforeEach(async() => {
     await pool.query(
       `CREATE TABLE "facilities" (
@@ -12,14 +13,40 @@ describe('/api/facilities', () => {
       "description" varchar(1000))`
     )
     await pool.query(
+      `CREATE TABLE "resources" (
+        "id" SERIAL PRIMARY KEY,
+        "facilities_id" int,
+        "name" varchar(100),
+        "description" varchar(100)
+      );`
+    )
+    await pool.query(
+      `CREATE TABLE "bookings" (
+        "id" SERIAL PRIMARY KEY,
+        "resources_id" int NOT NULL,
+        "organizer_id" int NOT NULL,
+        "start_time" timestamptz NOT NULL,
+        "end_time" timestamptz NOT NULL
+      );`
+  )
+    await pool.query(
       `INSERT INTO facilities (name, description) VALUES ('Smash Tennis Club', 'A private tennis club with well maintened indoor courts, hard courts, clay courts, and padel courts.')`
+    )
+    await pool.query(
+      `INSERT INTO resources (facilities_id, name, description) VALUES (1, 'Test Court 1', 'Nice test court')`
     )
   })
 
   afterEach(async () => {
     await pool.query(`DROP TABLE facilities`)
   })
-  
+  afterEach(async () => {
+    await pool.query(`DROP TABLE resources`)
+  })
+  afterEach(async () => {
+    await pool.query(`DROP TABLE bookings`)
+  })
+
   describe('GET /api/facilities', () => {
 
     it('should respond with JSON and a 200 status code', done => {
@@ -72,6 +99,21 @@ describe('/api/facilities', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(422, done);
+    })
+  })
+
+  describe('DELETE /api/facilities/{id}', () => {
+
+    it('should respond with a 204 status code when deleting a facility', done => {
+      request(app)
+      .delete('/api/facilities/1')
+      .expect(204, done)
+    })
+
+    it('should respond with a 422 status code when trying to delete a non-integer facility', done => {
+      request(app)
+      .delete('/api/facilities/test')
+      .expect(422, done)
     })
   })
 })

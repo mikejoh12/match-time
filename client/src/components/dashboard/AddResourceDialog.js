@@ -52,7 +52,6 @@ export const AddResourceDialog = props => {
             />
             <TextField
                 onChange={handleResourceDescriptionChange}
-                autoFocus
                 margin="dense"
                 id="resource-description"
                 label="Resource description"

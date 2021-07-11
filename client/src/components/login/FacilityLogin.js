@@ -22,12 +22,12 @@ export const FacilityLogin = () => {
     return (
         <div>
             <Grid   container
-                    justify="center"
+                    justifyContent="center"
                     direction="column"
                     alignItems="center"
                     spacing={2}>
                 <Grid item>
-                    <Typography variant="h2">
+                    <Typography variant="h4" >
                         {facility.name}
                     </Typography>
                 </Grid>

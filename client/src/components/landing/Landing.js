@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const Landing = () => {
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const [clubId, setClubId] = useState(1)
     const facilities = useSelector(selectAllFacilities)
+    const dispatch = useDispatch()
+    const [clubId, setClubId] = useState('')
     const history = useHistory()
     const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus) 
 
@@ -37,6 +37,13 @@ export const Landing = () => {
         dispatch(resourcesReset())
         dispatch(fetchAllFacilities())
     }, [dispatch])
+
+    // Set default facility to view once facilities are loaded
+    useEffect(() => {
+        if (facilities.length) {
+        setClubId(facilities[0].id)
+        }
+      }, [facilities, dispatch])
 
     const handleChange = event => setClubId(event.target.value)
     
@@ -55,11 +62,11 @@ export const Landing = () => {
                 spacing={2}
                 direction="column"
                 alignItems="center"
-                justify="center">
+                justifyContent="center">
                 <Grid item container
                         direction="column"
                         alignItems="center"
-                        justify="center">
+                        justifyContent="center">
                     <form onSubmit={handleSubmit} align="center">
                         <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
@@ -81,11 +88,11 @@ export const Landing = () => {
                     </form>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" color="primary" onClick={handleRegisterClick}>Register a facility</Button>
+                    <Button variant="contained" color="primary" onClick={handleRegisterClick}>Manage Facilities</Button>
                 </Grid>
         </Grid>
             :
-            <Grid item container justify="center">
+            <Grid item container justifyContent="center">
                 <CircularProgress />
             </Grid>
             }
