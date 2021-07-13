@@ -12,9 +12,17 @@ export const api = createApi({
     getResourcesByFacilityId: build.query({
       query: (id) => `resources/by_facility/${id}`,
     }),
+    getBookingsByFacilityId: build.query({
+      query: (id) => `bookings/by_facility/${id}`,
+    }),
+    getBookingsByUserId: build.query({
+      query: (id) => `bookings/by_user/${id}`,
+    }),
   }),
 })
 
 export const {  useGetFacilitiesQuery,
                 useGetFacilityByIdQuery,
-                useGetResourcesByFacilityIdQuery } = api
+                useGetResourcesByFacilityIdQuery,
+                useGetBookingsByFacilityIdQuery,
+                useGetBookingsByUserIdQuery } = api
