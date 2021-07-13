@@ -11,12 +11,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
-import { selectAllFacilities } from '../../features/facilities/facilitiesSlice';
+import { useGetFacilitiesQuery } from '../../services/api'
 
 export const Bookings = () => {
+    const { data, isError, isLoading } = useGetFacilitiesQuery()
     const dispatch = useDispatch();
     const bookings = useSelector(selectBookingsByUser);
-    const facilities = useSelector(selectAllFacilities)
+    const facilities = data
 
     React.useEffect(() => {
         dispatch(fetchBookingsByUser(1))
@@ -40,24 +41,31 @@ export const Bookings = () => {
                             )
 
     return (
-        <div>
-            <Grid   container
-                    justifyContent="center"
-                    direction="column"
-                    alignItems="center"
-                    spacing={2}>
-                <Grid item>
-                    { userBookings.length ?
-                    <List component="nav" aria-label="user bookings">
-                        {userBookings}
-                    </List>
-                    :
-                    <Typography variant="h5" >
-                        No bookings found.
-                    </Typography>     
-                    }
+        <div className="App">
+            {isError ? (
+            <>Oh no, there was an error</>
+            ) : isLoading ? (
+            <>Loading...</>
+            ) : data ? (
+                <Grid
+                container
+                justifyContent="center"
+                direction="column"
+                alignItems="center"
+                spacing={2}>
+                    <Grid item>
+                        { userBookings.length ?
+                        <List component="nav" aria-label="user bookings">
+                            {userBookings}
+                        </List>
+                        :
+                        <Typography variant="h5" >
+                            No bookings found.
+                        </Typography>     
+                        }
+                    </Grid>
                 </Grid>
-            </Grid>
+            ) : null}
         </div>
     );
 }

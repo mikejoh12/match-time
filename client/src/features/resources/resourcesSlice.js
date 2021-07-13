@@ -31,7 +31,6 @@ export const resourcesSlice = createSlice({
     name: 'resources',
     initialState,
     reducers: {
-      resourcesReset: state => initialState
     },
     extraReducers: {
         [fetchResources.pending]: (state, action) => {
@@ -67,7 +66,6 @@ export const resourcesSlice = createSlice({
     }
 })
 
-export const { resourcesReset } = resourcesSlice.actions
 export const selectResources = state => state.resources.resources
 export const selectFetchResourcesStatus = state => state.resources.fetchResourcesStatus
 

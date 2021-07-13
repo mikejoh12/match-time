@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom'
-import { selectAllFacilities, fetchAllFacilities, selectFetchAllFacilitiesStatus, facilitiesReset } from '../../features/facilities/facilitiesSlice'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -10,8 +9,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { bookingsReset } from "../../features/bookings/bookingsSlice";
-import { resourcesReset } from "../../features/resources/resourcesSlice";
+import { useGetFacilitiesQuery } from '../../services/api'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -24,23 +22,16 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const Landing = () => {
+    const { data, isError, isLoading } = useGetFacilitiesQuery()
     const classes = useStyles()
-    const facilities = useSelector(selectAllFacilities)
+    const facilities = data
     const dispatch = useDispatch()
     const [clubId, setClubId] = useState('')
-    const history = useHistory()
-    const fetchAllFacilitiesStatus = useSelector(selectFetchAllFacilitiesStatus) 
-
-    useEffect(() => {
-        dispatch(facilitiesReset()) // Clear previous data
-        dispatch(bookingsReset())
-        dispatch(resourcesReset())
-        dispatch(fetchAllFacilities())
-    }, [dispatch])
+    const history = useHistory() 
 
     // Set default facility to view once facilities are loaded
     useEffect(() => {
-        if (facilities.length) {
+        if (facilities) {
         setClubId(facilities[0].id)
         }
       }, [facilities, dispatch])
@@ -54,48 +45,48 @@ export const Landing = () => {
 
     const handleRegisterClick = () => history.push('/manager-dashboard')
 
-    return (
-        <div>
-            {fetchAllFacilitiesStatus === 'succeeded' ?
-
-        <Grid   container
-                spacing={2}
-                direction="column"
-                alignItems="center"
-                justifyContent="center">
-                <Grid item container
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center">
-                    <form onSubmit={handleSubmit} align="center">
-                        <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={clubId}
-                            onChange={handleChange}
-                            >
-                                {
-                                    facilities.map(facility =>
-                                        <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
-                                }
-                            </Select>
-                        </FormControl>
-                        <Grid item>
-                            <Button variant="contained" color="primary" type="submit">Login</Button>
+    return ( <div>
+                {isError ? (
+                    <>Oh no, there was an error</>
+                ) : isLoading ? (
+                    <Grid item container justifyContent="center">
+                        <CircularProgress />
+                    </Grid>
+                ) : data ? (
+                    <Grid   container
+                    spacing={2}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center">            
+                        <Grid item container
+                                direction="column"
+                                alignItems="center"
+                                justifyContent="center">
+                            <form onSubmit={handleSubmit} align="center">
+                                <FormControl className={classes.formControl}>
+                                <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
+                                    <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={clubId}
+                                    onChange={handleChange}
+                                    >
+                                        {
+                                            facilities.map(facility =>
+                                                <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <Grid item>
+                                    <Button variant="contained" color="primary" type="submit">Login</Button>
+                                </Grid>
+                            </form>
                         </Grid>
-                    </form>
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" color="primary" onClick={handleRegisterClick}>Manage Facilities</Button>
-                </Grid>
-        </Grid>
-            :
-            <Grid item container justifyContent="center">
-                <CircularProgress />
-            </Grid>
-            }
+                        <Grid item>
+                            <Button variant="contained" color="primary" onClick={handleRegisterClick}>Manage Facilities</Button>
+                        </Grid>
+                    </Grid>
+                ) : null}
         </div>
-        )
+    )
 }

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: Calendar-Booking API
   description: A platform for managing/reserving items such as sports courts, meeting rooms, and other resources.
