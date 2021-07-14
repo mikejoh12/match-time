@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -22,19 +21,17 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const Landing = () => {
-    const { data, isError, isLoading } = useGetFacilitiesQuery()
+    const { data: facilitiesData, isError, isLoading } = useGetFacilitiesQuery()
     const classes = useStyles()
-    const facilities = data
-    const dispatch = useDispatch()
     const [clubId, setClubId] = useState('')
     const history = useHistory() 
 
     // Set default facility to view once facilities are loaded
     useEffect(() => {
-        if (facilities) {
-        setClubId(facilities[0].id)
+        if (facilitiesData) {
+        setClubId(facilitiesData[0].id)
         }
-      }, [facilities, dispatch])
+      }, [facilitiesData])
 
     const handleChange = event => setClubId(event.target.value)
     
@@ -52,7 +49,7 @@ export const Landing = () => {
                     <Grid item container justifyContent="center">
                         <CircularProgress />
                     </Grid>
-                ) : data ? (
+                ) : facilitiesData ? (
                     <Grid   container
                     spacing={2}
                     direction="column"
@@ -72,7 +69,7 @@ export const Landing = () => {
                                     onChange={handleChange}
                                     >
                                         {
-                                            facilities.map(facility =>
+                                            facilitiesData.map(facility =>
                                                 <MenuItem value={facility.id} key={facility.id}>{facility.name}</MenuItem>)
                                         }
                                     </Select>

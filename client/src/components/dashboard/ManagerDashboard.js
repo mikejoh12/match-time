@@ -8,13 +8,12 @@ import { AddFacilityDialog } from './AddFacilityDialog'
 import { useGetFacilitiesQuery } from '../../services/api'
 
 export const ManagerDashboard = () => {
-    const { data, isError, isLoading } = useGetFacilitiesQuery()
-    const facilities = data
+    const { data: facilitiesData, isError, isLoading } = useGetFacilitiesQuery()
     const history = useHistory()
     
     const handleFacilityClick = event => history.push(`/manager-facility-edit/${event.currentTarget.getAttribute('value')}`)
 
-    const managerFacilities = facilities.map(facility => 
+    const managerFacilities = facilitiesData.map(facility => 
         <ListItem key={facility.id} button value={facility.id} onClick={handleFacilityClick} divider>
             <ListItemText primary={facility.name} />
         </ListItem>)
@@ -25,7 +24,7 @@ export const ManagerDashboard = () => {
             <>Oh no, there was an error</>
             ) : isLoading ? (
             <>Loading...</>
-            ) : data ? (
+            ) : facilitiesData ? (
                 <Grid   container
                 spacing={2}
                 direction="column"
