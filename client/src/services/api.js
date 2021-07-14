@@ -60,6 +60,15 @@ export const api = createApi({
       query: (id) => `bookings/by_user/${id}`,
       providesTags: ['Bookings']
     }),
+    createBooking: build.mutation({
+      query: (body) => ({
+        url: `bookings/`,
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['Bookings'],
+    }),
     deleteBooking: build.mutation({
       query: (id) => ({
         url: `bookings/${id}`,
@@ -77,6 +86,7 @@ export const {  useGetFacilitiesQuery,
                 useDeleteResourceMutation,
                 useGetBookingsByFacilityIdQuery,
                 useGetBookingsByUserIdQuery,
+                useCreateBookingMutation,
                 useDeleteBookingMutation,
                 useCreateFacilityMutation,
                 useDeleteFacilityMutation } = api

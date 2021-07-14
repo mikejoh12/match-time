@@ -18,8 +18,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { useSelector, useDispatch } from "react-redux";
 import { selectResources } from '../../features/resources/resourcesSlice';
-import { createBooking } from '../../features/bookings/bookingsSlice';
 import addMinutes from 'date-fns/addMinutes'
+import { useCreateBookingMutation } from '../../services/api';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -32,13 +32,17 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const BookDialog = props => {
-  const dispatch = useDispatch()
   const resources = useSelector(selectResources)
   const [open, setOpen] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(utcToZonedTime(new Date(props.calViewDate), 'UTC'))
   const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
+
+  const [
+    createBooking,
+    { isLoading: isUpdating }, // This is the destructured mutation result
+  ] = useCreateBookingMutation()
 
   const handleClickOpen = () => {
     setSelectedResource(props.resourceInView)
@@ -54,12 +58,12 @@ export const BookDialog = props => {
     const endTime = addMinutes(selectedDate, duration)
     const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
-    dispatch(createBooking({
+    createBooking({
         resources_id: selectedResource,
         organizer_id: 1, // TODO: Connect to logged in User
         start_time: utcStartTime,
         end_time: utcEndTime
-    }))
+    })
     setOpen(false)
   }
 

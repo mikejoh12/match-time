@@ -24,19 +24,6 @@ export const fetchBookingsByUser = createAsyncThunk('facilities/fetchBookingsByU
         return response.data
 })
 
-export const createBooking = createAsyncThunk('bookings/createBooking',
-    async ({resources_id, organizer_id, start_time, end_time}) => {
-        const response = await apiAxios.post(
-          '/bookings',
-          {
-              resources_id,
-              organizer_id,
-              start_time,
-              end_time
-          })
-          return response.data
-})
-
 const initialState = {
   fetchBookingsStatus: 'idle',
   fetchBookingsByUser: 'idle',
@@ -78,21 +65,6 @@ export const bookingsSlice = createSlice({
           [fetchBookingsByUser.rejected]: (state, action) => {
             state.fetchBookingsByUserStatus = 'failed'
           },          
-          [createBooking.pending]: (state, action) => {
-            state.createBookingStatus = 'loading'
-          },
-          [createBooking.fulfilled]: (state, action) => {
-            state.createBookingStatus = 'succeeded'
-            // Determine if a resource key exists in bookings store, otherwise we create a key and store a new array
-            if (state.bookings[action.payload.resources_id]) {
-              state.bookings[action.payload.resources_id].push(action.payload)
-            } else {
-              state.bookings[action.payload.resources_id] = [action.payload]
-            }
-          },
-          [createBooking.rejected]: (state, action) => {
-            state.createBookingStatus = 'failed'
-          },
     }
 })
 
