@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
-  tagTypes: ['Facilities', 'Resources'],
+  tagTypes: ['Facilities', 'Resources', 'Bookings'],
 
   endpoints: (build) => ({
 
@@ -52,12 +52,20 @@ export const api = createApi({
       invalidatesTags: ['Resources'],
       }),
 
-
     getBookingsByFacilityId: build.query({
       query: (id) => `bookings/by_facility/${id}`,
+      providesTags: ['Bookings']
     }),
     getBookingsByUserId: build.query({
       query: (id) => `bookings/by_user/${id}`,
+      providesTags: ['Bookings']
+    }),
+    deleteBooking: build.mutation({
+      query: (id) => ({
+        url: `bookings/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Bookings'],
     }),
   })
 })
@@ -69,5 +77,6 @@ export const {  useGetFacilitiesQuery,
                 useDeleteResourceMutation,
                 useGetBookingsByFacilityIdQuery,
                 useGetBookingsByUserIdQuery,
+                useDeleteBookingMutation,
                 useCreateFacilityMutation,
                 useDeleteFacilityMutation } = api

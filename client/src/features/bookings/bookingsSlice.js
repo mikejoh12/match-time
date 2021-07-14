@@ -37,16 +37,9 @@ export const createBooking = createAsyncThunk('bookings/createBooking',
           return response.data
 })
 
-export const deleteBooking = createAsyncThunk('bookings/deleteBooking',
-    async bookingId => {
-        await apiAxios.delete(`/bookings/${bookingId}`)
-        return bookingId
-})
-
 const initialState = {
   fetchBookingsStatus: 'idle',
   fetchBookingsByUser: 'idle',
-  deleteBookingStatus: 'idle',
   bookings: {},
   calViewDate: zonedTimeToUtc(roundToNearestMinutes(new Date(), { nearestTo: 30 }), 'UTC').toISOString(),
   court: '',
@@ -99,17 +92,6 @@ export const bookingsSlice = createSlice({
           },
           [createBooking.rejected]: (state, action) => {
             state.createBookingStatus = 'failed'
-          },
-          [deleteBooking.pending]: (state, action) => {
-            state.deleteBookingStatus = 'loading'
-          },
-          [deleteBooking.fulfilled]: (state, action) => {
-            // Update user bookings after delete of booking from db
-            state.bookingsByUser = state.bookingsByUser.filter(booking => booking.bookings_id !== parseInt(action.payload, 10))
-            state.deleteBookingStatus = 'succeeded'
-          },
-          [deleteBooking.rejected]: (state, action) => {
-            state.deleteBookingStatus = 'failed'
           },
     }
 })

@@ -6,19 +6,21 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
-import { deleteBooking } from '../../features/bookings/bookingsSlice';
-import { useDispatch } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
-import { useGetFacilitiesQuery, useGetBookingsByUserIdQuery } from '../../services/api'
+import { useGetFacilitiesQuery, useGetBookingsByUserIdQuery, useDeleteBookingMutation } from '../../services/api'
 
 export const Bookings = () => {
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesQuery()
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(1)
-    const dispatch = useDispatch();
 
-    const handleDeleteClick = (event) => dispatch(deleteBooking(event.currentTarget.value))
+    const [
+        deleteBooking,
+        { isLoading: isUpdating }, // This is the destructured mutation result
+      ] = useDeleteBookingMutation()
+
+    const handleDeleteClick = (event) => deleteBooking(event.currentTarget.value)
 
     return (
         <div className="App">
