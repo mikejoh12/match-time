@@ -5,14 +5,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import { useDispatch } from "react-redux";
-import { createFacility } from '../../features/facilities/facilitiesSlice';
+import { useCreateFacilityMutation } from '../../services/api'
 
 export const AddFacilityDialog = () => {
-  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
   const [facilityName, setFacilityName] = React.useState('')
   const [facilityDescription, setFacilityDescription] = React.useState('')
+
+  const [
+    createFacility, // This is the mutation trigger
+    { isLoading: isUpdating }, // This is the destructured mutation result
+  ] = useCreateFacilityMutation()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -23,10 +26,10 @@ export const AddFacilityDialog = () => {
   }
 
   const handleAddFacility = () => {
-    dispatch(createFacility({
+    createFacility({
       name: facilityName,
       description: facilityDescription
-    }))
+    })
     setOpen(false)
   }
 

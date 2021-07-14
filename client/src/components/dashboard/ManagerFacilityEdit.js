@@ -6,22 +6,22 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import { deleteResource } from '../../features/resources/resourcesSlice'
-import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { AddResourceDialog } from './AddResourceDialog';
 import { DeleteFacilityDialog } from './DeleteFacilityDialog';
 import { useGetFacilityByIdQuery } from '../../services/api'
-import { useGetResourcesByFacilityIdQuery } from '../../services/api'
-
+import { useGetResourcesByFacilityIdQuery, useDeleteResourceMutation } from '../../services/api'
 
 export const ManagerFacilityEdit = () => {
-    const dispatch = useDispatch()
     const { id } = useParams()
     const { data: facilityData, isError: facilityIsError, isLoading: facilityIsLoading } = useGetFacilityByIdQuery(id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
+    const [
+        deleteResource,
+        { isLoading: isUpdating }, // This is the destructured mutation result
+      ] = useDeleteResourceMutation()
 
-    const handleDeleteClick = event => dispatch(deleteResource(event.currentTarget.value))
+    const handleDeleteClick = event => deleteResource(event.currentTarget.value)
 
     return (
         <div>
@@ -72,6 +72,5 @@ export const ManagerFacilityEdit = () => {
                 </Grid>
             ) : null}
       </div>
-
       )
   }

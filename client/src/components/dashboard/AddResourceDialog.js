@@ -5,14 +5,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import { useDispatch } from "react-redux";
-import { createResource } from '../../features/resources/resourcesSlice';
+import { useCreateResourceMutation } from '../../services/api';
 
 export const AddResourceDialog = props => {
-  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
   const [resourceName, setResourceName] = React.useState('')
   const [resourceDescription, setResourceDescription] = React.useState('')
+
+  const [
+    createResource,
+    { isLoading: isUpdating }, // This is the destructured mutation result
+  ] = useCreateResourceMutation()
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -23,11 +26,11 @@ export const AddResourceDialog = props => {
   }
 
   const handleAddResource = () => {
-    dispatch(createResource({
+    createResource({
         facilities_id: props.facilityId,
         name: resourceName,
         description: resourceDescription
-    }))
+    })
     setOpen(false)
   }
 

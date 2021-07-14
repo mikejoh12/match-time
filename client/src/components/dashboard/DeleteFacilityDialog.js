@@ -7,14 +7,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useDispatch } from 'react-redux'
-import { deleteFacility } from '../../features/facilities/facilitiesSlice';
+import { useDeleteFacilityMutation } from '../../services/api';
 
 export const DeleteFacilityDialog = (props) => {
-  const dispatch = useDispatch()
   const history = useHistory()
   const [open, setOpen] = React.useState(false);
   const [confirmDelete, setConfirmDelete] = React.useState('')
+
+  const [
+    deleteFacility, // This is the mutation trigger
+    { isLoading: isUpdating }, // This is the destructured mutation result
+  ] = useDeleteFacilityMutation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,7 +30,7 @@ export const DeleteFacilityDialog = (props) => {
   const handleDeleteClick = () => {
       if (confirmDelete === 'DELETE') {
           console.log(`Delete Facility with id ${props.facilityId}`)
-          dispatch(deleteFacility(props.facilityId))
+          deleteFacility(props.facilityId)
           setOpen(false)
           history.push('/manager-dashboard')
 
