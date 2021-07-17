@@ -22,7 +22,7 @@ import { BookDialog } from './BookDialog'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { SingleCalendar } from './SingleCalendar'
+import { Calendars } from './Calendars'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -75,31 +75,6 @@ export const UserDashboard = () => {
     const handleChange = event => dispatch(courtUpdated(event.target.value))
 
     const selectedCourtIdx = resources.findIndex(resource => resource.id === court)
-    const calendars = resources.slice(selectedCourtIdx, selectedCourtIdx + nrOfCalendars.filter(cal => cal).length).map((resource, idx) => 
-      <Grid container item
-      xs={8}
-      md={4}
-      xl={2}
-      direction="column"
-      alignItems="center"
-      key={resource.id}>
-        <Grid item>
-          <Typography variant="h5" >
-          {resource.name}
-          </Typography>
-        </Grid>
-        <Typography variant="subtitle1" >
-          {resource.description}
-          </Typography>
-          <Grid item>
-            <SingleCalendar bookings={bookings}
-                            calendarsRefs={calendarsRefs}
-                            idx={idx}
-                            calViewDate={calViewDate}
-                            resource={resource} />
-          </Grid>
-        </Grid>
-        )
  
     return (
       <div>
@@ -148,7 +123,12 @@ export const UserDashboard = () => {
             </Grid>
             <Grid container
                   justifyContent="center">
-                  {calendars}
+                  <Calendars  resources={resources}
+                              selectedCourtIdx={selectedCourtIdx}
+                              nrOfCalendars={nrOfCalendars}
+                              bookings={bookings}
+                              calendarsRefs={calendarsRefs}
+                              calViewDate={calViewDate} />
             </Grid>
           </Grid>
           }
