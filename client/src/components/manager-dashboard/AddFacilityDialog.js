@@ -12,10 +12,7 @@ export const AddFacilityDialog = () => {
   const [facilityName, setFacilityName] = React.useState('')
   const [facilityDescription, setFacilityDescription] = React.useState('')
 
-  const [
-    createFacility, // This is the mutation trigger
-    { isLoading: isUpdating }, // This is the destructured mutation result
-  ] = useCreateFacilityMutation()
+  const [ createFacility ] = useCreateFacilityMutation()
 
   const handleClickOpen = () => {
     setOpen(true)

@@ -14,10 +14,7 @@ export const DeleteFacilityDialog = (props) => {
   const [open, setOpen] = React.useState(false);
   const [confirmDelete, setConfirmDelete] = React.useState('')
 
-  const [
-    deleteFacility, // This is the mutation trigger
-    { isLoading: isUpdating }, // This is the destructured mutation result
-  ] = useDeleteFacilityMutation()
+  const [ deleteFacility ] = useDeleteFacilityMutation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,7 +26,6 @@ export const DeleteFacilityDialog = (props) => {
 
   const handleDeleteClick = () => {
       if (confirmDelete === 'DELETE') {
-          console.log(`Delete Facility with id ${props.facilityId}`)
           deleteFacility(props.facilityId)
           setOpen(false)
           history.push('/manager-dashboard')

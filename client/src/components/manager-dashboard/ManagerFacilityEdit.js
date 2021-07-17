@@ -16,10 +16,7 @@ export const ManagerFacilityEdit = () => {
     const { id } = useParams()
     const { data: facilityData, isError: facilityIsError, isLoading: facilityIsLoading } = useGetFacilityByIdQuery(id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
-    const [
-        deleteResource,
-        { isLoading: isUpdating }, // This is the destructured mutation result
-      ] = useDeleteResourceMutation()
+    const [ deleteResource ] = useDeleteResourceMutation()
 
     const handleDeleteClick = event => deleteResource(event.currentTarget.value)
 

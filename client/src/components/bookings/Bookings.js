@@ -15,10 +15,7 @@ export const Bookings = () => {
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesQuery()
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(1)
 
-    const [
-        deleteBooking,
-        { isLoading: isUpdating }, // This is the destructured mutation result
-      ] = useDeleteBookingMutation()
+    const [ deleteBooking ] = useDeleteBookingMutation()
 
     const handleDeleteClick = (event) => deleteBooking(event.currentTarget.value)
 

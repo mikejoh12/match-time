@@ -12,10 +12,7 @@ export const AddResourceDialog = props => {
   const [resourceName, setResourceName] = React.useState('')
   const [resourceDescription, setResourceDescription] = React.useState('')
 
-  const [
-    createResource,
-    { isLoading: isUpdating }, // This is the destructured mutation result
-  ] = useCreateResourceMutation()
+  const [ createResource ] = useCreateResourceMutation()
 
   const handleClickOpen = () => {
     setOpen(true)

@@ -37,10 +37,7 @@ export const BookDialog = props => {
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
 
-  const [
-    createBooking,
-    { isLoading: isUpdating }, // This is the destructured mutation result
-  ] = useCreateBookingMutation()
+  const [ createBooking ] = useCreateBookingMutation()
 
   const handleClickOpen = () => {
     setSelectedResource(props.resourceInView)
