@@ -16,8 +16,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { useSelector, useDispatch } from "react-redux";
-import { selectResources } from '../../features/resources/resourcesSlice';
 import addMinutes from 'date-fns/addMinutes'
 import { useCreateBookingMutation } from '../../services/api';
 
@@ -32,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const BookDialog = props => {
-  const resources = useSelector(selectResources)
+  const resources = props.resources
   const [open, setOpen] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(utcToZonedTime(new Date(props.calViewDate), 'UTC'))
   const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)

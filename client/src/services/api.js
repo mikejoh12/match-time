@@ -54,6 +54,16 @@ export const api = createApi({
 
     getBookingsByFacilityId: build.query({
       query: (id) => `bookings/by_facility/${id}`,
+      transformResponse: (response) => {
+        const bookings = {}
+        response.forEach(booking => {
+          if (!bookings[booking.resources_id]) {
+            bookings[booking.resources_id] = []
+        }
+          bookings[booking.resources_id].push(booking)
+        });
+        return bookings
+      },
       providesTags: ['Bookings']
     }),
     getBookingsByUserId: build.query({
