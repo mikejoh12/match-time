@@ -4,8 +4,6 @@ import { fetchBookings, selectBookings, selectFetchBookingsStatus, selectCalView
 import { selectFacility } from "../../features/facilities/facilitiesSlice"
 import { fetchResources, selectResources, selectFetchResourcesStatus } from '../../features/resources/resourcesSlice'
 import 'date-fns';
-import FullCalendar from '@fullcalendar/react' // must go before plugins
-import timeGridPlugin from '@fullcalendar/timegrid'
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { roundToNearestMinutes, setHours } from 'date-fns'
@@ -24,6 +22,7 @@ import { BookDialog } from './BookDialog'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { SingleCalendar } from './SingleCalendar'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const FullCal = () => {
+export const UserDashboard = () => {
     const dispatch = useDispatch()
     const facility = useSelector(selectFacility)
     const resources = useSelector(selectResources)
@@ -92,29 +91,12 @@ export const FullCal = () => {
         <Typography variant="subtitle1" >
           {resource.description}
           </Typography>
-        <Grid item>
-          <FullCalendar
-            ref={element => (calendarsRefs.current[idx] = element)}
-            plugins={[ timeGridPlugin ]}
-            headerToolbar={{
-              left: '',
-              center: 'title',
-              right: ''
-            }}
-            allDaySlot={false}
-            timeZone="UTC"
-            initialView="timeGridDay"
-            slotMinTime="06:00:00"
-            slotMaxTime="22:00:00"
-            height="auto"
-            initialDate={calViewDate}
-            events={ 
-              bookings[resource.id]?.map(booking => ({
-              id: booking.bookings_id,
-              title: `Booked by user: ${booking.organizer_id}`,
-              start: booking.start_time,
-              end: booking.end_time
-            }))} />
+          <Grid item>
+            <SingleCalendar bookings={bookings}
+                            calendarsRefs={calendarsRefs}
+                            idx={idx}
+                            calViewDate={calViewDate}
+                            resource={resource} />
           </Grid>
         </Grid>
         )

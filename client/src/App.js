@@ -1,14 +1,14 @@
 import { Header } from './components/header/Header'
 import { FacilityLogin } from './components/login/FacilityLogin'
 import { Landing } from './components/landing/Landing'
-import { UserDashboard } from './components/dashboard/UserDashboard'
+import { UserDashboard } from './components/user-dashboard/UserDashboard'
 import { Bookings } from './components/bookings/Bookings'
-import { ManagerDashboard } from './components/dashboard/ManagerDashboard'
+import { ManagerDashboard } from './components/manager-dashboard/ManagerDashboard'
 import { BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom'
-import { ManagerFacilityEdit } from './components/dashboard/ManagerFacilityEdit'
+import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 
 function App() {
   return (
