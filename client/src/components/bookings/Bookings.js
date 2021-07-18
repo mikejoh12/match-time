@@ -13,7 +13,7 @@ import { useGetFacilitiesQuery, useGetBookingsByUserIdQuery, useDeleteBookingMut
 
 export const Bookings = () => {
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesQuery()
-    const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(1)
+    const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(2)
 
     const [ deleteBooking ] = useDeleteBookingMutation()
 

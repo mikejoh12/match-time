@@ -2,7 +2,7 @@ const { fetchUserByEmail, createUser } = require('../services/users-service')
 const { getPwdHash } = require('../services/auth-service')
 
 const signUpUser = async (req, res, next) => {
-    const { email, password } = req.body
+    const { email, first_name, last_name, password } = req.body
 
     //Check if active user with this email exists
     const userDb = await fetchUserByEmail(email)  
@@ -13,6 +13,8 @@ const signUpUser = async (req, res, next) => {
     const pwd_hash = await getPwdHash(password)
     const user = {
         email,
+        first_name,
+        last_name,
         pwd_hash,
         user_role: "customer"
     }

@@ -55,7 +55,7 @@ export const BookDialog = props => {
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     createBooking({
         resources_id: selectedResource,
-        organizer_id: 1, // TODO: Connect to logged in User
+        organizer_id: 2, // TODO: Connect to logged in User
         start_time: utcStartTime,
         end_time: utcEndTime
     })

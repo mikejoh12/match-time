@@ -162,9 +162,15 @@ paths:
             schema:
               required:
               - email
+              - first_name
+              - last_name
               - password
               properties:
                 email:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
                   type: string
                 password:
                   type: string
