@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { UserRegisterDialog } from '../login/UserRegisterDialog';
+import { UserLoginDialog } from '../login/UserLoginDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,13 +33,20 @@ export const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
+    const [openUserRegister, setOpenUserRegister] = useState(false)
+    const handleOpenUserRegister = () => setOpenUserRegister(true)
+    const handleCloseUserRegister = () => setOpenUserRegister(false)
+
+    const [openUserLogin, setOpenUserLogin] = useState(false)
+    const handleOpenUserLogin = () => setOpenUserLogin(true)
+    const handleCloseUserLogin = () => setOpenUserLogin(false)
+
     const theme = useTheme();
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('sm'))
 
     const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
     const handleBookingsClick = () => history.push('/bookings')
-    const handleLoginClick = () => history.push('/')
     const handleMenu = event => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
@@ -50,9 +59,11 @@ export const Header = () => {
             </Typography>
             {( showMenuButtons &&
               <div>
+                <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
+                <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button>
                 <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button>
                 <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button>
-                <Button color="inherit" size="large" onClick={handleLoginClick}>Login</Button>
+
               </div> )}
             {( !showMenuButtons &&
             <div>
@@ -74,13 +85,16 @@ export const Header = () => {
                   open={open}
                   onClose={handleClose}
               >
-                  <MenuItem onClick={handleLoginClick}>Login</MenuItem>
+                  <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
+                  <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem>
                   <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem>
                   <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem>
               </Menu>
             </div> )}
           </Toolbar>
         </AppBar>
+        <UserRegisterDialog open={openUserRegister} handleClose={handleCloseUserRegister} />
+        <UserLoginDialog open={openUserLogin} handleClose={handleCloseUserLogin} />
       </div>
     );
   }
