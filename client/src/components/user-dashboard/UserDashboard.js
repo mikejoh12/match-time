@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { selectCalViewDate, calViewDateUpdated, selectCourt, courtUpdated } from "../../features/bookings/bookingsSlice"
-import { selectFacility } from "../../features/facilities/facilitiesSlice"
+import { selectCalViewDate, calViewDateUpdated, selectCourt, courtUpdated, selectFacility } from "../../features/current-facility/currentFacilitySlice"
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -37,9 +36,9 @@ export const UserDashboard = () => {
     const dispatch = useDispatch()
     const facility = useSelector(selectFacility)
     const calViewDate = useSelector(selectCalViewDate)
-    const classes = useStyles()
     const court = useSelector(selectCourt)
 
+    const classes = useStyles()
     const theme = useTheme();
     const nrOfCalendars = [true, useMediaQuery(theme.breakpoints.up('md')), useMediaQuery(theme.breakpoints.up('lg')), useMediaQuery(theme.breakpoints.up('xl'))];
 
