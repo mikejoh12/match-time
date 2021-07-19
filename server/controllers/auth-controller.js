@@ -41,9 +41,16 @@ const loginUser = async (req, res, next) => {
                 if (error) return next(error);
 
                 const body = { id: user.id, email: user.email };
-                const token = jwt.sign({ user: body }, 'TOP_SECRET');
-                console.log('User logged in: ' + JSON.stringify(body))
-                return res.json({ token });
+                const token = jwt.sign({ user: body }, 'TOP_SECRET'); // TODO: Change secret
+                return res.json({
+                    token,
+                    user: {
+                        id: user.id,
+                        email: user.email,
+                        date_joined: user.date_joined,
+                        user_role: user.user_role
+                        }
+                    });
             }
             );
         } catch (error) {
