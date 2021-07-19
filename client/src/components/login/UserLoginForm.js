@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useLoginMutation } from '../../services/api';
+import { setCredentials } from '../../features/auth/authSlice';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const UserLoginForm = ({ handleClose }) => {
+  const dispatch = useDispatch()
   const classes = useStyles();
   // create state variables for each input
   const [email, setEmail] = useState('');
@@ -30,15 +34,18 @@ export const UserLoginForm = ({ handleClose }) => {
 
   const [login] = useLoginMutation()
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    login({
-      email,
-      password
-    })
-    console.log(email, password);
-    handleClose();
-  };
+      try {
+        const user = await login({email, password}).unwrap()
+        dispatch(setCredentials(user))
+        alert('You are logged in!!')
+      } catch (err) {
+        alert(err.data.error.message)
+      } finally {
+        handleClose()
+      }
+  }
 
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
