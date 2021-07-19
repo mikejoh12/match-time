@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useLoginMutation } from '../../services/api';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,8 +28,14 @@ export const UserLoginForm = ({ handleClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [login] = useLoginMutation()
+
   const handleSubmit = e => {
     e.preventDefault();
+    login({
+      email,
+      password
+    })
     console.log(email, password);
     handleClose();
   };

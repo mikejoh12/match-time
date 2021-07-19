@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useCreateUserMutation } from '../../services/api';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,10 +29,18 @@ export const UserRegisterForm = ({ handleClose }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  const [createUser] = useCreateUserMutation()
 
   const handleSubmit = e => {
     e.preventDefault();
     console.log(firstName, lastName, email, password);
+    createUser({
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      password
+    })
     handleClose();
   };
 

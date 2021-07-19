@@ -1,12 +1,20 @@
+const passport = require('passport')
 const Router = require('express-promise-router')
+
 const { getFacilityInfo, postFacility, getFacilites, deleteFacility } = require('../controllers/facilities-controller.js')
-const { signUpUser } = require('../controllers/auth-controller.js')
+const { signUpUser, loginUser } = require('../controllers/auth-controller.js')
 const { getBookingsByFacility, getBookingsByUser, postBooking, deleteBooking } = require('../controllers/bookings-controller.js')
-const { validateGetFacilityInfo, validatePostFacility, validateGetResources, validateSignUpUser, validateGetBookings, validatePostBooking,
+const { validateGetFacilityInfo,
+        validatePostFacility,
+        validateGetResources,
+        validateSignUpUser,
+        validateLoginUser,
+        validateGetBookings,
+        validatePostBooking,
         validateDeleteBooking, 
         validatePostResource,
         validateDeleteResource,
-        validateDeleteFacility} = require('./validation')
+        validateDeleteFacility } = require('./validation')
 const { getResources, postResource, deleteResource } = require('../controllers/resources-controller.js')
 
 const router = new Router()
@@ -22,6 +30,7 @@ router
     .delete('/resources/:id', validateDeleteResource, deleteResource)
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
+    .post('/auth/login', validateLoginUser, loginUser)
 
     .get('/bookings/by_facility/:id', validateGetBookings, getBookingsByFacility)
     .get('/bookings/by_user/:id', validateGetBookings, getBookingsByUser)

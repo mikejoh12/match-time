@@ -69,6 +69,16 @@ const validateSignUpUser = [
         } else next();
     }]
 
+const validateLoginUser = [
+    check('password').not().isEmpty().isLength({max: 100}),
+    check('email').not().isEmpty().isEmail().isLength({max: 100}),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() })
+        } else next();
+    }]
+
 const validateGetBookings = [
     param('id').isInt(),
     (req, res, next) => {
@@ -107,6 +117,7 @@ module.exports = {
     validateDeleteResource,
     validatePostResource,
     validateSignUpUser,
+    validateLoginUser,
     validateGetBookings,
     validatePostBooking,
     validateDeleteBooking

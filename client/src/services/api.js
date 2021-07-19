@@ -2,9 +2,26 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
-  tagTypes: ['Facilities', 'Resources', 'Bookings'],
+  tagTypes: ['Facilities', 'Resources', 'Bookings', 'User'],
 
   endpoints: (build) => ({
+
+    createUser: build.mutation({
+      query: (body) => ({
+        url: `auth/signup`,
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response) => response.data,
+      invalidatesTags: ['User'],
+    }),
+    login: build.mutation({
+      query: (credentials) => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
 
     getFacilities: build.query({
       query: () => 'facilities',
@@ -89,7 +106,9 @@ export const api = createApi({
   })
 })
 
-export const {  useGetFacilitiesQuery,
+export const {  useLoginMutation,
+                useCreateUserMutation,
+                useGetFacilitiesQuery,
                 useGetFacilityByIdQuery,
                 useGetResourcesByFacilityIdQuery,
                 useCreateResourceMutation,

@@ -183,6 +183,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/NewUser'
 
+  /api/auth/login:
+    post:
+      tags:
+      - auth
+      description: Logs a user in
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Returns a JWT under the token key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+
   /api/bookings/by_facility/{id}:
     get:
       tags:
@@ -308,6 +334,11 @@ components:
       properties:
         users_id:
           type: integer
+    Login:
+      type: object
+      properties:
+        token:
+          type: string
     Bookings:
       type: array
       items:
