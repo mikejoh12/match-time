@@ -8,6 +8,7 @@ import { BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom'
+import { PrivateRoute } from './utils/PrivateRoute'
 import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 
 function App() {
@@ -17,11 +18,27 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route exact path="/user-dashboard" component={UserDashboard} />
-        <Route exact path="/manager-dashboard" component={ManagerDashboard} />
-        <Route exact path="/manager-facility-edit/:id" component={ManagerFacilityEdit} />
-        <Route exact path="/bookings" component={Bookings} />
-        <Route path="/:id" component={FacilityLogin} />
+
+        <PrivateRoute path="/user-dashboard">
+          <Route component={UserDashboard} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/manager-dashboard">
+          <Route component={ManagerDashboard} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/manager-facility-edit/:id">
+          <Route component={ManagerFacilityEdit} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/bookings">
+          <Route component={Bookings} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/:id">
+          <Route component={FacilityLogin} />
+        </PrivateRoute>
+
       </Switch>
     </Router>
   );

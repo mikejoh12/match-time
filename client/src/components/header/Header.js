@@ -13,6 +13,9 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { UserRegisterDialog } from '../login/UserRegisterDialog';
 import { UserLoginDialog } from '../login/UserLoginDialog';
+import { removeCredentials } from '../../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { useAuth } from '../../hooks/useAuth'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = () => {
     const classes = useStyles()
+    const dispatch = useDispatch()
     const history = useHistory()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -37,9 +41,12 @@ export const Header = () => {
     const handleOpenUserRegister = () => setOpenUserRegister(true)
     const handleCloseUserRegister = () => setOpenUserRegister(false)
 
+    const { user } = useAuth()
+
     const [openUserLogin, setOpenUserLogin] = useState(false)
     const handleOpenUserLogin = () => setOpenUserLogin(true)
     const handleCloseUserLogin = () => setOpenUserLogin(false)
+    const handleUserLogout = () => dispatch(removeCredentials())
 
     const theme = useTheme();
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('sm'))
@@ -59,7 +66,11 @@ export const Header = () => {
             </Typography>
             {( showMenuButtons &&
               <div>
-                <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
+                { user ?
+                  <Button color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
+                  :
+                  <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
+                }
                 <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button>
                 <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button>
                 <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button>
@@ -85,7 +96,11 @@ export const Header = () => {
                   open={open}
                   onClose={handleClose}
               >
+                  { user ?
+                  <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                  :
                   <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
+                  }
                   <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem>
                   <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem>
                   <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem>
