@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import addMinutes from 'date-fns/addMinutes'
 import { useCreateBookingMutation } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -36,6 +37,7 @@ export const BookDialog = props => {
   const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
+  const { user } = useAuth()
 
   const [ createBooking ] = useCreateBookingMutation()
 
@@ -55,7 +57,7 @@ export const BookDialog = props => {
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     createBooking({
         resources_id: selectedResource,
-        organizer_id: 2, // TODO: Connect to logged in User
+        organizer_id: user.id,
         start_time: utcStartTime,
         end_time: utcEndTime
     })

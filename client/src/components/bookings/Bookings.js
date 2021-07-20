@@ -10,10 +10,12 @@ import Grid from "@material-ui/core/Grid";
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 import { useGetFacilitiesQuery, useGetBookingsByUserIdQuery, useDeleteBookingMutation } from '../../services/api'
+import { useAuth } from '../../hooks/useAuth'
 
 export const Bookings = () => {
+    const { user } = useAuth()
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesQuery()
-    const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(2)
+    const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(user.id)
 
     const [ deleteBooking ] = useDeleteBookingMutation()
 

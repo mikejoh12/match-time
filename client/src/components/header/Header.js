@@ -71,7 +71,7 @@ export const Header = () => {
                   :
                   <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                 }
-                <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button>
+                { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button>}
                 <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button>
                 <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button>
 
@@ -101,7 +101,7 @@ export const Header = () => {
                   :
                   <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
                   }
-                  <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem>
+                  { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
                   <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem>
                   <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem>
               </Menu>
