@@ -1,8 +1,10 @@
 const { pool } = require('../config/config.js')
 
-const fetchFacilitiesDb = async () => {
+const fetchFacilitiesByUserDb = async id => {
     const res = await pool.query(
-        `SELECT * FROM facilities`
+        `SELECT * FROM facilities
+        INNER JOIN users_facilities ON facilities.id = users_facilities.facilities_id
+        WHERE users_id = $1`, [id]
     )
     return res.rows
 }
@@ -29,7 +31,7 @@ const removeFacilityDb = async id => {
     return res.rows
 }
 
-module.exports = {  fetchFacilitiesDb,
+module.exports = {  fetchFacilitiesByUserDb,
                     fetchFacilityInfoDb,
                     createFacilityDb,
                     removeFacilityDb }

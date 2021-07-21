@@ -23,8 +23,8 @@ export const api = createApi({
       }),
     }),
 
-    getFacilities: build.query({
-      query: () => 'facilities',
+    getFacilitiesByUserId: build.query({
+      query: (id) => `facilities/by_user/${id}`,
       providesTags: ['Facilities']
     }),
     getFacilityById: build.query({
@@ -108,7 +108,7 @@ export const api = createApi({
 
 export const {  useLoginMutation,
                 useCreateUserMutation,
-                useGetFacilitiesQuery,
+                useGetFacilitiesByUserIdQuery,
                 useGetFacilityByIdQuery,
                 useGetResourcesByFacilityIdQuery,
                 useCreateResourceMutation,

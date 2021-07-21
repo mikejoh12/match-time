@@ -5,10 +5,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom'
 import { AddFacilityDialog } from './AddFacilityDialog'
-import { useGetFacilitiesQuery } from '../../services/api'
+import { useGetFacilitiesByUserIdQuery } from '../../services/api'
+import { useAuth } from '../../hooks/useAuth'
 
 export const ManagerDashboard = () => {
-    const { data: facilitiesData, isError, isLoading } = useGetFacilitiesQuery()
+    const { user } = useAuth()
+    const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserIdQuery(user.id)
     const history = useHistory()
     
     const handleFacilityClick = event => history.push(`/manager-facility-edit/${event.currentTarget.getAttribute('value')}`)
