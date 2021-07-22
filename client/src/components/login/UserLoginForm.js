@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
 export const UserLoginForm = ({ handleClose }) => {
   const dispatch = useDispatch()
   const classes = useStyles();
-  // create state variables for each input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -39,7 +38,6 @@ export const UserLoginForm = ({ handleClose }) => {
       try {
         const user = await login({email, password}).unwrap()
         dispatch(setCredentials(user))
-        alert('You are logged in!!')
       } catch (err) {
         alert(err.data.error.message)
       } finally {

@@ -15,14 +15,21 @@ tags:
 - name: bookings
   description: Bookings
 paths:
-  /api/facilities:
+  /api/facilities/by_user/{id}:
     get:
       tags:
       - facilities
       description: Gets all facilities
+      parameters:
+          - in: path
+            name: id
+            schema:
+              type: integer
+            required: true
+            description: Numeric ID of the facility
       responses:
         200:
-          description: An array containing all facilities as objects
+          description: An array containing all facilities as object
           content:
             application/json:
               schema:

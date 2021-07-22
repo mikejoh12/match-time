@@ -71,9 +71,9 @@ export const Header = () => {
                   :
                   <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                 }
-                { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button>}
-                <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button>
-                <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button>
+                { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
+                { user && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button> }
+                { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
 
               </div> )}
             {( !showMenuButtons &&
@@ -102,8 +102,8 @@ export const Header = () => {
                   <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
                   }
                   { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
-                  <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem>
-                  <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem>
+                  { user && <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem> }
+                  { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
               </Menu>
             </div> )}
           </Toolbar>

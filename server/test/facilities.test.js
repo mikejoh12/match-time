@@ -29,29 +29,38 @@ describe('/api/facilities', () => {
         "end_time" timestamptz NOT NULL
       );`
   )
+  await pool.query(
+    `CREATE TABLE "users" (
+      "id" SERIAL PRIMARY KEY,
+      "email" varchar(100) UNIQUE NOT NULL,
+      "pwd_hash" varchar(100),
+      "date_joined" timestamp DEFAULT (now()),
+      "active" boolean DEFAULT true,
+      "user_role" varchar(100)
+    );`)
     await pool.query(
       `INSERT INTO facilities (name, description) VALUES ('Smash Tennis Club', 'A private tennis club with well maintened indoor courts, hard courts, clay courts, and padel courts.')`
     )
     await pool.query(
       `INSERT INTO resources (facilities_id, name, description) VALUES (1, 'Test Court 1', 'Nice test court')`
     )
+    await pool.query(
+      `INSERT INTO users(email, pwd_hash, user_role) VALUES ('test@testmail.com', 'test-hash', 'customer')`
+  )
   })
 
   afterEach(async () => {
     await pool.query(`DROP TABLE facilities`)
-  })
-  afterEach(async () => {
     await pool.query(`DROP TABLE resources`)
-  })
-  afterEach(async () => {
     await pool.query(`DROP TABLE bookings`)
+    await pool.query(`DROP TABLE users`)
   })
 
-  describe('GET /api/facilities', () => {
+  describe('GET /api/facilities/by_user/{id}', () => {
 
     it('should respond with JSON and a 200 status code', done => {
       request(app)
-        .get('/api/facilities')
+        .get('/api/facilities/1')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, done);

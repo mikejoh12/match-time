@@ -8,6 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import { useParams } from 'react-router-dom'
 import { AddResourceDialog } from './AddResourceDialog';
+import { InviteMembersDialog } from './InviteMembersDialog';
 import { DeleteFacilityDialog } from './DeleteFacilityDialog';
 import { useGetFacilityByIdQuery } from '../../services/api'
 import { useGetResourcesByFacilityIdQuery, useDeleteResourceMutation } from '../../services/api'
@@ -61,10 +62,13 @@ export const ManagerFacilityEdit = () => {
                             </List>
                     </Grid>
                     <Grid item>
-                    <AddResourceDialog facilityId={id} />
+                        <AddResourceDialog facilityId={id} />
                     </Grid>
                     <Grid item>
-                    <DeleteFacilityDialog facilityId={id} />
+                        <InviteMembersDialog />
+                    </Grid>
+                    <Grid item>
+                        <DeleteFacilityDialog facilityId={id} />
                     </Grid>
                 </Grid>
             ) : null}

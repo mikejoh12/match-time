@@ -38,4 +38,5 @@ router
     .post('/bookings', validatePostBooking, postBooking)
     .delete('/bookings/:id', validateDeleteBooking, deleteBooking)
 
+
 module.exports = router

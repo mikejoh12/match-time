@@ -20,7 +20,6 @@ export const FacilityLogin = () => {
     }, [facilityData, dispatch])
 
     const handleUserLogin = () => history.push(`/user-dashboard`)
-    const handleManagerLogin = () => history.push('/manager-dashboard')
 
     return (
         <div>
@@ -47,10 +46,7 @@ export const FacilityLogin = () => {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="primary" onClick={handleUserLogin}>User Login</Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="primary" onClick={handleManagerLogin}>Manager Login</Button>
+                            <Button variant="contained" color="primary" onClick={handleUserLogin}>Go To Scheduling</Button>
                         </Grid>
                     </Grid>
                 ) : null}

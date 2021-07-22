@@ -20,4 +20,14 @@ const createUserDb = async ({email, first_name, last_name, pwd_hash, user_role})
     return res.rows[0]
 }
 
-module.exports = { fetchUserByEmailDb, fetchUserByIdDb, createUserDb }
+const createFacilityManagerDb = async ({facilityId, userId}) => {
+    const text = `INSERT INTO users_facilities(users_id, facilities_id, is_admin)
+                  VALUES($1, $2, true)`
+    const values = [userId, facilityId]
+    console.log(values)
+    const res = await pool.query(text, values)
+    console.log('Make manager:', res.rows[0])
+    return res.rows[0]
+}
+
+module.exports = { fetchUserByEmailDb, fetchUserByIdDb, createUserDb, createFacilityManagerDb }
