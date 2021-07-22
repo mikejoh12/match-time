@@ -8,7 +8,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useGetFacilitiesByUserIdQuery } from '../../services/api'
+import { useGetFacilitiesByUserQuery } from '../../services/api'
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export const LandingLoggedIn = () => {
-    const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserIdQuery(6)
+    const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const classes = useStyles()
     const [clubId, setClubId] = useState('')
     const history = useHistory() 

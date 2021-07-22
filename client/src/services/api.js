@@ -1,7 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
+  baseQuery: fetchBaseQuery({
+      baseUrl: '/api/',
+      prepareHeaders: (headers, { getState }) => {
+        // If we have a token in the store, let's use it for authenticated requests
+        const token = getState().auth.token
+        if (token) {
+          headers.set('authorization', `Bearer ${token}`)
+        }
+        return headers
+      },  
+    }),
   tagTypes: ['Facilities', 'Resources', 'Bookings', 'User'],
 
   endpoints: (build) => ({
@@ -23,8 +33,8 @@ export const api = createApi({
       }),
     }),
 
-    getFacilitiesByUserId: build.query({
-      query: (id) => `facilities/by_user/${id}`,
+    getFacilitiesByUser: build.query({
+      query: () => `facilities/by_user`,
       providesTags: ['Facilities']
     }),
     getFacilityById: build.query({
@@ -83,8 +93,8 @@ export const api = createApi({
       },
       providesTags: ['Bookings']
     }),
-    getBookingsByUserId: build.query({
-      query: (id) => `bookings/by_user/${id}`,
+    getBookingsByUser: build.query({
+      query: () => `bookings/by_user`,
       providesTags: ['Bookings']
     }),
     createBooking: build.mutation({
@@ -108,13 +118,13 @@ export const api = createApi({
 
 export const {  useLoginMutation,
                 useCreateUserMutation,
-                useGetFacilitiesByUserIdQuery,
+                useGetFacilitiesByUserQuery,
                 useGetFacilityByIdQuery,
                 useGetResourcesByFacilityIdQuery,
                 useCreateResourceMutation,
                 useDeleteResourceMutation,
                 useGetBookingsByFacilityIdQuery,
-                useGetBookingsByUserIdQuery,
+                useGetBookingsByUserQuery,
                 useCreateBookingMutation,
                 useDeleteBookingMutation,
                 useCreateFacilityMutation,

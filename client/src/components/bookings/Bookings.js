@@ -9,13 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from "@material-ui/core/Grid";
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
-import { useGetFacilitiesByUserIdQuery, useGetBookingsByUserIdQuery, useDeleteBookingMutation } from '../../services/api'
-import { useAuth } from '../../hooks/useAuth'
+import { useGetFacilitiesByUserQuery, useGetBookingsByUserQuery, useDeleteBookingMutation } from '../../services/api'
 
 export const Bookings = () => {
-    const { user } = useAuth()
-    const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesByUserIdQuery(user.id)
-    const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserIdQuery(user.id)
+    const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesByUserQuery()
+    const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserQuery()
 
     const [ deleteBooking ] = useDeleteBookingMutation()
 

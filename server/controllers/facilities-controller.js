@@ -1,7 +1,7 @@
 const { fetchFacilitiesByUser, fetchFacilityInfo, createFacility, removeFacility } = require('../services/facilities-service.js')
 
 const getFacilitesByUser = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.user
     const facilities = await fetchFacilitiesByUser(id)
     res.status(200).json(facilities)
 }

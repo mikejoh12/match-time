@@ -1,6 +1,5 @@
 const { fetchFacilityInfo } = require('../services/facilities-service.js')
 const { fetchBookingsByFacility, fetchBookingsByUser, checkConflictBooking, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
-const { fetchUserById } = require('../services/users-service')
 
 const getBookingsByFacility = async (req, res) => {
     const { id } = req.params
@@ -14,12 +13,7 @@ const getBookingsByFacility = async (req, res) => {
 }
 
 const getBookingsByUser = async (req, res) => {
-    const { id } = req.params
-    const user = await fetchUserById(id)
-    console.log(user)
-    if (!user) {
-        return res.status(422).json({error: "Invalid user id."})
-    }
+    const { id } = req.user
     const bookings = await fetchBookingsByUser(id)
     res.status(200).json(bookings)
 }

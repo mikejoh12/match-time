@@ -29,33 +29,32 @@ const loginUser = async (req, res, next) => {
         'login',
         async (err, user, info) => {
         try {
-            if (err || !user) {
-            const error = new Error(info.message);
-            return next(error);
+                if (err || !user) {
+                    const error = new Error(info.message);
+                return next(error);
             }
-
             req.login(
-            user,
-            { session: false },
-            async (error) => {
-                if (error) return next(error);
+                user,
+                { session: false },
+                async (error) => {
+                    if (error) return next(error);
 
-                const body = { id: user.id, email: user.email };
-                const token = jwt.sign({ user: body }, 'TOP_SECRET'); // TODO: Change secret
-                return res.json({
-                    token,
-                    user: {
-                        id: user.id,
-                        email: user.email,
-                        date_joined: user.date_joined,
-                        user_role: user.user_role
-                        }
-                    });
-            }
+                    const body = { id: user.id };
+                    const token = jwt.sign({ user: body }, 'TOP_SECRET'); // TODO: Change secret
+                    return res.json({
+                        token,
+                        user: {
+                            id: user.id,
+                            email: user.email,
+                            date_joined: user.date_joined,
+                            user_role: user.user_role
+                            }
+                        });
+                }
             );
         } catch (error) {
             return next(error);
-        }
+            }
         }
     )(req, res, next);
 }
