@@ -16,12 +16,13 @@ const getFacilityInfo = async (req, res) => {
 }
 
 const postFacility = async (req, res) => {
+    const { id: userId } = req.user
     const { name, description } = req.body
     const facility = {
         name,
         description
     }
-    const newFacility = await createFacility(facility)
+    const newFacility = await createFacility(facility, userId)
     res.status(201).json(newFacility)
 }
 

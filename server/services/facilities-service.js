@@ -7,12 +7,11 @@ const fetchFacilitiesByUser = async id => await fetchFacilitiesByUserDb(id)
 
 const fetchFacilityInfo = async id => await fetchFacilityInfoDb(id)
 
-const createFacility = async facility => {
+const createFacility = async (facility, userId) => {
     const newFacility = await createFacilityDb(facility)
-    console.log(newFacility)
     await createFacilityManagerDb({
         facilityId: newFacility.id,
-        userId: 6 // TO DO - Connect user
+        userId
     })
     return newFacility
 }
