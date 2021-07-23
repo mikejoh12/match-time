@@ -54,6 +54,7 @@ export const Header = () => {
     const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
     const handleBookingsClick = () => history.push('/bookings')
+    const handleAccountClick = () => history.push('/account')
     const handleMenu = event => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
@@ -74,6 +75,7 @@ export const Header = () => {
                 { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
                 { user && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button> }
                 { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
+                { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
 
               </div> )}
             {( !showMenuButtons &&
@@ -104,6 +106,7 @@ export const Header = () => {
                   { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
                   { user && <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem> }
                   { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
+                  { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
               </Menu>
             </div> )}
           </Toolbar>

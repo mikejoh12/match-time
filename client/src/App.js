@@ -4,6 +4,7 @@ import { Landing } from './components/landing/Landing'
 import { UserDashboard } from './components/user-dashboard/UserDashboard'
 import { Bookings } from './components/bookings/Bookings'
 import { ManagerDashboard } from './components/manager-dashboard/ManagerDashboard'
+import { Account } from './components/account/Account'
 import { BrowserRouter as Router,
   Switch,
   Route
@@ -25,6 +26,10 @@ function App() {
 
         <PrivateRoute path="/manager-dashboard">
           <Route component={ManagerDashboard} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/account">
+          <Route component={Account} />
         </PrivateRoute>
 
         <PrivateRoute path="/manager-facility-edit/:id">

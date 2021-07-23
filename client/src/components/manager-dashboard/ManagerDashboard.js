@@ -28,10 +28,10 @@ export const ManagerDashboard = () => {
             <>Loading...</>
             ) : facilitiesData ? (
                 <Grid   container
-                spacing={2}
-                direction="column"
-                alignItems="center"
-                justifyContent="center">
+                        spacing={2}
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center">
                     <Grid item>
                         <Typography variant="h4" >
                             Manager Dashboard
@@ -49,12 +49,12 @@ export const ManagerDashboard = () => {
                             </List>
                             :
                             <Typography variant="h6" >
-                            You are not managing any facilities.
+                                You are not managing any facilities.
                             </Typography>  
                             }
                     </Grid>
                     <Grid item>
-                    <AddFacilityDialog />
+                        <AddFacilityDialog />
                     </Grid>
                 </Grid>
             ) : null}
