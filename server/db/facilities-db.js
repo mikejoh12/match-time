@@ -34,4 +34,5 @@ const removeFacilityDb = async id => {
 module.exports = {  fetchFacilitiesByUserDb,
                     fetchFacilityInfoDb,
                     createFacilityDb,
-                    removeFacilityDb }
+                    removeFacilityDb
+                }

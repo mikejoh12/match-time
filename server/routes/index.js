@@ -22,20 +22,20 @@ const router = new Router()
 router  
     .get('/facilities/by_user', passport.authenticate('jwt-customer', {session: false}), getFacilitesByUser)
     .get('/facilities/:id', validateGetFacilityInfo, getFacilityInfo)
-    .post('/facilities', passport.authenticate('jwt-customer', {session: false}), validatePostFacility, postFacility)
-    .delete('/facilities/:id', passport.authenticate('jwt-customer', {session: false}), validateDeleteFacility, deleteFacility)
+    .post('/facilities', validatePostFacility, passport.authenticate('jwt-customer', {session: false}), postFacility)
+    .delete('/facilities/:id',  validateDeleteFacility, passport.authenticate('jwt-customer', {session: false}), deleteFacility)
 
-    .get('/resources/by_facility/:id', passport.authenticate('jwt-customer', {session: false}), validateGetResources, getResources)
-    .post('/resources', passport.authenticate('jwt-customer', {session: false}), validatePostResource, postResource)
-    .delete('/resources/:id', passport.authenticate('jwt-customer', {session: false}), validateDeleteResource, deleteResource)
+    .get('/resources/by_facility/:id', validateGetResources, passport.authenticate('jwt-customer', {session: false}), getResources)
+    .post('/resources', validatePostResource, passport.authenticate('jwt-customer', {session: false}), postResource)
+    .delete('/resources/:id', validateDeleteResource, passport.authenticate('jwt-customer', {session: false}), deleteResource)
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
     .post('/auth/login', validateLoginUser, loginUser)
 
-    .get('/bookings/by_facility/:id', passport.authenticate('jwt-customer', {session: false}), validateGetBookings, getBookingsByFacility)
+    .get('/bookings/by_facility/:id', validateGetBookings, passport.authenticate('jwt-customer', {session: false}), getBookingsByFacility)
     .get('/bookings/by_user', passport.authenticate('jwt-customer', {session: false}), getBookingsByUser)
-    .post('/bookings', passport.authenticate('jwt-customer', {session: false}), validatePostBooking, postBooking)
-    .delete('/bookings/:id', passport.authenticate('jwt-customer', {session: false}), validateDeleteBooking, deleteBooking)
+    .post('/bookings', validatePostBooking, passport.authenticate('jwt-customer', {session: false}), postBooking)
+    .delete('/bookings/:id', validateDeleteBooking, passport.authenticate('jwt-customer', {session: false}), deleteBooking)
 
 
 module.exports = router

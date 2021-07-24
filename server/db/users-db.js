@@ -28,4 +28,25 @@ const createFacilityManagerDb = async ({facilityId, userId}) => {
     return res.rows[0]
 }
 
-module.exports = { fetchUserByEmailDb, fetchUserByIdDb, createUserDb, createFacilityManagerDb }
+const fetchManagerByIdDb = async (facilityId, userId) => {
+    const res = await pool.query(   `SELECT id, facilities_id, is_admin FROM users
+                                    INNER JOIN users_facilities ON users.id = users_facilities.users_id
+                                    WHERE users_facilities.facilities_id = $1
+                                    AND users.id = $2
+                                    AND users_facilities.is_admin = true`, [facilityId, userId])
+    return res.rows[0]
+}
+
+const removeFacilityManagerDb = async id => {
+    const res = await pool.query(
+        `DELETE FROM users_facilities WHERE facilities_id = $1`, [id]
+    )
+    return res.rows
+}
+
+module.exports = {  fetchUserByEmailDb,
+                    fetchUserByIdDb,
+                    createUserDb,
+                    createFacilityManagerDb,
+                    fetchManagerByIdDb,
+                    removeFacilityManagerDb }

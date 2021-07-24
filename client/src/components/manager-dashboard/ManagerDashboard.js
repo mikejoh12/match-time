@@ -6,10 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom'
 import { AddFacilityDialog } from './AddFacilityDialog'
 import { useGetFacilitiesByUserQuery } from '../../services/api'
-import { useAuth } from '../../hooks/useAuth'
 
 export const ManagerDashboard = () => {
-    const { user } = useAuth()
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const history = useHistory()
     

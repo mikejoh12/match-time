@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const { fetchUserByEmail } = require('../services/users-service')
-const isProduction = process.env.NODE_ENV === 'production'
+const { fetchUserByEmail, fetchManagerById } = require('../services/users-service')
 
 passport.use(
     'login',
