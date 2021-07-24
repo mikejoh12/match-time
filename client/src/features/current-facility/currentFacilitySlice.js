@@ -20,11 +20,12 @@ export const currentFacilitySlice = createSlice({
       },
       facilityUpdated(state, action) {
         state.facility = action.payload
-      }
+      },
+      logout:  (state) => {}
     },       
 })
 
-export const { calViewDateUpdated, courtUpdated, facilityUpdated } = currentFacilitySlice.actions
+export const { calViewDateUpdated, courtUpdated, facilityUpdated, logout } = currentFacilitySlice.actions
 export const selectCalViewDate = state => state.currentFacility.calViewDate
 export const selectCourt = state => state.currentFacility.court
 export const selectFacility = state => state.currentFacility.facility

@@ -13,7 +13,7 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { UserRegisterDialog } from '../login/UserRegisterDialog';
 import { UserLoginDialog } from '../login/UserLoginDialog';
-import { removeCredentials } from '../../features/auth/authSlice';
+import { logout } from '../../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'
 
@@ -46,7 +46,7 @@ export const Header = () => {
     const [openUserLogin, setOpenUserLogin] = useState(false)
     const handleOpenUserLogin = () => setOpenUserLogin(true)
     const handleCloseUserLogin = () => setOpenUserLogin(false)
-    const handleUserLogout = () => dispatch(removeCredentials())
+    const handleUserLogout = () => dispatch(logout())
 
     const theme = useTheme();
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('sm'))
