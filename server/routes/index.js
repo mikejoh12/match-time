@@ -23,11 +23,11 @@ router
     .get('/facilities/by_user', passport.authenticate('jwt-customer', {session: false}), getFacilitesByUser)
     .get('/facilities/:id', validateGetFacilityInfo, getFacilityInfo)
     .post('/facilities', validatePostFacility, passport.authenticate('jwt-customer', {session: false}), postFacility)
-    .delete('/facilities/:id',  validateDeleteFacility, passport.authenticate('jwt-customer', {session: false}), deleteFacility)
+    .delete('/facilities/:id',  validateDeleteFacility, passport.authenticate('jwt-manager', {session: false}), deleteFacility)
 
     .get('/resources/by_facility/:id', validateGetResources, passport.authenticate('jwt-customer', {session: false}), getResources)
-    .post('/resources', validatePostResource, passport.authenticate('jwt-customer', {session: false}), postResource)
-    .delete('/resources/:id', validateDeleteResource, passport.authenticate('jwt-customer', {session: false}), deleteResource)
+    .post('/resources', validatePostResource, passport.authenticate('jwt-customer', {session: false}), postResource) //TODO mgr access
+    .delete('/resources/:id', validateDeleteResource, passport.authenticate('jwt-customer', {session: false}), deleteResource) //TODO mgr access
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
     .post('/auth/login', validateLoginUser, loginUser)

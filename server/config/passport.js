@@ -34,11 +34,28 @@ passport.use(
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
       },
       async (token, done) => {
-        try {
           return done(null, token.user);
-        } catch (error) {
-          done(error);
+      }
+    )
+  );
+
+  passport.use(
+    'jwt-manager',
+    new JWTstrategy(
+      {
+        secretOrKey: 'TOP_SECRET',
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        passReqToCallback: true
+      },
+      async (req, token, done) => {
+        const facilityId = req.params.id
+        const userId = token.user.id
+        const facilityManager = await fetchManagerById(facilityId, userId)
+        // If user is not manager of facility - don't allow access
+        if (!facilityManager) {
+          return done(null, false, { message: 'No manager access.' });
         }
+        return done(null, token.user);
       }
     )
   );

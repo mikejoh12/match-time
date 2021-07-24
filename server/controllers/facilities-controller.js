@@ -29,15 +29,6 @@ const postFacility = async (req, res) => {
 
 const deleteFacility = async (req, res) => {
     const { id: facilityId } = req.params
-    const { id: userId } = req.user
-    console.log(`User id: ${userId} Facility id: ${facilityId}`)
-    const facilityManager = await fetchManagerById(facilityId, userId)
-    console.log(`facilityManager: ${JSON.stringify(facilityManager)}`)
-    // If user is not manager of facility - don't allow access
-    if (!facilityManager) {
-        console.log('rejecting access')
-        return res.status(401).json({error: "No manager access."})
-    }
     await removeFacility(facilityId)
     res.status(204).send()
 }
