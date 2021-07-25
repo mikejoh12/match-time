@@ -12,12 +12,13 @@ const getResources = async (req, res) => {
 }
 
 const postResource = async (req, res) => {
-    const { facilities_id } = req.body
-    const facilityInfo = await fetchFacilityInfo(facilities_id);
-    if (!facilityInfo) {
-        return res.status(422).json({error: "Invalid facility id."})
-    }
-    const newResource = await createResource(req.body)
+    const { id: facilities_id } = req.params
+    const { name, description } = req.body
+    const newResource = await createResource({
+                                facilities_id,
+                                name,
+                                description
+                            })
     res.status(201).json(newResource)
 }
 

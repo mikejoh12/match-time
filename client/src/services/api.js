@@ -63,10 +63,11 @@ export const api = createApi({
         providesTags: ['Resources']
       }),
     createResource: build.mutation({
-      query: (body) => ({
-        url: `resources/`,
+      query: ( {facilities_id, resource_name, description} ) => ({
+        url: `resources/by_facility/${facilities_id}`,
         method: 'POST',
-        body,
+        body: { name: resource_name,
+                description },
       }),
       transformResponse: (response) => response.data,
       invalidatesTags: ['Resources'],

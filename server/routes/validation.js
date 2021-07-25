@@ -56,7 +56,7 @@ const validateDeleteResource = [
     }]
 
 const validatePostResource = [
-    check('facilities_id').not().isEmpty().isInt(),
+    param('id').isInt(),
     check('name').not().isEmpty(),
     check('description').not().isEmpty(),
     (req, res, next) => {

@@ -26,8 +26,8 @@ router
     .delete('/facilities/:id',  validateDeleteFacility, passport.authenticate('jwt-manager', {session: false}), deleteFacility)
 
     .get('/resources/by_facility/:id', validateGetResources, passport.authenticate('jwt-customer', {session: false}), getResources)
-    .post('/resources', validatePostResource, passport.authenticate('jwt-customer', {session: false}), postResource) //TODO mgr access
-    .delete('/resources/:id', validateDeleteResource, passport.authenticate('jwt-customer', {session: false}), deleteResource) //TODO mgr access
+    .post('/resources/by_facility/:id', validatePostResource, passport.authenticate('jwt-manager', {session: false}), postResource) //TODO mgr access
+    .delete('/resources/by_facility/:id', validateDeleteResource, passport.authenticate('jwt-manager', {session: false}), deleteResource) //TODO mgr access
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
     .post('/auth/login', validateLoginUser, loginUser)

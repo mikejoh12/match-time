@@ -25,7 +25,7 @@ export const AddResourceDialog = props => {
   const handleAddResource = () => {
     createResource({
         facilities_id: props.facilityId,
-        name: resourceName,
+        resource_name: resourceName,
         description: resourceDescription
     })
     setOpen(false)

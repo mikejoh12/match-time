@@ -15,13 +15,13 @@ passport.use(
     async (email, password, done) => {
         const user = await fetchUserByEmail(email);
         if (!user) {
-        return done(null, false, { message: 'Incorrect email or password.' });
+          return done(null, false, { message: 'Incorrect email or password.' });
         }
 
         const match = await bcrypt.compare(password, user.pwd_hash)
 
         if (!match) {
-        return done(null, false, { message: 'Incorrect email or password.' });
+          return done(null, false, { message: 'Incorrect email or password.' });
         }
         return done(null, user, { message: 'Logged in Successfully' });
 }))
@@ -48,8 +48,8 @@ passport.use(
         passReqToCallback: true
       },
       async (req, token, done) => {
-        const facilityId = req.params.id
-        const userId = token.user.id
+        const  { id: facilityId } = req.params
+        const { id: userId } = token.user
         const facilityManager = await fetchManagerById(facilityId, userId)
         // If user is not manager of facility - don't allow access
         if (!facilityManager) {
