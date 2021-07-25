@@ -19,7 +19,11 @@ export const ManagerFacilityEdit = () => {
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
     const [ deleteResource ] = useDeleteResourceMutation()
 
-    const handleDeleteClick = event => deleteResource(event.currentTarget.value)
+    const handleDeleteClick = event => {
+        console.log(event.currentTarget.value)
+        deleteResource( {   id,
+                            resource_id: event.currentTarget.value })
+    }
 
     return (
         <div>

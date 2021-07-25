@@ -48,6 +48,7 @@ const validateGetResources = [
 
 const validateDeleteResource = [
     param('id').not().isEmpty().isInt(),
+    param('resource_id').not().isEmpty().isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {

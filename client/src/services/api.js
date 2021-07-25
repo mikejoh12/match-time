@@ -73,9 +73,9 @@ export const api = createApi({
       invalidatesTags: ['Resources'],
       }), 
     deleteResource: build.mutation({
-      query: (id) => ({
-        url: `resources/${id}`,
-        method: 'DELETE',
+      query: ({id, resource_id}) => ({
+        url: `resources/by_facility/${id}/${resource_id}`,
+        method: 'DELETE'
       }),
       invalidatesTags: ['Resources'],
       }),

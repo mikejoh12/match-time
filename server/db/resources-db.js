@@ -22,8 +22,16 @@ const deleteResourceDb = async id => {
     return res.rows
 }
 
+const resourceBelongsToFacilityDb = async (facility_id, resource_id) => {
+    const res = await pool.query(
+        `SELECT * FROM resources WHERE facilities_id = $1 AND id = $2`, [facility_id, resource_id]
+    )
+    return res.rows[0]
+}
+
 module.exports = {
     fetchResourcesDb,
     createResourceDb,
-    deleteResourceDb
+    deleteResourceDb,
+    resourceBelongsToFacilityDb
  }

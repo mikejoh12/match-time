@@ -1,4 +1,4 @@
-const { fetchResources, createResource, removeResource } = require("../services/resources-service")
+const { fetchResources, createResource, removeResource, resourceBelongsToFacility } = require("../services/resources-service")
 const { fetchFacilityInfo } = require('../services/facilities-service')
 
 const getResources = async (req, res) => {
@@ -23,10 +23,16 @@ const postResource = async (req, res) => {
 }
 
 const deleteResource = async (req, res) => {
-    const { id } = req.params
-    await removeResource(id)
+    const { id: facility_id, resource_id } = req.params
+    const resource = await resourceBelongsToFacility(facility_id, resource_id)
+    if (!resource) {
+        return res.status(401).json({error: "Resource does not belong to facility."})
+    }
+    await removeResource(resource_id)
     res.status(204).send()
 }
+
+
 
 module.exports = {
     getResources,

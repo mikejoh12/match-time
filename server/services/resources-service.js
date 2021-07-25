@@ -1,5 +1,5 @@
 const { removeBookingsByResourceIdDb } = require('../db/bookings-db.js')
-const { fetchResourcesDb, createResourceDb, deleteResourceDb } = require('../db/resources-db.js')
+const { fetchResourcesDb, createResourceDb, deleteResourceDb, resourceBelongsToFacilityDb } = require('../db/resources-db.js')
 
 const fetchResources = async id => await fetchResourcesDb(id)
 
@@ -10,8 +10,12 @@ const removeResource = async id => {
     await deleteResourceDb(id)
 }
 
+const resourceBelongsToFacility = async (facility_id, resource_id) =>
+    await resourceBelongsToFacilityDb(facility_id, resource_id)
+
 module.exports = {
     fetchResources,
     createResource,
-    removeResource
+    removeResource,
+    resourceBelongsToFacility
 }
