@@ -12,6 +12,7 @@ import {
 } from '@material-ui/pickers'
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
+import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -76,7 +77,7 @@ export const UserDashboard = () => {
                     <Grid item container justifyContent="center">
                         <CircularProgress />
                     </Grid>
-                ) : (bookingsData && resourcesData && court) ? (
+                ) : (bookingsData && resourcesData.length && court) ? (
                   <Grid container
                         direction="column"
                         alignItems="center"
@@ -129,6 +130,18 @@ export const UserDashboard = () => {
                                     bookings={bookingsData}
                                     calendarsRefs={calendarsRefs}
                                     calViewDate={calViewDate} />
+                  </Grid>
+                </Grid>
+                ) : (!resourcesData.length) ? (
+                  <Grid   container
+                  spacing={2}
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center">
+                  <Grid item>
+                    <Typography variant="h5" >
+                        This facility does not have any resources.
+                    </Typography>
                   </Grid>
                 </Grid>
                 ) : null}

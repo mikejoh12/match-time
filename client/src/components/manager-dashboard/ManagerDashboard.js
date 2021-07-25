@@ -37,7 +37,7 @@ export const ManagerDashboard = () => {
                     </Grid>
                     <Grid item>
                         <Typography variant="h6" >
-                            You are an admin of the following facilities. Select a facility to edit or add a new facility.
+                            Select a facility to edit or add a new facility.
                         </Typography>
                     </Grid>
                     <Grid item>

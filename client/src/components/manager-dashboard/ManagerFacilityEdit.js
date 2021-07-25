@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useParams } from 'react-router-dom'
 import { AddResourceDialog } from './AddResourceDialog';
 import { InviteMembersDialog } from './InviteMembersDialog';
@@ -20,7 +21,6 @@ export const ManagerFacilityEdit = () => {
     const [ deleteResource ] = useDeleteResourceMutation()
 
     const handleDeleteClick = event => {
-        console.log(event.currentTarget.value)
         deleteResource( {   id,
                             resource_id: event.currentTarget.value })
     }
@@ -30,7 +30,9 @@ export const ManagerFacilityEdit = () => {
             {facilityIsError || resourcesIsError? (
             <>Oh no, there was an error</>
             ) : facilityIsLoading || resourcesIsLoading? (
-            <>Loading...</>
+                <Grid item container justifyContent="center">
+                    <CircularProgress />
+                </Grid>
             ) : facilityData && resourcesData? (
                 <Grid   container
                 spacing={2}
