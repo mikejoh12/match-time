@@ -43,7 +43,7 @@ export const Bookings = () => {
                                 const date = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'MM/dd/yyyy')
                                 const startTime = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'p')
                                 const endTime = format(utcToZonedTime(new Date(booking.end_time), 'UTC'), 'p')
-                                const facilityName = facilitiesData.find(facility => facility.id === booking.facilities_id).name
+                                const facilityName = facilitiesData.find(facility => facility.id === booking.facilities_id)?.name
                                 return  <ListItem key={booking.bookings_id}>
                                             <ListItemText primary={`Facility: ${facilityName} - Booking Id: ${booking.bookings_id} - Name: ${booking.resources_name} - Date: ${date} - Start: ${startTime} - End: ${endTime}` }/>
                                             <ListItemSecondaryAction>

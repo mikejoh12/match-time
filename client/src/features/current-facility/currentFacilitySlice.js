@@ -5,7 +5,7 @@ import { roundToNearestMinutes } from 'date-fns'
 const initialState = {
   calViewDate: zonedTimeToUtc(roundToNearestMinutes(new Date(), { nearestTo: 30 }), 'UTC').toISOString(),
   court: '',
-  facility: {}
+  facility: {},
 }
 
 export const currentFacilitySlice = createSlice({
@@ -29,5 +29,9 @@ export const { calViewDateUpdated, courtUpdated, facilityUpdated, logout } = cur
 export const selectCalViewDate = state => state.currentFacility.calViewDate
 export const selectCourt = state => state.currentFacility.court
 export const selectFacility = state => state.currentFacility.facility
+export const selectFacilityIsLoaded = state => {
+  const obj = state.currentFacility.facility
+  return !(obj && Object.keys(obj).length === 0 && obj.constructor === Object) // Return true when facility is loaded (for calendar) 
+} 
 
 export default currentFacilitySlice.reducer

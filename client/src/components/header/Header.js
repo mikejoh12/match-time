@@ -14,7 +14,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { UserRegisterDialog } from '../login/UserRegisterDialog';
 import { UserLoginDialog } from '../login/UserLoginDialog';
 import { logout } from '../../features/auth/authSlice';
-import { useDispatch } from 'react-redux';
+import { selectFacilityIsLoaded } from '../../features/current-facility/currentFacilitySlice'
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,7 @@ export const Header = () => {
     const handleCloseUserRegister = () => setOpenUserRegister(false)
 
     const { user } = useAuth()
+    const facilityIsLoaded = useSelector(selectFacilityIsLoaded)
 
     const [openUserLogin, setOpenUserLogin] = useState(false)
     const handleOpenUserLogin = () => setOpenUserLogin(true)
@@ -73,7 +75,7 @@ export const Header = () => {
                   <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                 }
                 { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
-                { user && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button> }
+                { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button> }
                 { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
                 { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
 
@@ -104,7 +106,7 @@ export const Header = () => {
                   <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
                   }
                   { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
-                  { user && <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem> }
+                  { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem> }
                   { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
                   { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
               </Menu>
