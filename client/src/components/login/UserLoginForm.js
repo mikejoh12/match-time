@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useLoginMutation } from '../../services/api';
 import { setCredentials } from '../../features/auth/authSlice';
-
+import { useForm, Controller } from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,13 +28,12 @@ const useStyles = makeStyles(theme => ({
 export const UserLoginForm = ({ handleClose }) => {
   const dispatch = useDispatch()
   const classes = useStyles();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { control, handleSubmit } = useForm() 
 
   const [login] = useLoginMutation()
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = async data => {
+      const { email, password } = data
       try {
         const user = await login({email, password}).unwrap()
         dispatch(setCredentials(user))
@@ -46,22 +45,40 @@ export const UserLoginForm = ({ handleClose }) => {
   }
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <TextField
-        label="Email"
-        variant="filled"
-        type="email"
-        required
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+    <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="email"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="Email"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+            type="email"
+          />
+        )}
+        rules={{ required: 'Email required' }}
       />
-      <TextField
-        label="Password"
-        variant="filled"
-        type="password"
-        required
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+      <Controller
+        name="password"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="Password"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+            type="password"
+          />
+        )}
+        rules={{ required: 'Password required' }}
       />
       <div>
         <Button variant="contained" onClick={handleClose}>

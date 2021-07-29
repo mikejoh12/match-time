@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useCreateUserMutation } from '../../services/api';
+import { useForm, Controller } from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,17 +25,12 @@ const useStyles = makeStyles(theme => ({
 
 export const UserRegisterForm = ({ handleClose }) => {
   const classes = useStyles();
-  // create state variables for each input
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
+
+  const { control, handleSubmit } = useForm()  
   const [createUser] = useCreateUserMutation()
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log(firstName, lastName, email, password);
+  const onSubmit = data => {
+    const { firstName, lastName, email, password } = data;
     createUser({
       email,
       first_name: firstName,
@@ -45,36 +41,73 @@ export const UserRegisterForm = ({ handleClose }) => {
   };
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <TextField
-        label="First Name"
-        variant="filled"
-        required
-        value={firstName}
-        onChange={e => setFirstName(e.target.value)}
+    <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+      
+      <Controller
+        name="firstName"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="First Name"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+          />
+        )}
+        rules={{ required: 'First name required' }}
       />
-      <TextField
-        label="Last Name"
-        variant="filled"
-        required
-        value={lastName}
-        onChange={e => setLastName(e.target.value)}
+      <Controller
+        name="lastName"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="Last Name"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+          />
+        )}
+        rules={{ required: 'Last name required' }}
       />
-      <TextField
-        label="Email"
-        variant="filled"
-        type="email"
-        required
-        value={email}
-        onChange={e => setEmail(e.target.value)}
+      <Controller
+        name="email"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="Email"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+            type="email"
+          />
+        )}
+        rules={{ required: 'Email required' }}
       />
-      <TextField
-        label="Password"
-        variant="filled"
-        type="password"
-        required
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+      <Controller
+        name="password"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="Password"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+            type="password"
+          />
+        )}
+        rules={{ required: 'Password required' }}
       />
       <div>
         <Button variant="contained" onClick={handleClose}>
