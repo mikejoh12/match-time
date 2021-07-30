@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useCreateUserMutation } from '../../services/api';
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, watch } from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,8 +26,11 @@ const useStyles = makeStyles(theme => ({
 export const UserRegisterForm = ({ handleClose }) => {
   const classes = useStyles();
 
-  const { control, handleSubmit } = useForm()  
   const [createUser] = useCreateUserMutation()
+
+  const { control, handleSubmit, watch } = useForm()  
+  const password = useRef({})
+  password.current = watch("password", "")
 
   const onSubmit = data => {
     const { firstName, lastName, email, password } = data;
@@ -107,7 +110,30 @@ export const UserRegisterForm = ({ handleClose }) => {
             type="password"
           />
         )}
-        rules={{ required: 'Password required' }}
+        rules={{  required: 'Password required',
+                  minLength: { value: 6, message: "Password needs to be minimum 6 characters." }
+                }}
+      />
+      <Controller
+        name="confirmPassword"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <TextField
+            label="Confirm Password"
+            variant="filled"
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error ? error.message : null}
+            type="password"
+          />
+        )}
+        rules={{  required: 'Password required',
+                  minLength: { value: 6, message: "Password needs to be minimum 6 characters." },
+                  validate: value =>
+                  value === password.current || 'The passwords do not match'
+                }}
       />
       <div>
         <Button variant="contained" onClick={handleClose}>
