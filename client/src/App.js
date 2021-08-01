@@ -11,41 +11,44 @@ import { BrowserRouter as Router,
 } from 'react-router-dom'
 import { PrivateRoute } from './utils/PrivateRoute'
 import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
+import MsgSnackbar from './utils/MsgSnackbar'
 
 function App() {
   return (
+    <div>
+      <MsgSnackbar />
+      <Router>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Landing} />
 
-    <Router>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={Landing} />
+          <PrivateRoute path="/user-dashboard">
+            <Route component={UserDashboard} />
+          </PrivateRoute>
 
-        <PrivateRoute path="/user-dashboard">
-          <Route component={UserDashboard} />
-        </PrivateRoute>
+          <PrivateRoute path="/manager-dashboard">
+            <Route component={ManagerDashboard} />
+          </PrivateRoute>
 
-        <PrivateRoute path="/manager-dashboard">
-          <Route component={ManagerDashboard} />
-        </PrivateRoute>
+          <PrivateRoute path="/account">
+            <Route component={Account} />
+          </PrivateRoute>
 
-        <PrivateRoute path="/account">
-          <Route component={Account} />
-        </PrivateRoute>
+          <PrivateRoute path="/manager-facility-edit/:id">
+            <Route component={ManagerFacilityEdit} />
+          </PrivateRoute>
 
-        <PrivateRoute path="/manager-facility-edit/:id">
-          <Route component={ManagerFacilityEdit} />
-        </PrivateRoute>
+          <PrivateRoute path="/bookings">
+            <Route component={Bookings} />
+          </PrivateRoute>
 
-        <PrivateRoute path="/bookings">
-          <Route component={Bookings} />
-        </PrivateRoute>
+          <PrivateRoute path="/:id">
+            <Route component={FacilityLogin} />
+          </PrivateRoute>
 
-        <PrivateRoute path="/:id">
-          <Route component={FacilityLogin} />
-        </PrivateRoute>
-
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useCreateUserMutation } from '../../services/api';
-import { useForm, Controller, watch } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
   root: {

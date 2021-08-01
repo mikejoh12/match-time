@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { useLoginMutation } from '../../services/api';
 import { setCredentials } from '../../features/auth/authSlice';
 import { useForm, Controller } from "react-hook-form";
+import { showSuccessSnackbar } from '../../features/ui/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +39,7 @@ export const UserLoginForm = ({ handleClose }) => {
         const user = await login({email, password}).unwrap()
         dispatch(setCredentials(user))
       } catch (err) {
-        alert(err.data.error.message)
+        dispatch(showSuccessSnackbar(err.data.error.message))
       } finally {
         handleClose()
       }
