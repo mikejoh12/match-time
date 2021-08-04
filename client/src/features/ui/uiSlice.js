@@ -1,27 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    successSnackbarOpen: false,
-    successSnackbarMessage: ''
+    snackbarOpen: false,
+    snackbarMessage: {
+      message: '',
+      severity: '',
+    },
 }
 
 export const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {
-      showSuccessSnackbar(state, action) {
-            state.successSnackbarOpen = true
-            state.successSnackbarMessage = action.payload
+      showSnackbar(state, action) {
+            state.snackbarOpen = true
+            state.snackbarMessage = action.payload
       },
       clearSnackbar(state, action) {
-            state.successSnackbarOpen = false
+            state.snackbarOpen = false
       }
     }
 })
 
-export const { showSuccessSnackbar, clearSnackbar } = uiSlice.actions
+export const { showSnackbar, clearSnackbar } = uiSlice.actions
 
-export const selectSuccessSnackBarOpen = state => state.ui.successSnackbarOpen
-export const selectSuccessSnackbarMessage = state => state.ui.successSnackbarMessage
+export const selectSnackBarOpen = state => state.ui.snackbarOpen
+export const selectSnackbarMessage = state => state.ui.snackbarMessage
 
 export default uiSlice.reducer

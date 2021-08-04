@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from '@material-ui/lab/Alert';
-import { clearSnackbar, selectSuccessSnackBarOpen, selectSuccessSnackbarMessage } from "../features/ui/uiSlice"
+import { clearSnackbar, selectSnackBarOpen, selectSnackbarMessage } from "../features/ui/uiSlice"
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,8 +17,8 @@ export default function MsgSnackbar() {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const successSnackbarMessage = useSelector(selectSuccessSnackbarMessage)
-  const successSnackbarOpen = useSelector(selectSuccessSnackBarOpen)
+  const snackbarMessage = useSelector(selectSnackbarMessage)
+  const snackbarOpen = useSelector(selectSnackBarOpen)
 
   function handleClose() {
     dispatch(clearSnackbar());
@@ -26,9 +26,9 @@ export default function MsgSnackbar() {
 
   return (
     <div className={classes.root}>
-      <Snackbar open={successSnackbarOpen} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" variant="filled" elevation={6}>
-          {successSnackbarMessage}
+      <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snackbarMessage.severity} variant="filled" elevation={6}>
+          {snackbarMessage.message}
         </Alert>
       </Snackbar>
     </div>

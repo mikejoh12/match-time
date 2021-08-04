@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { useLoginMutation } from '../../services/api';
 import { setCredentials } from '../../features/auth/authSlice';
 import { useForm, Controller } from "react-hook-form";
-import { showSuccessSnackbar } from '../../features/ui/uiSlice';
+import { showSnackbar } from '../../features/ui/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,8 +38,16 @@ export const UserLoginForm = ({ handleClose }) => {
       try {
         const user = await login({email, password}).unwrap()
         dispatch(setCredentials(user))
+        dispatch(showSnackbar({
+          message: `Login Successful for ${user.user.email}`,
+          severity: 'success'
+          }
+        ))
       } catch (err) {
-        dispatch(showSuccessSnackbar(err.data.error.message))
+        dispatch(showSnackbar({
+          message: err.data.error.message,
+          severity: 'error'
+        }))
       } finally {
         handleClose()
       }
