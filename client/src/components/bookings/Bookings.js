@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux'
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from "@material-ui/core/Grid";
+import { showSnackbar } from '../../features/ui/uiSlice';
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 import { useGetFacilitiesByUserQuery, useGetBookingsByUserQuery, useDeleteBookingMutation } from '../../services/api'
@@ -17,8 +19,22 @@ export const Bookings = () => {
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserQuery()
 
     const [ deleteBooking ] = useDeleteBookingMutation()
+    const dispatch = useDispatch();
 
-    const handleDeleteClick = (event) => deleteBooking(event.currentTarget.value)
+    const handleDeleteClick = async event => {
+        try {
+            await deleteBooking(event.currentTarget.value).unwrap()
+            dispatch(showSnackbar({
+                message: `Booking deleted`,
+                severity: 'success'
+              }))
+        } catch(err) {
+            dispatch(showSnackbar({
+                message: err.data.error,
+                severity: 'error'
+              }))
+        }
+    }
 
     return (
         <div className="App">

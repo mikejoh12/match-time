@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux'
+import { showSnackbar } from '../../features/ui/uiSlice';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -30,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const BookDialog = props => {
-  const resources = props.resources
+export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(utcToZonedTime(new Date(props.calViewDate), 'UTC'))
-  const [selectedResource, setSelectedResource] = React.useState(props.resourceInView)
+  const [selectedDate, setSelectedDate] = React.useState(utcToZonedTime(new Date(calViewDate), 'UTC'))
+  const [selectedResource, setSelectedResource] = React.useState(resourceInView)
   const [duration, setDuration] = React.useState(60)
   const classes = useStyles()
   const { user } = useAuth()
@@ -42,8 +44,8 @@ export const BookDialog = props => {
   const [ createBooking ] = useCreateBookingMutation()
 
   const handleClickOpen = () => {
-    setSelectedResource(props.resourceInView)
-    setSelectedDate(utcToZonedTime(new Date(props.calViewDate)))
+    setSelectedResource(resourceInView)
+    setSelectedDate(utcToZonedTime(new Date(calViewDate)))
     setOpen(true)
   }
   
@@ -55,13 +57,25 @@ export const BookDialog = props => {
     const endTime = addMinutes(selectedDate, duration)
     const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
-    createBooking({
+    try {
+      createBooking({
         resources_id: selectedResource,
         organizer_id: user.id,
         start_time: utcStartTime,
         end_time: utcEndTime
-    })
-    setOpen(false)
+      }).unwrap()
+      dispatch(showSnackbar({
+        message: `Booking created successfully`,
+        severity: 'success'
+      }))
+    } catch (err) {
+      dispatch(showSnackbar({
+        message: err.data.error,
+        severity: 'error'
+      }))
+    } finally {
+      setOpen(false)
+    }
   }
 
   const handleResourceChange = event => setSelectedResource(event.target.value)

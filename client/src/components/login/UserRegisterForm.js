@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useCreateUserMutation } from '../../services/api';
 import { useForm, Controller } from "react-hook-form";
+import { showSnackbar } from '../../features/ui/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,22 +27,33 @@ const useStyles = makeStyles(theme => ({
 
 export const UserRegisterForm = ({ handleClose }) => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const [createUser] = useCreateUserMutation()
 
   const { control, handleSubmit, watch } = useForm()  
   const password = useRef({})
   password.current = watch("password", "")
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     const { firstName, lastName, email, password } = data;
-    createUser({
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      password
-    })
-    handleClose();
+    try {
+      await createUser({
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        password
+      }).unwrap()
+      dispatch(showSnackbar({
+        message: `User Created`,
+        severity: 'success'
+        }))
+      handleClose();
+    } catch (err) {
+      dispatch(showSnackbar({
+        message: err.data.error,
+        severity: 'error'
+      }))
+    }
   };
 
   return (
