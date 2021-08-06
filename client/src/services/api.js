@@ -12,7 +12,7 @@ export const api = createApi({
         return headers
       },  
     }),
-  tagTypes: ['Facilities', 'Resources', 'Bookings', 'User'],
+  tagTypes: ['Facilities', 'currentFacility','Resources', 'Bookings', 'User'],
 
   endpoints: (build) => ({
 
@@ -39,7 +39,7 @@ export const api = createApi({
     }),
     getFacilityById: build.query({
       query: (id) => `facilities/${id}`,
-      providesTags: ['Facilities']
+      providesTags: ['currentFacility']
     }),
     createFacility: build.mutation({
       query: (body) => ({

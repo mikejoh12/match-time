@@ -6,12 +6,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import { useCreateResourceMutation } from '../../services/api';
+import { showSnackbar } from '../../features/ui/uiSlice';
+import { useDispatch } from 'react-redux';
 
-export const AddResourceDialog = props => {
+export const AddResourceDialog = ({facilityId}) => {
   const [open, setOpen] = React.useState(false);
   const [resourceName, setResourceName] = React.useState('')
   const [resourceDescription, setResourceDescription] = React.useState('')
-
+  const dispatch = useDispatch()
   const [ createResource ] = useCreateResourceMutation()
 
   const handleClickOpen = () => {
@@ -22,13 +24,25 @@ export const AddResourceDialog = props => {
     setOpen(false)
   }
 
-  const handleAddResource = () => {
-    createResource({
-        facilities_id: props.facilityId,
-        resource_name: resourceName,
-        description: resourceDescription
-    })
-    setOpen(false)
+  const handleAddResource = async () => {
+    try {
+      await createResource({
+          facilities_id: facilityId,
+          resource_name: resourceName,
+          description: resourceDescription
+      })
+      dispatch(showSnackbar({
+        message: `Resource added: ${resourceName}`,
+        severity: 'success'
+        }))
+    } catch (err) {
+      dispatch(showSnackbar({
+        message: err.data.error,
+        severity: 'error'
+      }))
+    } finally {
+      setOpen(false)
+    }
   }
 
   const handleResourceNameChange = event => setResourceName(event.target.value)

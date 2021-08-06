@@ -13,16 +13,32 @@ import { InviteMembersDialog } from './InviteMembersDialog';
 import { DeleteFacilityDialog } from './DeleteFacilityDialog';
 import { useGetFacilityByIdQuery } from '../../services/api'
 import { useGetResourcesByFacilityIdQuery, useDeleteResourceMutation } from '../../services/api'
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from '../../features/ui/uiSlice';
 
 export const ManagerFacilityEdit = () => {
     const { id } = useParams()
     const { data: facilityData, isError: facilityIsError, isLoading: facilityIsLoading } = useGetFacilityByIdQuery(id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
     const [ deleteResource ] = useDeleteResourceMutation()
+    const dispatch = useDispatch()
 
-    const handleDeleteClick = event => {
-        deleteResource( {   id,
-                            resource_id: event.currentTarget.value })
+    const handleDeleteClick = async event => {
+        try {
+            await deleteResource({
+                id,
+                resource_id: event.currentTarget.value
+            })
+            dispatch(showSnackbar({
+                message: `Resource deleted`,
+                severity: 'success'
+            }))
+        } catch (err) {
+            dispatch(showSnackbar({
+                message: err.data.error,
+                severity: 'error'
+              }))
+        }
     }
 
     return (

@@ -13,7 +13,7 @@ export const ManagerDashboard = () => {
     
     const handleFacilityClick = event => history.push(`/manager-facility-edit/${event.currentTarget.getAttribute('value')}`)
 
-    const managerFacilities = facilitiesData.filter(facility => facility.is_admin).map(facility => 
+    const managerFacilities = facilitiesData?.filter(facility => facility.is_admin).map(facility => 
         <ListItem key={facility.id} button value={facility.id} onClick={handleFacilityClick} divider>
             <ListItemText primary={facility.name} />
         </ListItem>)

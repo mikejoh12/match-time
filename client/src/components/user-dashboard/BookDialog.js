@@ -53,12 +53,12 @@ export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
     setOpen(false)
   }
 
-  const handleCloseBook = () => {
+  const handleCloseBook = async () => {
     const endTime = addMinutes(selectedDate, duration)
     const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     try {
-      createBooking({
+      await createBooking({
         resources_id: selectedResource,
         organizer_id: user.id,
         start_time: utcStartTime,

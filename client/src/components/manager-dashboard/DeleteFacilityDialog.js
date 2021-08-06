@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,11 +9,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useDeleteFacilityMutation } from '../../services/api';
+import { showSnackbar } from '../../features/ui/uiSlice';
 
-export const DeleteFacilityDialog = (props) => {
+export const DeleteFacilityDialog = ({facilityId}) => {
   const history = useHistory()
   const [open, setOpen] = React.useState(false);
   const [confirmDelete, setConfirmDelete] = React.useState('')
+  const dispatch = useDispatch()
 
   const [ deleteFacility ] = useDeleteFacilityMutation()
 
@@ -24,15 +27,28 @@ export const DeleteFacilityDialog = (props) => {
     setOpen(false);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
+    try {
       if (confirmDelete === 'DELETE') {
-          deleteFacility(props.facilityId)
+          await deleteFacility(facilityId)
+          dispatch(showSnackbar({
+            message: `Facility deleted.`,
+            severity: 'success'
+            }))
           setOpen(false)
           history.push('/manager-dashboard')
-
       } else {
-          console.log('You did not enter DELETE')
+        dispatch(showSnackbar({
+          message: `You did not enter DELETE`,
+          severity: 'info'
+          }))
       }
+    } catch (err) {
+      dispatch(showSnackbar({
+        message: err.data.error,
+        severity: 'error'
+      }))
+    }
   }
 
   const handleConfirmDeleteChange = event => setConfirmDelete(event.target.value)
