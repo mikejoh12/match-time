@@ -3,10 +3,11 @@ const { pool } = require('../config/config.js')
 const fetchBookingsByFacilityDb = async id => {
     const res = await pool.query(
         `SELECT bookings.id AS bookings_id, resources_id, organizer_id, start_time, end_time,
-         facilities_id, resources.name AS resources_name
+         facilities_id, resources.name AS resources_name, first_name, last_name
          FROM bookings
          INNER JOIN resources ON bookings.resources_id = resources.id
          INNER JOIN facilities ON resources.facilities_id = facilities.id
+         INNER JOIN users ON organizer_id = users.id
          WHERE facilities.id = $1`, [id])
     return res.rows
 }

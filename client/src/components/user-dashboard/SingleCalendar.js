@@ -21,7 +21,7 @@ export const SingleCalendar = props => {
     events={ 
       props.bookings[props.resource.id]?.map(booking => ({
       id: booking.bookings_id,
-      title: `Booked by user: ${booking.organizer_id}`,
+      title: `Booked by user: ${booking.first_name} ${booking.last_name}`,
       start: booking.start_time,
       end: booking.end_time
     }))} />
