@@ -42,9 +42,7 @@ function App() {
             <Route component={Bookings} />
           </PrivateRoute>
 
-          <PrivateRoute path="/:id">
-            <Route component={FacilityLogin} />
-          </PrivateRoute>
+          <Route path="/:id" component={FacilityLogin} />
 
         </Switch>
       </Router>

@@ -30,14 +30,14 @@ export const AddResourceDialog = ({facilityId}) => {
           facilities_id: facilityId,
           resource_name: resourceName,
           description: resourceDescription
-      })
+      }).unwrap()
       dispatch(showSnackbar({
         message: `Resource added: ${resourceName}`,
         severity: 'success'
         }))
     } catch (err) {
       dispatch(showSnackbar({
-        message: err.data.error,
+        message: 'There was a problem adding the resource',
         severity: 'error'
       }))
     } finally {

@@ -71,6 +71,11 @@ export const ManagerFacilityEdit = () => {
                         </Typography>              
                     </Grid>
                     <Grid item>
+                        <Typography variant="h6" >
+                            Club Login URL: http://localhost:3000/{facilityData.id}
+                        </Typography>              
+                    </Grid>
+                    <Grid item>
                             <List component="nav" aria-label="user bookings">
                                 {resourcesData.map(resource => 
                                     <ListItem key={resource.id} divider>

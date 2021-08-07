@@ -7,11 +7,13 @@ import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetFacilityByIdQuery } from '../../services/api';
 import { facilityUpdated } from '../../features/current-facility/currentFacilitySlice';
+import { useAuth } from '../../hooks/useAuth'
 
 export const FacilityLogin = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
+    const { user } = useAuth()
 
     const { data: facilityData, isError, isLoading } = useGetFacilityByIdQuery(id)
 
@@ -46,7 +48,13 @@ export const FacilityLogin = () => {
                             </Typography>
                         </Grid>
                         <Grid item>
+                            { user ?
                             <Button variant="contained" color="primary" onClick={handleUserLogin}>Go To Scheduling</Button>
+                            :
+                            <Typography variant="h5">
+                                Please log in to access club schedules.
+                            </Typography>
+                            }
                         </Grid>
                     </Grid>
                 ) : null}
