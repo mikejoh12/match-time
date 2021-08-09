@@ -9,13 +9,15 @@ import { BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom'
+import { ThemeProvider } from '@material-ui/core/styles'
+import { theme } from './theme'
 import { PrivateRoute } from './utils/PrivateRoute'
 import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 import MsgSnackbar from './utils/MsgSnackbar'
 
 function App() {
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <MsgSnackbar />
       <Router>
         <Header />
@@ -46,7 +48,7 @@ function App() {
 
         </Switch>
       </Router>
-    </div>
+    </ThemeProvider>
   );
 }
 

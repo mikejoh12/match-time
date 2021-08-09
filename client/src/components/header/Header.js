@@ -51,10 +51,11 @@ export const Header = () => {
     const handleUserLogout = () => dispatch(logout())
 
     const theme = useTheme();
-    const showMenuButtons = useMediaQuery(theme.breakpoints.up('sm'))
+    const showMenuButtons = useMediaQuery(theme.breakpoints.up('md'))
 
     const handleLogoClick = () => history.push('/')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
+    const handleManageClick = () => history.push('/manager-dashboard')
     const handleBookingsClick = () => history.push('/bookings')
     const handleAccountClick = () => history.push('/account')
     const handleMenu = event => setAnchorEl(event.currentTarget);
@@ -75,7 +76,8 @@ export const Header = () => {
                   <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                 }
                 { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
-                { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Dash Board</Button> }
+                { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
+                { user && <Button color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
                 { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
                 { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
 
@@ -106,7 +108,8 @@ export const Header = () => {
                   <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
                   }
                   { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
-                  { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Dashboard</MenuItem> }
+                  { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }
+                  { user && <MenuItem onClick={handleManageClick}>Manage Facilities</MenuItem>}
                   { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
                   { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
               </Menu>
