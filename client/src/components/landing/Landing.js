@@ -33,11 +33,21 @@ export const Landing = () => {
                                     <Typography variant="h4" >
                                         Calendar Booking
                                     </Typography>
+                                    <Grid item>
                                     <Typography variant="h6" align="center">
-                                        A sports scheduling platform for both facility administrators and players
+                                        A scheduling platform for sports facility managers and players
+                                    </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                    <Typography variant="body1" align="center">
+                                        - Manage sports facilities and add resources such as tennis courts or soccer fields.
+                                    </Typography>
+                                    </Grid>
+                                    <Typography variant="body1" align="center">
+                                        - Invite users to your facility and have them access the facilities landing page.
                                     </Typography>
                                     <Typography variant="body1" align="center">
-                                        Instructions
+                                        - Users of the facility can book resources within the facilities where they are members.
                                     </Typography>
                                 </Grid>
                             </Paper>
