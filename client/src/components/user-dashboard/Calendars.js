@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography'
 import { SingleCalendar } from './SingleCalendar'
 
 export const Calendars = props => {
+        const resource = props.resources[props.selectedCourtIdx]
     return (
-        props.resources.slice(props.selectedCourtIdx, props.selectedCourtIdx + props.nrOfCalendars.filter(cal => cal).length).map((resource, idx) => 
         <Grid container item
         xs={8}
         md={4}
@@ -23,11 +23,9 @@ export const Calendars = props => {
             <Grid item>
               <SingleCalendar bookings={props.bookings}
                               calendarsRefs={props.calendarsRefs}
-                              idx={idx}
                               calViewDate={props.calViewDate}
                               resource={resource} />
             </Grid>
           </Grid>
-      )
     )
 }

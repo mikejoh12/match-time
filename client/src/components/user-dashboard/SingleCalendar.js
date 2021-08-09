@@ -4,8 +4,8 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 export const SingleCalendar = props => {
     return (
     <FullCalendar
-    ref={element => (props.calendarsRefs.current[props.idx] = element)}
     plugins={[ timeGridPlugin ]}
+    ref={element => (props.calendarsRefs.current[props.idx] = element)}
     headerToolbar={{
       left: '',
       center: 'title',

@@ -41,22 +41,21 @@ export const UserDashboard = () => {
 
     const classes = useStyles()
     const theme = useTheme();
-    const nrOfCalendars = [true, useMediaQuery(theme.breakpoints.up('md')), useMediaQuery(theme.breakpoints.up('lg')), useMediaQuery(theme.breakpoints.up('xl'))];
-
-    // Create a React ref to be able to access Full Calendar API to set dates from external code
-    const calendarsRefs = useRef({})
 
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByFacilityIdQuery(facility.id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(facility.id)
 
+    // Create a React ref to be able to access Full Calendar API to set dates from external code
+    const calendarsRefs = useRef({})
+
     const handleDateChange = date => {
           dispatch(calViewDateUpdated(zonedTimeToUtc(roundToNearestMinutes(setHours(date, 10), { nearestTo: 30}),'UTC').toISOString()))
-          // Use Full Calendar API to set date from external date picker for all rendered calendars
-          Object.keys(calendarsRefs.current).forEach(key => {
-            let calendarApi = calendarsRefs.current[key].getApi()
-            calendarApi.gotoDate(date)
-          })
-    }
+              // Use Full Calendar API to set date from external date picker for all rendered calendars (if rendering more than one)
+              Object.keys(calendarsRefs.current).forEach(key => {
+                let calendarApi = calendarsRefs.current[key].getApi()
+                calendarApi.gotoDate(date)
+              })
+      }
 
     // Set default calendar resource to view once resources are loaded
     useEffect(() => {
@@ -126,9 +125,8 @@ export const UserDashboard = () => {
                         justifyContent="center">
                         <Calendars  resources={resourcesData}
                                     selectedCourtIdx={selectedCourtIdx}
-                                    nrOfCalendars={nrOfCalendars}
-                                    bookings={bookingsData}
                                     calendarsRefs={calendarsRefs}
+                                    bookings={bookingsData}
                                     calViewDate={calViewDate} />
                   </Grid>
                 </Grid>
@@ -147,4 +145,4 @@ export const UserDashboard = () => {
                 ) : null}
         </div>
     )
-}
+  }
