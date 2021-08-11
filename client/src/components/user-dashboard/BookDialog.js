@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showSnackbar } from '../../features/ui/uiSlice';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from "@date-io/date-fns";
-import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
+import { zonedTimeToUtc } from 'date-fns-tz'
 import { 
     MuiPickersUtilsProvider,
     KeyboardTimePicker } from "@material-ui/pickers";
@@ -20,6 +20,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import addMinutes from 'date-fns/addMinutes'
 import { useCreateBookingMutation } from '../../services/api';
+import { closeBookDialog, selectBookDialogOpen } from '../../features/ui/uiSlice';
 import { useAuth } from '../../hooks/useAuth'
 
 const useStyles = makeStyles((theme) => ({
@@ -32,34 +33,23 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
+export const BookDialog = ({    resources, bookingSelectedDate, bookingSelectedResource,
+                                bookingDuration, handleBookingDurationChange, handleBookingDateChange, handleBookingResourceChange,
+                                handleClickOpen, handleClose }) => {
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(utcToZonedTime(new Date(calViewDate), 'UTC'))
-  const [selectedResource, setSelectedResource] = React.useState(resourceInView)
-  const [duration, setDuration] = React.useState(60)
+  const bookDialogOpen = useSelector(selectBookDialogOpen)
   const classes = useStyles()
   const { user } = useAuth()
 
   const [ createBooking ] = useCreateBookingMutation()
 
-  const handleClickOpen = () => {
-    setSelectedResource(resourceInView)
-    setSelectedDate(utcToZonedTime(new Date(calViewDate)))
-    setOpen(true)
-  }
-  
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   const handleCloseBook = async () => {
-    const endTime = addMinutes(selectedDate, duration)
-    const utcStartTime = zonedTimeToUtc(selectedDate, 'UTC').toISOString()
+    const endTime = addMinutes(bookingSelectedDate, bookingDuration)
+    const utcStartTime = zonedTimeToUtc(bookingSelectedDate, 'UTC').toISOString()
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     try {
       await createBooking({
-        resources_id: selectedResource,
+        resources_id: bookingSelectedResource,
         organizer_id: user.id,
         start_time: utcStartTime,
         end_time: utcEndTime
@@ -74,20 +64,16 @@ export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
         severity: 'error'
       }))
     } finally {
-      setOpen(false)
+      dispatch(closeBookDialog())
     }
   }
-
-  const handleResourceChange = event => setSelectedResource(event.target.value)
-  const handleDateChange = date => setSelectedDate(date)
-  const handleDurationChange = event => setDuration(event.target.value)
 
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Book a Court
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={bookDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title" align="center">Book a Court</DialogTitle>
         <DialogContent>
             <Grid     container
@@ -98,8 +84,8 @@ export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
                   <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={selectedResource}
-                  onChange={handleResourceChange}
+                  value={bookingSelectedResource}
+                  onChange={handleBookingResourceChange}
                   >
                       {
                           resources.map(resource =>
@@ -112,14 +98,14 @@ export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
                   <DatePicker
                       disableToolbar
                       variant="inline"
-                      value={selectedDate}
-                      onChange={handleDateChange}/>
+                      value={bookingSelectedDate}
+                      onChange={handleBookingDateChange}/>
                   <KeyboardTimePicker
                       margin="normal"
                       id="time-picker"
                       label="Time"
-                      value={selectedDate}
-                      onChange={handleDateChange}
+                      value={bookingSelectedDate}
+                      onChange={handleBookingDateChange}
                       KeyboardButtonProps={{
                           'aria-label': 'change time',
                       }}
@@ -129,8 +115,8 @@ export const BookDialog = ({ resources, calViewDate, resourceInView }) => {
                   <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={duration}
-                  onChange={handleDurationChange}
+                  value={bookingDuration}
+                  onChange={handleBookingDurationChange}
                   >
 
                               <MenuItem value={30} key={30}>30 min</MenuItem>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { selectCalViewDate, calViewDateUpdated, selectCourt, courtUpdated, selectFacility } from "../../features/current-facility/currentFacilitySlice"
 import 'date-fns';
@@ -18,10 +18,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { BookDialog } from './BookDialog'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Calendars } from './Calendars'
 import { useGetBookingsByFacilityIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api'
+import { openBookDialog, closeBookDialog } from '../../features/ui/uiSlice';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -39,8 +38,31 @@ export const UserDashboard = () => {
     const calViewDate = useSelector(selectCalViewDate)
     const court = useSelector(selectCourt)
 
+    const [bookingSelectedDate, setBookingSelectedDate] = useState(utcToZonedTime(new Date(calViewDate), 'UTC'))
+    const [bookingSelectedResource, setBookingSelectedResource] = useState(court)
+    const [bookingDuration, setBookingDuration] = useState(60)
+
+    const handleBookingResourceChange = event => setBookingSelectedResource(event.target.value)
+    const handleBookingDateChange = date => setBookingSelectedDate(date)
+    const handleBookingDurationChange = event => setBookingDuration(event.target.value)
+
+    const handleDateClick = arg => {
+      setBookingSelectedResource(court)
+      setBookingSelectedDate(utcToZonedTime(new Date(arg.dateStr)))
+      dispatch(openBookDialog())
+    }
+
+    const handleClickOpen = () => {
+      setBookingSelectedResource(court)
+      setBookingSelectedDate(utcToZonedTime(new Date(calViewDate)))
+      dispatch(openBookDialog())
+    }
+    
+    const handleClose = () => {
+      dispatch(closeBookDialog())
+    }
+
     const classes = useStyles()
-    const theme = useTheme();
 
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByFacilityIdQuery(facility.id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(facility.id)
@@ -119,7 +141,18 @@ export const UserDashboard = () => {
                   <Grid item>
                         <BookDialog resourceInView={court}
                                     calViewDate={calViewDate}
-                                    resources={resourcesData} />
+                                    resources={resourcesData}
+                                    bookingDuration={bookingDuration}
+                                    bookingSelectedDate={bookingSelectedDate}
+                                    bookingSelectedResource={bookingSelectedResource}
+                                    handleBookingDurationChange={handleBookingDurationChange}
+                                    handleBookingResourceChange={handleBookingResourceChange}
+                                    handleBookingDateChange={handleBookingDateChange}
+                                    setBookingSelectedDate={setBookingSelectedDate}
+                                    setBookingDuration={setBookingDuration}
+                                    setBookingSelectedResource={setBookingSelectedResource}
+                                    handleClickOpen={handleClickOpen}
+                                    handleClose={handleClose} />
                   </Grid>
                   <Grid container
                         justifyContent="center">
@@ -127,7 +160,8 @@ export const UserDashboard = () => {
                                     selectedCourtIdx={selectedCourtIdx}
                                     calendarsRefs={calendarsRefs}
                                     bookings={bookingsData}
-                                    calViewDate={calViewDate} />
+                                    calViewDate={calViewDate}
+                                    handleDateClick={handleDateClick} />
                   </Grid>
                 </Grid>
                 ) : (!resourcesData.length) ? (

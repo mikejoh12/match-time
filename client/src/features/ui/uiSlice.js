@@ -6,6 +6,7 @@ const initialState = {
       message: '',
       severity: '',
     },
+    bookDialogOpen: false
 }
 
 export const uiSlice = createSlice({
@@ -18,13 +19,20 @@ export const uiSlice = createSlice({
       },
       clearSnackbar(state, action) {
             state.snackbarOpen = false
+      },
+      openBookDialog(state, action) {
+            state.bookDialogOpen = true
+      },
+      closeBookDialog(state, action) {
+            state.bookDialogOpen = false
       }
     }
 })
 
-export const { showSnackbar, clearSnackbar } = uiSlice.actions
+export const { showSnackbar, clearSnackbar, openBookDialog, closeBookDialog } = uiSlice.actions
 
 export const selectSnackBarOpen = state => state.ui.snackbarOpen
 export const selectSnackbarMessage = state => state.ui.snackbarMessage
+export const selectBookDialogOpen = state => state.ui.bookDialogOpen
 
 export default uiSlice.reducer

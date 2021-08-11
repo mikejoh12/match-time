@@ -5,6 +5,7 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
+    "@fullcalendar/interaction": "^5.9.0",
     "@fullcalendar/react": "^5.7.2",
     "@fullcalendar/timegrid": "^5.7.2",
     "@material-ui/core": "^4.11.4",

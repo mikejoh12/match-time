@@ -24,7 +24,8 @@ export const Calendars = props => {
               <SingleCalendar bookings={props.bookings}
                               calendarsRefs={props.calendarsRefs}
                               calViewDate={props.calViewDate}
-                              resource={resource} />
+                              resource={resource}
+                              handleDateClick={props.handleDateClick} />
             </Grid>
           </Grid>
     )
