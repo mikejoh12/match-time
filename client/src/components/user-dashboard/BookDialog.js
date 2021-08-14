@@ -19,11 +19,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import addMinutes from 'date-fns/addMinutes'
-import { useCreateBookingMutation } from '../../services/api';
+import { useCreateBookingMutation, useGetResourcesByFacilityIdQuery } from '../../services/api';
 import { closeBookDialog, selectBookDialogOpen } from '../../features/ui/uiSlice';
 import {  selectBookingDuration, bookingDurationUpdated,
           selectBookingDate, bookingDateUpdated,
-          selectBookingSelectedResource, bookingSelectedResourceUpdated } from '../../features/current-facility/currentFacilitySlice';
+          selectBookingSelectedResource, bookingSelectedResourceUpdated,
+          selectFacility } from '../../features/current-facility/currentFacilitySlice';
 import { useAuth } from '../../hooks/useAuth'
 
 const useStyles = makeStyles((theme) => ({
@@ -36,9 +37,9 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const BookDialog = ({    resources,
-                                handleClickOpen, handleClose }) => {
+export const BookDialog = ({ handleClickOpen, handleClose }) => {
   const dispatch = useDispatch();
+  const facility = useSelector(selectFacility)
   const bookDialogOpen = useSelector(selectBookDialogOpen)
   const bookingDuration = useSelector(selectBookingDuration)
   const bookingDate = new Date(useSelector(selectBookingDate))
@@ -47,6 +48,8 @@ export const BookDialog = ({    resources,
   const { user } = useAuth()
 
   const [ createBooking ] = useCreateBookingMutation()
+  const { data: resourcesData } = useGetResourcesByFacilityIdQuery(facility.id)
+
 
   const handleBookingResourceChange = event => dispatch(bookingSelectedResourceUpdated(event.target.value))
   const handleBookingDateChange = date => dispatch(bookingDateUpdated(date.toISOString()))
@@ -97,7 +100,7 @@ export const BookDialog = ({    resources,
                   onChange={handleBookingResourceChange}
                   >
                       {
-                          resources.map(resource =>
+                          resourcesData.map(resource =>
                               <MenuItem value={resource.id} key={resource.id}>{resource.name}</MenuItem>)
                       }
                   </Select>

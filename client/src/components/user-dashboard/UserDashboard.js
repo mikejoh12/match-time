@@ -24,7 +24,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { BookDialog } from './BookDialog'
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Calendars } from './Calendars'
+import { SingleCalendar } from './SingleCalendar'
 import { useGetBookingsByFacilityIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api'
 import { openBookDialog, closeBookDialog } from '../../features/ui/uiSlice';
 
@@ -50,9 +50,7 @@ export const UserDashboard = () => {
       dispatch(openBookDialog())
     }
     
-    const handleClose = () => {
-      dispatch(closeBookDialog())
-    }
+    const handleClose = () => dispatch(closeBookDialog())
 
     const classes = useStyles()
 
@@ -138,10 +136,9 @@ export const UserDashboard = () => {
                   </Grid>
                   <Grid container
                         justifyContent="center">
-                        <Calendars  resources={resourcesData}
+                        <SingleCalendar
                                     selectedResourceIdx={selectedResourceIdx}
-                                    calendarsRefs={calendarsRefs}
-                                    bookings={bookingsData} />
+                                    calendarsRefs={calendarsRefs} />
                   </Grid>
                 </Grid>
                 ) : (!resourcesData.length) ? (
