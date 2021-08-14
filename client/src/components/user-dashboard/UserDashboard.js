@@ -1,6 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { selectCalViewDate, calViewDateUpdated, selectCourt, courtUpdated, selectFacility } from "../../features/current-facility/currentFacilitySlice"
+import {  selectCalViewDate,
+          calViewDateUpdated,
+          selectCurrentResource,
+          currentResourceUpdated,
+          selectFacility,
+          bookingDateUpdated,
+          bookingSelectedResourceUpdated } from "../../features/current-facility/currentFacilitySlice"
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -36,25 +42,11 @@ export const UserDashboard = () => {
     const dispatch = useDispatch()
     const facility = useSelector(selectFacility)
     const calViewDate = useSelector(selectCalViewDate)
-    const court = useSelector(selectCourt)
-
-    const [bookingSelectedDate, setBookingSelectedDate] = useState(utcToZonedTime(new Date(calViewDate), 'UTC'))
-    const [bookingSelectedResource, setBookingSelectedResource] = useState(court)
-    const [bookingDuration, setBookingDuration] = useState(60)
-
-    const handleBookingResourceChange = event => setBookingSelectedResource(event.target.value)
-    const handleBookingDateChange = date => setBookingSelectedDate(date)
-    const handleBookingDurationChange = event => setBookingDuration(event.target.value)
-
-    const handleDateClick = arg => {
-      setBookingSelectedResource(court)
-      setBookingSelectedDate(utcToZonedTime(new Date(arg.dateStr)))
-      dispatch(openBookDialog())
-    }
+    const currentResource = useSelector(selectCurrentResource)
 
     const handleClickOpen = () => {
-      setBookingSelectedResource(court)
-      setBookingSelectedDate(utcToZonedTime(new Date(calViewDate)))
+      dispatch(bookingSelectedResourceUpdated(currentResource))
+      dispatch(bookingDateUpdated(utcToZonedTime(new Date(calViewDate)).toISOString()))
       dispatch(openBookDialog())
     }
     
@@ -82,13 +74,13 @@ export const UserDashboard = () => {
     // Set default calendar resource to view once resources are loaded
     useEffect(() => {
       if (resourcesData?.length) {
-      dispatch(courtUpdated(resourcesData[0].id))
+      dispatch(currentResourceUpdated(resourcesData[0].id))
       }
     }, [resourcesData, dispatch])
 
-    const handleChange = event => dispatch(courtUpdated(event.target.value))
+    const handleChange = event => dispatch(currentResourceUpdated(event.target.value))
 
-    const selectedCourtIdx = resourcesData?.findIndex(resource => resource.id === court)
+    const selectedResourceIdx = resourcesData?.findIndex(resource => resource.id === currentResource)
  
     return (
           <div>
@@ -98,7 +90,7 @@ export const UserDashboard = () => {
                     <Grid item container justifyContent="center">
                         <CircularProgress />
                     </Grid>
-                ) : (bookingsData && resourcesData.length && court) ? (
+                ) : (bookingsData && resourcesData.length && currentResource) ? (
                   <Grid container
                         direction="column"
                         alignItems="center"
@@ -123,11 +115,11 @@ export const UserDashboard = () => {
                   <Grid item>
                       <form>
                         <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-label">Choose a court:</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Selection:</InputLabel>
                             <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={court}
+                            value={currentResource}
                             onChange={handleChange}
                             >
                                 {
@@ -139,29 +131,17 @@ export const UserDashboard = () => {
                       </form>
                   </Grid>
                   <Grid item>
-                        <BookDialog resourceInView={court}
-                                    calViewDate={calViewDate}
+                        <BookDialog 
                                     resources={resourcesData}
-                                    bookingDuration={bookingDuration}
-                                    bookingSelectedDate={bookingSelectedDate}
-                                    bookingSelectedResource={bookingSelectedResource}
-                                    handleBookingDurationChange={handleBookingDurationChange}
-                                    handleBookingResourceChange={handleBookingResourceChange}
-                                    handleBookingDateChange={handleBookingDateChange}
-                                    setBookingSelectedDate={setBookingSelectedDate}
-                                    setBookingDuration={setBookingDuration}
-                                    setBookingSelectedResource={setBookingSelectedResource}
                                     handleClickOpen={handleClickOpen}
                                     handleClose={handleClose} />
                   </Grid>
                   <Grid container
                         justifyContent="center">
                         <Calendars  resources={resourcesData}
-                                    selectedCourtIdx={selectedCourtIdx}
+                                    selectedResourceIdx={selectedResourceIdx}
                                     calendarsRefs={calendarsRefs}
-                                    bookings={bookingsData}
-                                    calViewDate={calViewDate}
-                                    handleDateClick={handleDateClick} />
+                                    bookings={bookingsData} />
                   </Grid>
                 </Grid>
                 ) : (!resourcesData.length) ? (

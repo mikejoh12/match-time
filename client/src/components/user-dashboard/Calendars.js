@@ -2,8 +2,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 import { SingleCalendar } from './SingleCalendar'
 
-export const Calendars = props => {
-        const resource = props.resources[props.selectedCourtIdx]
+export const Calendars = ({resources, selectedResourceIdx, bookings, calendarsRefs}) => {
+        const resource = resources[selectedResourceIdx]
     return (
         <Grid container item
         xs={8}
@@ -21,11 +21,9 @@ export const Calendars = props => {
             {resource.description}
             </Typography>
             <Grid item>
-              <SingleCalendar bookings={props.bookings}
-                              calendarsRefs={props.calendarsRefs}
-                              calViewDate={props.calViewDate}
-                              resource={resource}
-                              handleDateClick={props.handleDateClick} />
+              <SingleCalendar bookings={bookings}
+                              calendarsRefs={calendarsRefs}
+                              resource={resource} />
             </Grid>
           </Grid>
     )

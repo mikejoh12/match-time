@@ -21,6 +21,9 @@ import Grid from '@material-ui/core/Grid';
 import addMinutes from 'date-fns/addMinutes'
 import { useCreateBookingMutation } from '../../services/api';
 import { closeBookDialog, selectBookDialogOpen } from '../../features/ui/uiSlice';
+import {  selectBookingDuration, bookingDurationUpdated,
+          selectBookingDate, bookingDateUpdated,
+          selectBookingSelectedResource, bookingSelectedResourceUpdated } from '../../features/current-facility/currentFacilitySlice';
 import { useAuth } from '../../hooks/useAuth'
 
 const useStyles = makeStyles((theme) => ({
@@ -33,19 +36,25 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const BookDialog = ({    resources, bookingSelectedDate, bookingSelectedResource,
-                                bookingDuration, handleBookingDurationChange, handleBookingDateChange, handleBookingResourceChange,
+export const BookDialog = ({    resources,
                                 handleClickOpen, handleClose }) => {
   const dispatch = useDispatch();
   const bookDialogOpen = useSelector(selectBookDialogOpen)
+  const bookingDuration = useSelector(selectBookingDuration)
+  const bookingDate = new Date(useSelector(selectBookingDate))
+  const bookingSelectedResource = useSelector(selectBookingSelectedResource)
   const classes = useStyles()
   const { user } = useAuth()
 
   const [ createBooking ] = useCreateBookingMutation()
 
+  const handleBookingResourceChange = event => dispatch(bookingSelectedResourceUpdated(event.target.value))
+  const handleBookingDateChange = date => dispatch(bookingDateUpdated(date.toISOString()))
+  const handleBookingDurationChange = event => dispatch(bookingDurationUpdated(event.target.value))
+
   const handleCloseBook = async () => {
-    const endTime = addMinutes(bookingSelectedDate, bookingDuration)
-    const utcStartTime = zonedTimeToUtc(bookingSelectedDate, 'UTC').toISOString()
+    const endTime = addMinutes(bookingDate, bookingDuration)
+    const utcStartTime = zonedTimeToUtc(bookingDate, 'UTC').toISOString()
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     try {
       await createBooking({
@@ -98,13 +107,13 @@ export const BookDialog = ({    resources, bookingSelectedDate, bookingSelectedR
                   <DatePicker
                       disableToolbar
                       variant="inline"
-                      value={bookingSelectedDate}
+                      value={bookingDate}
                       onChange={handleBookingDateChange}/>
                   <KeyboardTimePicker
                       margin="normal"
                       id="time-picker"
                       label="Time"
-                      value={bookingSelectedDate}
+                      value={bookingDate}
                       onChange={handleBookingDateChange}
                       KeyboardButtonProps={{
                           'aria-label': 'change time',
