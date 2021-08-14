@@ -9,32 +9,19 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from "@material-ui/core/Grid";
-import { showSnackbar } from '../../features/ui/uiSlice';
+import { openDeleteBookingDialog } from '../../features/ui/uiSlice';
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
-import { useGetFacilitiesByUserQuery, useGetBookingsByUserQuery, useDeleteBookingMutation } from '../../services/api'
+import { useGetFacilitiesByUserQuery, useGetBookingsByUserQuery } from '../../services/api'
+import { DeleteBookingDialog } from './DeleteBookingDialog';
 
 export const Bookings = () => {
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesByUserQuery()
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserQuery()
 
-    const [ deleteBooking ] = useDeleteBookingMutation()
     const dispatch = useDispatch();
 
-    const handleDeleteClick = async event => {
-        try {
-            await deleteBooking(event.currentTarget.value).unwrap()
-            dispatch(showSnackbar({
-                message: `Booking deleted`,
-                severity: 'success'
-              }))
-        } catch(err) {
-            dispatch(showSnackbar({
-                message: err.data.error,
-                severity: 'error'
-              }))
-        }
-    }
+    const handleDeleteClick = async event => dispatch(openDeleteBookingDialog(event.currentTarget.value))
 
     return (
         <div className="App">
@@ -75,6 +62,9 @@ export const Bookings = () => {
                             No bookings found.
                         </Typography>     
                         }
+                    </Grid>
+                    <Grid item>
+                        <DeleteBookingDialog />
                     </Grid>
                 </Grid>
             ) : null}
