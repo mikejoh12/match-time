@@ -8,24 +8,20 @@ import TextField from '@material-ui/core/TextField';
 import { useCreateFacilityMutation } from '../../services/api'
 import { useDispatch } from 'react-redux';
 import { showSnackbar } from '../../features/ui/uiSlice';
+import { useForm, Controller } from "react-hook-form";
 
 export const AddFacilityDialog = () => {
   const [open, setOpen] = React.useState(false);
-  const [facilityName, setFacilityName] = React.useState('')
-  const [facilityDescription, setFacilityDescription] = React.useState('')
   const dispatch = useDispatch();
+  const { control, handleSubmit } = useForm()
 
   const [ createFacility ] = useCreateFacilityMutation()
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-  
-  const handleClose = () => {
-    setOpen(false)
-  }
+  const handleClickOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
-  const handleAddFacility = async () => {
+  const handleAddFacility = async data => {
+    const { facilityName, facilityDescription } = data
     try {
       await createFacility({
         name: facilityName,
@@ -45,41 +41,60 @@ export const AddFacilityDialog = () => {
     }
   }
 
-  const handleFacilityNameChange = event => setFacilityName(event.target.value)
-  const handleFacilityDescriptionChange = event => setFacilityDescription(event.target.value)
-
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Add a Facility
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add a Facility</DialogTitle>
-        <DialogContent>
-            <TextField
-                onChange={handleFacilityNameChange}
-                autoFocus
-                margin="dense"
-                id="facility-name"
-                label="Facility name"
-                fullWidth
+      <Dialog open={open} onClose={handleClose}>
+        <form onSubmit={handleSubmit(handleAddFacility)}>
+          <DialogTitle id="facility-form-dialog-title">Add a Facility</DialogTitle>
+          <DialogContent>
+            <Controller
+              name="facilityName"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                    autoFocus
+                    fullWidth
+                    margin="dense"
+                    label="Facility name"
+                    value={value}
+                    onChange={onChange}
+                    error={!!error}
+                    helperText={error ? error.message : null}
+                />
+              )}
+              rules={{ required: 'Facility name required' }}
+              />
+            <Controller
+              name="facilityDescription"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="Facility description"
+                    value={value}
+                    onChange={onChange}
+                    error={!!error}
+                    helperText={error ? error.message : null}
+                />
+              )}
+              rules={{ required: 'Facility description required' }}
             />
-            <TextField
-                onChange={handleFacilityDescriptionChange}
-                margin="dense"
-                id="facility-description"
-                label="Facility description"
-                fullWidth
-            />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleAddFacility} color="primary">
-            Add Facility
-          </Button>
-        </DialogActions>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button type="submit" color="primary">
+              Add Facility
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );

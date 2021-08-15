@@ -8,23 +8,20 @@ import TextField from '@material-ui/core/TextField';
 import { useCreateResourceMutation } from '../../services/api';
 import { showSnackbar } from '../../features/ui/uiSlice';
 import { useDispatch } from 'react-redux';
+import { useForm, Controller } from "react-hook-form";
 
 export const AddResourceDialog = ({facilityId}) => {
   const [open, setOpen] = React.useState(false);
-  const [resourceName, setResourceName] = React.useState('')
-  const [resourceDescription, setResourceDescription] = React.useState('')
   const dispatch = useDispatch()
+  const { control, handleSubmit } = useForm()
+  
   const [ createResource ] = useCreateResourceMutation()
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-  
-  const handleClose = () => {
-    setOpen(false)
-  }
+  const handleClickOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
-  const handleAddResource = async () => {
+  const handleAddResource = async data => {
+    const { resourceName, resourceDescription } = data
     try {
       await createResource({
           facilities_id: facilityId,
@@ -45,41 +42,60 @@ export const AddResourceDialog = ({facilityId}) => {
     }
   }
 
-  const handleResourceNameChange = event => setResourceName(event.target.value)
-  const handleResourceDescriptionChange = event => setResourceDescription(event.target.value)
-
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Add a Resource
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add a Resource</DialogTitle>
-        <DialogContent>
-            <TextField
-                onChange={handleResourceNameChange}
-                autoFocus
-                margin="dense"
-                id="resource-name"
-                label="Resource name"
-                fullWidth
+      <Dialog open={open} onClose={handleClose}>
+        <form onSubmit={handleSubmit(handleAddResource)}>
+          <DialogTitle id="resource-form-dialog-title">Add a Resource</DialogTitle>
+          <DialogContent>
+            <Controller
+              name="resourceName"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <TextField
+                    autoFocus
+                    fullWidth
+                    margin="dense"
+                    label="Resource name"
+                    value={value}
+                    onChange={onChange}
+                    error={!!error}
+                    helperText={error ? error.message : null}
+                />
+              )}
+              rules={{ required: 'Resource name required' }}
             />
-            <TextField
-                onChange={handleResourceDescriptionChange}
-                margin="dense"
-                id="resource-description"
-                label="Resource description"
-                fullWidth
+            <Controller
+              name="resourceDescription"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                  fullWidth
+                  margin="dense"
+                  label="Resource description"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+              />
+              )}
+              rules={{ required: 'Resource description required' }}
             />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleAddResource} color="primary">
-            Add Resource
-          </Button>
-        </DialogActions>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button type="submit" color="primary">
+              Add Resource
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
