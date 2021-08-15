@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DateFnsUtils from "@date-io/date-fns";
-import { zonedTimeToUtc } from 'date-fns-tz'
+import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
 import { 
     MuiPickersUtilsProvider,
     KeyboardTimePicker } from "@material-ui/pickers";
@@ -42,7 +42,7 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
   const facility = useSelector(selectFacility)
   const bookDialogOpen = useSelector(selectBookDialogOpen)
   const bookingDuration = useSelector(selectBookingDuration)
-  const bookingDate = new Date(useSelector(selectBookingDate))
+  const bookingDate = utcToZonedTime(new Date(useSelector(selectBookingDate)), 'UTC')
   const bookingSelectedResource = useSelector(selectBookingSelectedResource)
   const classes = useStyles()
   const { user } = useAuth()
