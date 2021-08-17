@@ -9,13 +9,9 @@ import {  selectCalViewDate,
           bookingSelectedResourceUpdated } from "../../features/current-facility/currentFacilitySlice"
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
 import { roundToNearestMinutes, setHours } from 'date-fns'
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers'
+import { KeyboardDatePicker } from '@material-ui/pickers'
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
@@ -94,7 +90,6 @@ export const UserDashboard = () => {
                         alignItems="center"
                         justifyContent="center">
                   <Grid item>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         disableToolbar
                         variant="inline"
@@ -108,7 +103,6 @@ export const UserDashboard = () => {
                           'aria-label': 'change date',
                         }}
                       />
-                    </MuiPickersUtilsProvider>
                   </Grid>
                   <Grid item>
                       <form>

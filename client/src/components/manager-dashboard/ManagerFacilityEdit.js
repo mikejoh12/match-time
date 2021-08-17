@@ -11,35 +11,18 @@ import { useParams } from 'react-router-dom'
 import { AddResourceDialog } from './AddResourceDialog';
 import { InviteMembersDialog } from './InviteMembersDialog';
 import { DeleteFacilityDialog } from './DeleteFacilityDialog';
-import { useGetFacilityByIdQuery } from '../../services/api'
-import { useGetResourcesByFacilityIdQuery, useDeleteResourceMutation } from '../../services/api'
+import { useGetFacilityByIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api'
 import { useDispatch } from 'react-redux';
-import { showSnackbar } from '../../features/ui/uiSlice';
+import { openDeleteResourceDialog } from '../../features/ui/uiSlice';
+import { DeleteResourceDialog } from './DeleteResourceDialog';
 
 export const ManagerFacilityEdit = () => {
     const { id } = useParams()
     const { data: facilityData, isError: facilityIsError, isLoading: facilityIsLoading } = useGetFacilityByIdQuery(id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
-    const [ deleteResource ] = useDeleteResourceMutation()
     const dispatch = useDispatch()
 
-    const handleDeleteClick = async event => {
-        try {
-            await deleteResource({
-                id,
-                resource_id: event.currentTarget.value
-            })
-            dispatch(showSnackbar({
-                message: `Resource deleted`,
-                severity: 'success'
-            }))
-        } catch (err) {
-            dispatch(showSnackbar({
-                message: err.data.error,
-                severity: 'error'
-              }))
-        }
-    }
+    const handleDeleteClick = async event => dispatch(openDeleteResourceDialog(event.currentTarget.value))
 
     return (
         <div>
@@ -96,6 +79,9 @@ export const ManagerFacilityEdit = () => {
                     </Grid>
                     <Grid item>
                         <DeleteFacilityDialog facilityId={id} />
+                    </Grid>
+                    <Grid item>
+                        <DeleteResourceDialog facilityId={id} />
                     </Grid>
                 </Grid>
             ) : null}

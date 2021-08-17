@@ -6,11 +6,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DateFnsUtils from "@date-io/date-fns";
 import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
-import { 
-    MuiPickersUtilsProvider,
-    KeyboardTimePicker } from "@material-ui/pickers";
+import { KeyboardTimePicker } from "@material-ui/pickers";
 import { DatePicker } from "@material-ui/pickers";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -52,7 +49,7 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
 
 
   const handleBookingResourceChange = event => dispatch(bookingSelectedResourceUpdated(event.target.value))
-  const handleBookingDateChange = date => dispatch(bookingDateUpdated(date.toISOString()))
+  const handleBookingDateChange = date => dispatch(bookingDateUpdated(zonedTimeToUtc(date, 'UTC').toISOString()))
   const handleBookingDurationChange = event => dispatch(bookingDurationUpdated(event.target.value))
 
   const handleCloseBook = async () => {
@@ -105,7 +102,6 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
                       }
                   </Select>
               </FormControl>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <InputLabel id="date-label">Select Date:</InputLabel>
                   <DatePicker
                       disableToolbar
@@ -116,13 +112,13 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
                       margin="normal"
                       id="time-picker"
                       label="Time"
+                      minutesStep={30}
                       value={bookingDate}
                       onChange={handleBookingDateChange}
                       KeyboardButtonProps={{
                           'aria-label': 'change time',
                       }}
                   />
-              </MuiPickersUtilsProvider>
               <InputLabel id="court-label">Duration:</InputLabel>
                   <Select
                   labelId="demo-simple-select-label"
