@@ -151,7 +151,7 @@ export const UserRegisterForm = ({ handleClose }) => {
         rules={{  required: 'Password required',
                   minLength: { value: 6, message: "Password needs to be minimum 6 characters." },
                   validate: value =>
-                  value === password.current || 'The passwords do not match'
+                    value === password.current || 'The passwords do not match'
                 }}
       />
       <div>

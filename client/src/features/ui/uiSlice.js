@@ -10,7 +10,8 @@ const initialState = {
     deleteBookingDialogOpen: false,
     bookingIdToDelete: null,
     deleteResourceDialogOpen: false,
-    resourceIdToDelete: null
+    resourceIdToDelete: null,
+    inviteMemberDialogOpen: false
 }
 
 export const uiSlice = createSlice({
@@ -45,13 +46,20 @@ export const uiSlice = createSlice({
       closeDeleteResourceDialog(state, action) {
             state.deleteResourceDialogOpen = false
             state.resourceIdToDelete = null
+      },
+      openInviteMemberDialog(state, action) {
+            state.inviteMemberDialogOpen = true
+      },
+      closeInviteMemberDialog(state, action) {
+            state.inviteMemberDialogOpen = false
       }
     }
 })
 
 export const {    showSnackbar, clearSnackbar, openBookDialog, closeBookDialog,
                   openDeleteBookingDialog, closeDeleteBookingDialog,
-                  closeDeleteResourceDialog, openDeleteResourceDialog } = uiSlice.actions
+                  openDeleteResourceDialog, closeDeleteResourceDialog,
+                  openInviteMemberDialog, closeInviteMemberDialog } = uiSlice.actions
 
 export const selectSnackBarOpen = state => state.ui.snackbarOpen
 export const selectSnackbarMessage = state => state.ui.snackbarMessage
@@ -60,5 +68,5 @@ export const selectDeleteBookingDialogOpen = state => state.ui.deleteBookingDial
 export const selectBookingIdToDelete = state => state.ui.bookingIdToDelete
 export const selectDeleteResourceDialogOpen = state => state.ui.deleteResourceDialogOpen
 export const selectResourceIdToDelete = state => state.ui.resourceIdToDelete
-
+export const selectInviteMemberDialogOpen = state => state.ui.inviteMemberDialogOpen
 export default uiSlice.reducer

@@ -114,6 +114,13 @@ export const api = createApi({
       }),
       invalidatesTags: ['Bookings'],
     }),
+    inviteUser: build.mutation({
+      query: (body) => ({
+        url: `auth/invite`,
+        method: 'POST',
+        body,
+      }),
+    }),
   })
 })
 
@@ -129,4 +136,5 @@ export const {  useLoginMutation,
                 useCreateBookingMutation,
                 useDeleteBookingMutation,
                 useCreateFacilityMutation,
-                useDeleteFacilityMutation } = api
+                useDeleteFacilityMutation,
+                useInviteUserMutation } = api

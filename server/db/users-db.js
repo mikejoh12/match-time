@@ -44,9 +44,18 @@ const removeFacilityManagerDb = async id => {
     return res.rows
 }
 
+const createFacilityMemberDb = async ({facilityId, userId}) => {
+    const text = `INSERT INTO users_facilities(users_id, facilities_id, is_admin)
+                  VALUES($1, $2, false)`
+    const values = [userId, facilityId]
+    const res = await pool.query(text, values)
+    return res.rows[0]
+}
+
 module.exports = {  fetchUserByEmailDb,
                     fetchUserByIdDb,
                     createUserDb,
                     createFacilityManagerDb,
                     fetchManagerByIdDb,
-                    removeFacilityManagerDb }
+                    removeFacilityManagerDb,
+                    createFacilityMemberDb }

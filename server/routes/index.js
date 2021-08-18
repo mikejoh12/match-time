@@ -2,7 +2,7 @@ const passport = require('passport')
 const Router = require('express-promise-router')
 
 const { getFacilityInfo, postFacility, getFacilitesByUser, deleteFacility } = require('../controllers/facilities-controller.js')
-const { signUpUser, loginUser } = require('../controllers/auth-controller.js')
+const { signUpUser, loginUser, inviteUser } = require('../controllers/auth-controller.js')
 const { getBookingsByFacility, getBookingsByUser, postBooking, deleteBooking } = require('../controllers/bookings-controller.js')
 const { validateGetFacilityInfo,
         validatePostFacility,
@@ -31,6 +31,7 @@ router
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
     .post('/auth/login', validateLoginUser, loginUser)
+    .post('/auth/invite', inviteUser)
 
     .get('/bookings/by_facility/:id', validateGetBookings, passport.authenticate('jwt-customer', {session: false}), getBookingsByFacility)
     .get('/bookings/by_user', passport.authenticate('jwt-customer', {session: false}), getBookingsByUser)

@@ -1,7 +1,17 @@
-const { fetchUserByEmail, createUser } = require('../services/users-service')
+const { fetchUserByEmail, createUser, createFacilityMember } = require('../services/users-service')
 const { getPwdHash } = require('../services/auth-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
+let transport = nodemailer.createTransport({
+    host: 'smtp.mailtrap.io',
+    port: 2525,
+    auth: {
+       user: process.env.MAIL_USER,
+       pass: process.env.MAIL_PASS
+    }
+});
 
 const signUpUser = async (req, res, next) => {
     const { email, first_name, last_name, password } = req.body
@@ -61,4 +71,31 @@ const loginUser = async (req, res, next) => {
     )(req, res, next);
 }
 
-module.exports = { signUpUser, loginUser }
+const inviteUser = async (req, res, next) => {
+    const { email: sendEmail, facilityId } = req.body;
+    const user = await fetchUserByEmail(sendEmail)
+    if (!user) {
+        return res.status(422).json({error: "No user associated with email"})
+    }
+    await createFacilityMember({
+        userId: user.id,
+        facilityId
+    })
+    const message = {
+        from: 'mike@calendar-booking.com', // Sender address
+        to: sendEmail,         // List of recipients
+        subject: 'You are invited to join our club', // Subject line
+        text: 'Click this link to join.' // Plain text body
+    };
+    transport.sendMail(message, function(err, info) {
+        if (err) {
+          console.log(err)
+          res.send(err)
+        } else {
+          res.json(info)
+        }
+    });
+
+}
+
+module.exports = { signUpUser, loginUser, inviteUser }

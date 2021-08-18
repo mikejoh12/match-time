@@ -75,7 +75,7 @@ export const ManagerFacilityEdit = () => {
                         <AddResourceDialog facilityId={id} />
                     </Grid>
                     <Grid item>
-                        <InviteMembersDialog />
+                        <InviteMembersDialog facilityId={id} />
                     </Grid>
                     <Grid item>
                         <DeleteFacilityDialog facilityId={id} />

@@ -1,4 +1,9 @@
-const { fetchUserByEmailDb, fetchUserByIdDb, createUserDb, fetchManagerByIdDb } = require('../db/users-db')
+const { fetchUserByEmailDb,
+        fetchUserByIdDb,
+        createUserDb,
+        fetchManagerByIdDb,
+        createFacilityMemberDb }
+        = require('../db/users-db')
 
 const fetchUserByEmail = async email => await fetchUserByEmailDb(email)
 
@@ -8,4 +13,14 @@ const createUser = async user => await createUserDb(user)
 
 const fetchManagerById = async (facilityId, userId) => await fetchManagerByIdDb(facilityId, userId)
 
-module.exports = { fetchUserByEmail, fetchUserById, createUser, fetchManagerById }
+const createFacilityMember = async ({userId, facilityId}) => {
+    return await createFacilityMemberDb({
+        userId,
+        facilityId
+    })
+}
+module.exports = {  fetchUserByEmail,
+                    fetchUserById,
+                    createUser,
+                    fetchManagerById,
+                    createFacilityMember }
