@@ -12,7 +12,7 @@ export const api = createApi({
         return headers
       },  
     }),
-  tagTypes: ['Facilities', 'currentFacility','Resources', 'Bookings', 'User'],
+  tagTypes: ['Facilities', 'currentFacility','Resources', 'Bookings', 'User', 'FacilityUsers'],
 
   endpoints: (build) => ({
 
@@ -115,11 +115,16 @@ export const api = createApi({
       invalidatesTags: ['Bookings'],
     }),
     inviteUser: build.mutation({
-      query: (body) => ({
-        url: `auth/invite`,
+      query: ({inviteEmail, facilityId}) => ({
+        url: `auth/invite/${facilityId}`,
         method: 'POST',
-        body,
+        body : { inviteEmail },
       }),
+      invalidatesTags: ['FacilityUsers'],
+    }),
+    getUsersByFacilityId: build.query({
+      query: (facilityId) => `users/by_facility/${facilityId}`,
+      providesTags: ['FacilityUsers']
     }),
   })
 })
@@ -137,4 +142,5 @@ export const {  useLoginMutation,
                 useDeleteBookingMutation,
                 useCreateFacilityMutation,
                 useDeleteFacilityMutation,
-                useInviteUserMutation } = api
+                useInviteUserMutation,
+                useGetUsersByFacilityIdQuery } = api

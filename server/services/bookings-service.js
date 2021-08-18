@@ -16,7 +16,7 @@ const checkConflictBooking = async booking => await checkConflictBookingDb(booki
 
 const createBooking = async booking => await createBookingDb(booking)
 
-const removeBooking = async id => await removeBookingDb(id)
+const removeBooking = async bookingId => await removeBookingDb(bookingId)
 
 module.exports = {  fetchBookingsByFacility,
                     fetchBookingsByUser,

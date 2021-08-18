@@ -2,20 +2,20 @@ const { fetchResources, createResource, removeResource, resourceBelongsToFacilit
 const { fetchFacilityInfo } = require('../services/facilities-service')
 
 const getResources = async (req, res) => {
-    const { id } = req.params
-    const facilityInfo = await fetchFacilityInfo(id);
+    const { facilityId } = req.params
+    const facilityInfo = await fetchFacilityInfo(facilityId);
     if (!facilityInfo) {
         return res.status(422).json({error: "Invalid facility id."})
     }
-    const resources = await fetchResources(id)
+    const resources = await fetchResources(facilityId)
     res.status(200).json(resources)
 }
 
 const postResource = async (req, res) => {
-    const { id: facilities_id } = req.params
+    const { facilityId } = req.params
     const { name, description } = req.body
     const newResource = await createResource({
-                                facilities_id,
+                                facilityId,
                                 name,
                                 description
                             })
@@ -23,12 +23,12 @@ const postResource = async (req, res) => {
 }
 
 const deleteResource = async (req, res) => {
-    const { id: facility_id, resource_id } = req.params
-    const resource = await resourceBelongsToFacility(facility_id, resource_id)
+    const { facilityId, resourceId } = req.params
+    const resource = await resourceBelongsToFacility({ facilityId, resourceId })
     if (!resource) {
         return res.status(401).json({error: "Resource does not belong to facility."})
     }
-    await removeResource(resource_id)
+    await removeResource(resourceId)
     res.status(204).send()
 }
 

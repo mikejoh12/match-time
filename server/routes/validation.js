@@ -10,7 +10,7 @@ const validateGetFacilitiesByUser = [
     }]
 
 const validateGetFacilityInfo = [
-    param('id').isInt(),
+    param('facilityId').isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -29,7 +29,7 @@ const validatePostFacility = [
     }]
 
 const validateDeleteFacility = [
-    param('id').isInt(),
+    param('facilityId').isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -38,7 +38,7 @@ const validateDeleteFacility = [
     }]
 
 const validateGetResources = [
-    param('id').isInt(),
+    param('facilityId').isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -47,8 +47,8 @@ const validateGetResources = [
     }]
 
 const validateDeleteResource = [
-    param('id').not().isEmpty().isInt(),
-    param('resource_id').not().isEmpty().isInt(),
+    param('facilityId').not().isEmpty().isInt(),
+    param('resourceId').not().isEmpty().isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -57,7 +57,7 @@ const validateDeleteResource = [
     }]
 
 const validatePostResource = [
-    param('id').isInt(),
+    param('facilityId').isInt(),
     check('name').not().isEmpty(),
     check('description').not().isEmpty(),
     (req, res, next) => {
@@ -68,8 +68,8 @@ const validatePostResource = [
     }]
 
 const validateSignUpUser = [
-    check('first_name').not().isEmpty().isLength({max: 100}),
-    check('last_name').not().isEmpty().isLength({max: 100}),
+    check('firstName').not().isEmpty().isLength({max: 100}),
+    check('lastName').not().isEmpty().isLength({max: 100}),
     check('password').not().isEmpty().isLength({min: 6, max: 100}),
     check('email').not().isEmpty().isEmail().isLength({max: 100}),
     (req, res, next) => {
@@ -90,7 +90,7 @@ const validateLoginUser = [
     }]
 
 const validateGetBookings = [
-    param('id').isInt(),
+    param('facilityId').isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -99,10 +99,10 @@ const validateGetBookings = [
     }]
 
 const validatePostBooking = [
-    check('resources_id').not().isEmpty().isInt(),
-    check('organizer_id').not().isEmpty().isInt(),
-    check('start_time').not().isEmpty().isLength({max: 100}),
-    check('end_time').not().isEmpty().isLength({max: 100}),
+    check('resourceId').not().isEmpty().isInt(),
+    check('organizerId').not().isEmpty().isInt(),
+    check('startTime').not().isEmpty().isLength({max: 100}),
+    check('endTime').not().isEmpty().isLength({max: 100}),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -111,12 +111,22 @@ const validatePostBooking = [
     }]
 
 const validateDeleteBooking = [
-    param('id').isInt(),
+    param('bookingId').isInt(),
     (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() })
         } else next()
+    }]
+
+const validateInvite = [
+    param('facilityId').isInt(),
+    check('email').not().isEmpty().isEmail(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() })
+        } else next();
     }]
 
 module.exports = {

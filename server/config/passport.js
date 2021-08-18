@@ -48,7 +48,7 @@ passport.use(
         passReqToCallback: true
       },
       async (req, token, done) => {
-        const  { id: facilityId } = req.params
+        const  { facilityId } = req.params
         const { id: userId } = token.user
         const facilityManager = await fetchManagerById(facilityId, userId)
         // If user is not manager of facility - don't allow access

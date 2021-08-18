@@ -16,12 +16,12 @@ const createFacility = async (facility, userId) => {
     return newFacility
 }
 
-const removeFacility = async id => {
-    const resourceIds = (await fetchResources(id)).map(resource => resource.id)
+const removeFacility = async facilityId => {
+    const resourceIds = (await fetchResources(facilityId)).map(resource => resource.id)
     // Remove all resources and associated bookings from a facility before deleting it
-    await Promise.all(resourceIds.map(async id => await removeResource(id)))
-    await removeFacilityManagerDb(id)
-    return await removeFacilityDb(id)
+    await Promise.all(resourceIds.map(async resourceId => await removeResource(resourceId)))
+    await removeFacilityManagerDb(facilityId)
+    return await removeFacilityDb(facilityId)
 }
 
 module.exports = {  fetchFacilitiesByUser,

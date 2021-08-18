@@ -12,10 +12,10 @@ const fetchUserByIdDb = async id => {
     return res.rows[0]
 }
 
-const createUserDb = async ({email, first_name, last_name, pwd_hash, user_role}) => {
+const createUserDb = async ({email, firstName, lastName, pwdHash, userRole}) => {
     const text = `INSERT INTO users(email, first_name, last_name, pwd_hash, user_role)
                   VALUES($1, $2, $3, $4, $5) RETURNING *`
-    const values = [email, first_name, last_name, pwd_hash, user_role]
+    const values = [email, firstName, lastName, pwdHash, userRole]
     const res = await pool.query(text, values)
     return res.rows[0]
 }
@@ -37,9 +37,9 @@ const fetchManagerByIdDb = async (facilityId, userId) => {
     return res.rows[0]
 }
 
-const removeFacilityManagerDb = async id => {
+const removeFacilityManagerDb = async facilityId => {
     const res = await pool.query(
-        `DELETE FROM users_facilities WHERE facilities_id = $1`, [id]
+        `DELETE FROM users_facilities WHERE facilities_id = $1`, [facilityId]
     )
     return res.rows
 }
@@ -52,10 +52,19 @@ const createFacilityMemberDb = async ({facilityId, userId}) => {
     return res.rows[0]
 }
 
+const fetchMembersByFacilityIdDb = async facilityId => {
+    const res = await pool.query(`SELECT id, email, first_name, last_name, active
+                                  FROM users 
+                                  INNER JOIN users_facilities ON users.id = users_facilities.users_id
+                                  WHERE facilities_id = $1`, [facilityId])
+    return res.rows
+}
+
 module.exports = {  fetchUserByEmailDb,
                     fetchUserByIdDb,
                     createUserDb,
                     createFacilityManagerDb,
                     fetchManagerByIdDb,
                     removeFacilityManagerDb,
-                    createFacilityMemberDb }
+                    createFacilityMemberDb,
+                    fetchMembersByFacilityIdDb }

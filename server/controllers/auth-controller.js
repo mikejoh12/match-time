@@ -14,7 +14,7 @@ let transport = nodemailer.createTransport({
 });
 
 const signUpUser = async (req, res, next) => {
-    const { email, first_name, last_name, password } = req.body
+    const { email, firstName, lastName, password } = req.body
 
     //Check if active user with this email exists
     const userDb = await fetchUserByEmail(email)  
@@ -22,13 +22,13 @@ const signUpUser = async (req, res, next) => {
         return res.status(422).json({error:"User with this email already exists."})
     }
 
-    const pwd_hash = await getPwdHash(password)
+    const pwdHash = await getPwdHash(password)
     const user = {
         email,
-        first_name,
-        last_name,
-        pwd_hash,
-        user_role: "customer"
+        firstName,
+        lastName,
+        pwdHash,
+        userRole: "customer"
     }
     const newUser = await createUser(user)
     res.status(201).json({users_id: newUser.id})
@@ -72,8 +72,9 @@ const loginUser = async (req, res, next) => {
 }
 
 const inviteUser = async (req, res, next) => {
-    const { email: sendEmail, facilityId } = req.body;
-    const user = await fetchUserByEmail(sendEmail)
+    const { inviteEmail } = req.body;
+    const { facilityId } = req.params;
+    const user = await fetchUserByEmail(inviteEmail)
     if (!user) {
         return res.status(422).json({error: "No user associated with email"})
     }
@@ -82,17 +83,17 @@ const inviteUser = async (req, res, next) => {
         facilityId
     })
     const message = {
-        from: 'mike@calendar-booking.com', // Sender address
-        to: sendEmail,         // List of recipients
-        subject: 'You are invited to join our club', // Subject line
-        text: 'Click this link to join.' // Plain text body
+        from: 'mike@calendar-booking.com',
+        to: inviteEmail,
+        subject: 'You are invited to join our club',
+        text: 'Click this link to join.'
     };
     transport.sendMail(message, function(err, info) {
         if (err) {
           console.log(err)
           res.send(err)
         } else {
-          res.json(info)
+          res.status(200).json(info)
         }
     });
 

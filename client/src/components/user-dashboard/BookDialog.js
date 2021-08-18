@@ -58,10 +58,10 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
     const utcEndTime = zonedTimeToUtc(endTime, 'UTC').toISOString()
     try {
       await createBooking({
-        resources_id: bookingSelectedResource,
-        organizer_id: user.id,
-        start_time: utcStartTime,
-        end_time: utcEndTime
+        resourceId: bookingSelectedResource,
+        organizerId: user.id,
+        startTime: utcStartTime,
+        endTime: utcEndTime
       }).unwrap()
       dispatch(showSnackbar({
         message: `Booking created successfully`,

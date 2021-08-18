@@ -2,13 +2,13 @@ const { fetchFacilityInfo } = require('../services/facilities-service.js')
 const { fetchBookingsByFacility, fetchBookingsByUser, checkConflictBooking, createBooking, removeBooking, fetchBookingById } = require('../services/bookings-service.js')
 
 const getBookingsByFacility = async (req, res) => {
-    const { id } = req.params
-    const facilityInfo = await fetchFacilityInfo(id)
+    const { facilityId } = req.params
+    const facilityInfo = await fetchFacilityInfo(facilityId)
     if (!facilityInfo) {
         return res.status(422).json({error: "Invalid facility id."})
     }
 
-    const bookings = await fetchBookingsByFacility(id)
+    const bookings = await fetchBookingsByFacility(facilityId)
     res.status(200).json(bookings)
 }
 
@@ -19,12 +19,12 @@ const getBookingsByUser = async (req, res) => {
 }
 
 const postBooking = async (req, res, next) => {
-    const { resources_id, organizer_id, start_time, end_time } = req.body
+    const { resourceId, organizerId, startTime, endTime } = req.body
     const booking = {
-        resources_id,
-        organizer_id,
-        start_time,
-        end_time
+        resourceId,
+        organizerId,
+        startTime,
+        endTime
     }
     const conflictBookings = await checkConflictBooking(booking)
     if (conflictBookings.length) {
@@ -35,12 +35,12 @@ const postBooking = async (req, res, next) => {
 }
 
 const deleteBooking = async (req, res) => {
-    const { id } = req.params
-    const booking = await fetchBookingById(id)
+    const { bookingId } = req.params
+    const booking = await fetchBookingById(bookingId)
     if (!booking) {
         return res.status(422).json({error: "Invalid booking id."})
     }
-    await removeBooking(id)
+    await removeBooking(bookingId)
     res.status(204).send()
 }
 

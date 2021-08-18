@@ -27,28 +27,28 @@ const fetchBookingsByUserDb = async id => {
 // 1. Booking starts before scheduled booking and ends after
 // 2. Start of booking is within time of existing booking
 // 3. End of booking is within time of existing booking
-const checkConflictBookingDb = async ({resources_id, organizer_id, start_time, end_time}) => {
+const checkConflictBookingDb = async ({ resourceId, startTime, endTime }) => {
     const text =    `SELECT * FROM bookings
                     WHERE resources_id = $1 AND (
                     ($2 < start_time AND $3 > end_time) OR
                     ($2 >= start_time AND $2 < end_time) OR
                     ($3 > start_time AND $3 <= end_time)
                     )` 
-    const values = [resources_id, start_time, end_time]
+    const values = [resourceId, startTime, endTime]
     const res = await pool.query(text, values)
     return res.rows
 }
 
-const createBookingDb = async ({resources_id, organizer_id, start_time, end_time}) => {
+const createBookingDb = async ({resourceId, organizerId, startTime, endTime}) => {
     const text = `INSERT INTO bookings(resources_id, organizer_id, start_time, end_time)
                   VALUES($1, $2, $3, $4) RETURNING *`
-    const values = [resources_id, organizer_id, start_time, end_time]
+    const values = [resourceId, organizerId, startTime, endTime]
     const res = await pool.query(text, values)
     return res.rows[0]
 }
 
-const removeBookingDb = async id => {
-    const res = await pool.query('DELETE FROM bookings WHERE id = $1', [id])
+const removeBookingDb = async bookingId => {
+    const res = await pool.query('DELETE FROM bookings WHERE id = $1', [bookingId])
     return res.rows
 }
 

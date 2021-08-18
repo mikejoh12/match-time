@@ -24,7 +24,7 @@ export const Bookings = () => {
     const handleDeleteClick = async event => dispatch(openDeleteBookingDialog(event.currentTarget.value))
 
     return (
-        <div className="App">
+        <div>
             {facilitiesIsError || bookingsIsError? (
             <>Oh no, there was an error</>
             ) : facilitiesIsLoading || bookingsIsLoading? (

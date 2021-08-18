@@ -35,8 +35,8 @@ export const InviteMembersDialog = ({facilityId}) => {
   const dispatch = useDispatch()
   
   const { control, handleSubmit, watch } = useForm()
-  const email = useRef({})
-  email.current = watch("email", "")
+  const inviteEmail = useRef({})
+  inviteEmail.current = watch("inviteEmail", "")
 
   const handleClickOpen = () => dispatch(openInviteMemberDialog())
   const handleClose = () => dispatch(closeInviteMemberDialog())
@@ -44,9 +44,9 @@ export const InviteMembersDialog = ({facilityId}) => {
   const [ inviteUser ] = useInviteUserMutation()
 
   const handleInvite = async data => {
-    const { email } = data
+    const { inviteEmail } = data
     try {
-      const res = await inviteUser({email, facilityId}).unwrap()
+      const res = await inviteUser({inviteEmail, facilityId}).unwrap()
       dispatch(showSnackbar({
         message: `User invited. Email sent to: ${res.accepted}`,
         severity: 'success'
@@ -71,7 +71,7 @@ export const InviteMembersDialog = ({facilityId}) => {
         <DialogTitle id="form-dialog-title">Invite Member:</DialogTitle>
         
         <Controller
-          name="email"
+          name="inviteEmail"
           control={control}
           defaultValue=""
           render={({ field: { onChange, value }, fieldState: { error } }) => (
@@ -105,7 +105,7 @@ export const InviteMembersDialog = ({facilityId}) => {
         )}
         rules={{  required: 'Email required',
                   validate: value =>
-                    value === email.current || 'The emails do not match'
+                    value === inviteEmail.current || 'The emails do not match'
               }}
         />  
 

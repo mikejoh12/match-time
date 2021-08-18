@@ -1,5 +1,4 @@
 const { fetchFacilitiesByUser, fetchFacilityInfo, createFacility, removeFacility } = require('../services/facilities-service.js')
-const { fetchManagerById } = require('../services/users-service.js')
 
 const getFacilitesByUser = async (req, res) => {
     const { id } = req.user
@@ -8,8 +7,8 @@ const getFacilitesByUser = async (req, res) => {
 }
 
 const getFacilityInfo = async (req, res) => {
-    const { id } = req.params
-    const facilityInfo = await fetchFacilityInfo(id);
+    const { facilityId } = req.params
+    const facilityInfo = await fetchFacilityInfo(facilityId);
     if (!facilityInfo) {
         return res.status(422).json({error: "Invalid facility id."})
     }
@@ -28,7 +27,7 @@ const postFacility = async (req, res) => {
 }
 
 const deleteFacility = async (req, res) => {
-    const { id: facilityId } = req.params
+    const { facilityId } = req.params
     await removeFacility(facilityId)
     res.status(204).send()
 }
