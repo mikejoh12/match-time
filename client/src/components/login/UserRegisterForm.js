@@ -41,8 +41,8 @@ export const UserRegisterForm = ({ handleClose }) => {
     try {
       await createUser({
         email,
-        first_name: firstName,
-        last_name: lastName,
+        firstName,
+        lastName,
         password
       }).unwrap()
       const user = await login({email, password}).unwrap()
