@@ -1,5 +1,5 @@
 const { fetchUserByEmail, createUser, createFacilityMember } = require('../services/users-service')
-const { getPwdHash } = require('../services/auth-service')
+const { getPwdHash, createUnregisteredFacilityInvitation } = require('../services/auth-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -31,6 +31,7 @@ const signUpUser = async (req, res, next) => {
         userRole: "customer"
     }
     const newUser = await createUser(user)
+
     res.status(201).json({users_id: newUser.id})
 }
 
@@ -76,7 +77,13 @@ const inviteUser = async (req, res, next) => {
     const { facilityId } = req.params;
     const user = await fetchUserByEmail(inviteEmail)
     if (!user) {
-        return res.status(422).json({error: "No user associated with email"})
+        // If there is no current user with the email, add the email and facility_id to invitations table in db.
+        // When the user later registers, the user will become a member of the associated facility.
+        await createUnregisteredFacilityInvitation({
+                email: inviteEmail,
+                facilityId
+            })
+        return res.status(200).json({message: 'Email address is not registered. Added invitation to facility so that user has access to it upon registration.'})
     }
     await createFacilityMember({
         userId: user.id,

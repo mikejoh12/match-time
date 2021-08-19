@@ -46,9 +46,9 @@ export const InviteMembersDialog = ({facilityId}) => {
   const handleInvite = async data => {
     const { inviteEmail } = data
     try {
-      const res = await inviteUser({inviteEmail, facilityId}).unwrap()
+      await inviteUser({inviteEmail, facilityId}).unwrap()
       dispatch(showSnackbar({
-        message: `User invited. Email sent to: ${res.accepted}`,
+        message: `User invited. Email sent to: ${inviteEmail}`,
         severity: 'success'
       }))
     } catch (err) {

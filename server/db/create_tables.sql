@@ -5,7 +5,7 @@ CREATE TABLE "users" (
   "last_name" varchar(100) NOT NULL,
   "pwd_hash" varchar(100),
   "date_joined" timestamp DEFAULT (now()),
-  "active" boolean DEFAULT true,
+  "active" boolean DEFAULT FALSE,
   "user_role" varchar(100)
 );
 
@@ -36,6 +36,12 @@ CREATE TABLE "users_facilities" (
   "is_admin" boolean NOT NULL
 );
 
+CREATE TABLE "invitations" (
+  "email" varchar(100) NOT NULL,
+  "facilities_id" int,
+  PRIMARY KEY("email", "facilities_id")
+)
+
 ALTER TABLE "resources" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
 
 ALTER TABLE "bookings" ADD FOREIGN KEY ("resources_id") REFERENCES "resources" ("id");
@@ -45,3 +51,5 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("organizer_id") REFERENCES "users" ("id"
 ALTER TABLE "users_facilities" ADD FOREIGN KEY ("users_id") REFERENCES "users" ("id");
 
 ALTER TABLE "users_facilities" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
+
+ALTER TABLE "invitations" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
