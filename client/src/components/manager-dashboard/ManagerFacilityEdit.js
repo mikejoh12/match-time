@@ -76,7 +76,7 @@ export const ManagerFacilityEdit = () => {
                     </Grid>
 
                     <Button variant="outlined" color="primary" onClick={handleMembersClick}>
-                        Facility Members
+                        Members / Invitations
                     </Button>
 
                     <Grid item>

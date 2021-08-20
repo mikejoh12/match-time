@@ -10,7 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useParams } from 'react-router-dom'
-import { useGetUsersByFacilityIdQuery } from '../../services/api';
+import { useGetInvitationsByFacilityIdQuery, useGetUsersByFacilityIdQuery } from '../../services/api';
 
 const useStyles = makeStyles({
     root: {
@@ -29,16 +29,18 @@ export const FacilityMemberList = () => {
     const { id } = useParams()
     const classes = useStyles()
 
-    const { data: usersData, isError, isLoading } = useGetUsersByFacilityIdQuery(id)
+    const { data: usersData, isError: usersIsError, isLoading: usersIsLoading } = useGetUsersByFacilityIdQuery(id)
+    const { data: invitesData, isError: invitesIsError, isLoading: invitesIsLoading } = useGetInvitationsByFacilityIdQuery(id)
+
     return (
         <div>
-            {isError? (
+            {usersIsError || invitesIsError? (
             <>Oh no, there was an error</>
-            ) : isLoading? (
+            ) : usersIsLoading || invitesIsLoading? (
                 <Grid item container justifyContent="center">
                     <CircularProgress />
                 </Grid>
-            ) : usersData? (
+            ) : usersData && invitesData? (
                 <Grid
                 container
                 justifyContent="center"
@@ -63,6 +65,30 @@ export const FacilityMemberList = () => {
                                     </TableCell>
                                     <TableCell align="right">{user.email}</TableCell>
                                     <TableCell align="right">{user.first_name} {user.last_name}</TableCell>
+                                    </TableRow>
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        :
+                        <Typography variant="h5" >
+                            No users found.
+                        </Typography>     
+                        }
+                    </Grid>
+                    <Grid item xs={12} md={6} className={classes.root}>
+                        { invitesData.length ?
+                            <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="simple table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">Email</TableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {invitesData.map((invite) => (
+                                    <TableRow key={`${invite.email}-${invite.facilities_id}`}>
+                                    <TableCell align="center">{invite.email}</TableCell>
                                     </TableRow>
                                 ))}
                                 </TableBody>

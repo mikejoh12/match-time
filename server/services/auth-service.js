@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 
-const { createUnregisteredFacilityInvitationDb } = require('../db/auth-db')
+const { createUnregisteredFacilityInvitationDb, fetchInvitationsByFacilityIdDb } = require('../db/auth-db')
 
 const getPwdHash = async pwd => {
     const hash = await bcrypt.hash(pwd, 10)
@@ -9,7 +9,10 @@ const getPwdHash = async pwd => {
 
 const createUnregisteredFacilityInvitation = invitation => createUnregisteredFacilityInvitationDb(invitation)
 
+const fetchInvitationsByFacilityId = facilityId => fetchInvitationsByFacilityIdDb(facilityId);
+
 module.exports = {
   getPwdHash,
-  createUnregisteredFacilityInvitation
+  createUnregisteredFacilityInvitation,
+  fetchInvitationsByFacilityId
 }

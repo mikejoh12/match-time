@@ -1,5 +1,6 @@
 const { fetchUserByEmail, createUser, createFacilityMember } = require('../services/users-service')
-const { getPwdHash, createUnregisteredFacilityInvitation } = require('../services/auth-service')
+const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId } = require('../services/auth-service')
+const { fetchFacilityInfo } = require('../services/facilities-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -75,7 +76,12 @@ const loginUser = async (req, res, next) => {
 const inviteUser = async (req, res, next) => {
     const { inviteEmail } = req.body;
     const { facilityId } = req.params;
+    const facilityInfo = await fetchFacilityInfo(facilityId)
+    if (!facilityInfo) {
+        return res.status(422).json({error: "Invalid facility id."})
+    }
     const user = await fetchUserByEmail(inviteEmail)
+    
     if (!user) {
         // If there is no current user with the email, add the email and facility_id to invitations table in db.
         // When the user later registers, the user will become a member of the associated facility.
@@ -83,27 +89,34 @@ const inviteUser = async (req, res, next) => {
                 email: inviteEmail,
                 facilityId
             })
+
+        let info = await transport.sendMail({
+            from: 'mike@calendar-booking.com',
+            to: inviteEmail,
+            subject: `You are invited to our club: ${facilityInfo.name}`,
+            text: `Go to http://calendar-booking.com/${facilityId} and create an account with Calendar-Booking to access the club scheduling features.`
+            })
+        console.log(`Message sent: ${info.messageId}`);
+
         return res.status(200).json({message: 'Email address is not registered. Added invitation to facility so that user has access to it upon registration.'})
     }
+    
     await createFacilityMember({
         userId: user.id,
         facilityId
     })
-    const message = {
-        from: 'mike@calendar-booking.com',
-        to: inviteEmail,
-        subject: 'You are invited to join our club',
-        text: 'Click this link to join.'
-    };
-    transport.sendMail(message, function(err, info) {
-        if (err) {
-          console.log(err)
-          res.send(err)
-        } else {
-          res.status(200).json(info)
-        }
-    });
-
+    return res.status(200).json({message: `User has been invited to the facility: ${facilityInfo.name}`})
 }
 
-module.exports = { signUpUser, loginUser, inviteUser }
+const getInvitationsByFacilityId = async (req, res) => {
+    const { facilityId } = req.params
+    const facilityInfo = await fetchFacilityInfo(facilityId)
+    if (!facilityInfo) {
+        return res.status(422).json({error: "Invalid facility id."})
+    }
+
+    const invitations = await fetchInvitationsByFacilityId(facilityId)
+    res.status(200).json(invitations)
+}
+
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId }

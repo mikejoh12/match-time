@@ -48,12 +48,12 @@ export const InviteMembersDialog = ({facilityId}) => {
     try {
       await inviteUser({inviteEmail, facilityId}).unwrap()
       dispatch(showSnackbar({
-        message: `User invited. Email sent to: ${inviteEmail}`,
+        message: `User invited: ${inviteEmail}`,
         severity: 'success'
       }))
     } catch (err) {
       dispatch(showSnackbar({
-        message: 'There was a problem sending email invite.',
+        message: 'There was a problem inviting the user to the facility.',
         severity: 'error'
       }))
     } finally {
@@ -64,7 +64,7 @@ export const InviteMembersDialog = ({facilityId}) => {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Invite Member
+        Invite New Member
       </Button>
       <Dialog open={inviteMemberDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
         <form className={classes.root} onSubmit={handleSubmit(handleInvite)}>

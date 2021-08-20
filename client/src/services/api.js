@@ -126,6 +126,10 @@ export const api = createApi({
       query: (facilityId) => `users/by_facility/${facilityId}`,
       providesTags: ['FacilityUsers']
     }),
+    getInvitationsByFacilityId: build.query({
+      query: (facilityId) => `auth/invite/${facilityId}`,
+      providesTags: ['FacilityUsers']
+    }),
   })
 })
 
@@ -143,4 +147,5 @@ export const {  useLoginMutation,
                 useCreateFacilityMutation,
                 useDeleteFacilityMutation,
                 useInviteUserMutation,
-                useGetUsersByFacilityIdQuery } = api
+                useGetUsersByFacilityIdQuery,
+                useGetInvitationsByFacilityIdQuery } = api

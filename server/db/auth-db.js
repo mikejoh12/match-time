@@ -15,9 +15,16 @@ const removeUnregisteredFacilityInvitationDb = async ({email, facilityId}) => {
     return res.rows
 }
 
-const getUnregisteredFacilityInvitationsDb = async (email) => {
+const fetchInvitationsByEmailDb = async (email) => {
     const text = `SELECT * FROM invitations WHERE email = $1`
     const values = [email]
+    const res = await pool.query(text, values)
+    return res.rows
+}
+
+const fetchInvitationsByFacilityIdDb = async (facilityId) => {
+    const text = `SELECT * FROM invitations WHERE facilities_id = $1`
+    const values = [facilityId]
     const res = await pool.query(text, values)
     return res.rows
 }
@@ -25,5 +32,6 @@ const getUnregisteredFacilityInvitationsDb = async (email) => {
 module.exports = {
     createUnregisteredFacilityInvitationDb,
     removeUnregisteredFacilityInvitationDb,
-    getUnregisteredFacilityInvitationsDb
+    fetchInvitationsByEmailDb,
+    fetchInvitationsByFacilityIdDb
 }

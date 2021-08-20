@@ -1,4 +1,4 @@
-const { getUnregisteredFacilityInvitationsDb, removeUnregisteredFacilityInvitationDb } = require('../db/auth-db')
+const { fetchInvitationsByEmailDb, removeUnregisteredFacilityInvitationDb } = require('../db/auth-db')
 const { fetchUserByEmailDb,
         fetchUserByIdDb,
         createUserDb,
@@ -15,7 +15,7 @@ const createUser = async user => {
     const newUser = await createUserDb(user)
     
     // Check if there are invites to facilities for the unregistered user
-    const invites = await getUnregisteredFacilityInvitationsDb(user.email)
+    const invites = await fetchInvitationsByEmailDb(user.email)
     
     // If there are invites, then we add those memberships in users_facilities table and remove the invites
     await Promise.all(invites.map(async invite => {
@@ -24,7 +24,7 @@ const createUser = async user => {
             facilityId: invite.facilities_id
         })
         return await removeUnregisteredFacilityInvitationDb({
-            userId: newUser.id,
+            email: newUser.email,
             facilityId: invite.facilities_id
         })
     }))
