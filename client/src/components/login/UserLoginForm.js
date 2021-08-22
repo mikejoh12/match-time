@@ -44,6 +44,7 @@ export const UserLoginForm = ({ handleClose }) => {
           }
         ))
       } catch (err) {
+        console.log(err)
         dispatch(showSnackbar({
           message: err.data.error.message,
           severity: 'error'

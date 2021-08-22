@@ -13,15 +13,8 @@ import { useParams } from 'react-router-dom'
 import { useGetInvitationsByFacilityIdQuery, useGetUsersByFacilityIdQuery } from '../../services/api';
 
 const useStyles = makeStyles({
-    root: {
-        marginTop: 50
-    },
     table: {
         minWidth: 300,
-    },
-    tableCell: {
-        paddingRight: 4,
-        paddingLeft: 5
     }
 });
 
@@ -45,7 +38,13 @@ export const FacilityMemberList = () => {
                 container
                 justifyContent="center"
                 direction="column"
-                alignItems="center">
+                alignItems="center"
+                spacing={2}>
+                    <Grid item>
+                        <Typography variant="h5" >
+                            Facility Members
+                        </Typography>              
+                    </Grid>
                     <Grid item xs={12} md={6} className={classes.root}>
                         { usersData.length ?
                             <TableContainer component={Paper}>
@@ -71,10 +70,18 @@ export const FacilityMemberList = () => {
                             </Table>
                         </TableContainer>
                         :
-                        <Typography variant="h5" >
+                        <Typography variant="h6" >
                             No users found.
                         </Typography>     
                         }
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="h5" align="center">
+                            Invited Emails
+                        </Typography>
+                        <Typography variant="body1" align="center">
+                            These email address have gotten an invite but have not established an account with Calendar-Booking.
+                        </Typography> 
                     </Grid>
                     <Grid item xs={12} md={6} className={classes.root}>
                         { invitesData.length ?
@@ -95,7 +102,7 @@ export const FacilityMemberList = () => {
                             </Table>
                         </TableContainer>
                         :
-                        <Typography variant="h5" >
+                        <Typography variant="h6" >
                             No users found.
                         </Typography>     
                         }

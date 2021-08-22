@@ -52,4 +52,8 @@ ALTER TABLE "users_facilities" ADD FOREIGN KEY ("users_id") REFERENCES "users" (
 
 ALTER TABLE "users_facilities" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
 
+ALTER TABLE "users_facilities" ADD UNIQUE ("users_id", "facilities_id");
+
 ALTER TABLE "invitations" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
+
+ALTER TABLE "invitations" ADD UNIQUE ("email", "facilities_id");

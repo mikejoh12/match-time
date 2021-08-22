@@ -15,14 +15,25 @@ import { theme } from './theme'
 import { PrivateRoute } from './utils/PrivateRoute'
 import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 import MsgSnackbar from './utils/MsgSnackbar'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  root: {
+      margin: '20px'
+  }
+});
 
 function App() {
+  const classes = useStyles()
+
   return (
     <ThemeProvider theme={theme}>
       <MsgSnackbar />
       <Router>
         <Header />
+        <div className={classes.root}>
         <Switch>
+
           <Route exact path="/" component={Landing} />
 
           <PrivateRoute path="/user-dashboard">
@@ -52,6 +63,7 @@ function App() {
           <Route path="/:id" component={FacilityLogin} />
 
         </Switch>
+        </div>
       </Router>
     </ThemeProvider>
   );

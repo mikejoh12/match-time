@@ -54,7 +54,7 @@ export const UserRegisterForm = ({ handleClose }) => {
       ))
     } catch (err) {
       dispatch(showSnackbar({
-        message: err.data.error.message,
+        message: err.data.error,
         severity: 'error'
       }))
     } finally {
