@@ -47,7 +47,7 @@ export const FacilityMemberList = () => {
                     </Grid>
                     <Grid item xs={12} md={6} className={classes.root}>
                         { usersData.length ?
-                            <TableContainer component={Paper}>
+                        <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="simple table">
                                 <TableHead>
                                 <TableRow>

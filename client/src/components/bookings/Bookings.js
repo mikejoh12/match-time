@@ -9,16 +9,26 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from "@material-ui/core/Grid";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import { openDeleteBookingDialog } from '../../features/ui/uiSlice';
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 import { useGetFacilitiesByUserQuery, useGetBookingsByUserQuery } from '../../services/api'
 import { DeleteBookingDialog } from './DeleteBookingDialog';
 
+const useStyles = makeStyles({
+    table: {
+        minWidth: 300,
+    }
+});
+
 export const Bookings = () => {
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesByUserQuery()
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserQuery()
 
+    const classes = useStyles()
     const dispatch = useDispatch();
 
     const handleDeleteClick = async event => dispatch(openDeleteBookingDialog(event.currentTarget.value))
@@ -40,23 +50,47 @@ export const Bookings = () => {
                 spacing={2}>
                     <Grid item>
                         { bookingsData.length ?
-                        <List component="nav" aria-label="user bookings">
-                            {
-                            bookingsData.map(booking => {
-                                const date = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'MM/dd/yyyy')
-                                const startTime = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'p')
-                                const endTime = format(utcToZonedTime(new Date(booking.end_time), 'UTC'), 'p')
-                                const facilityName = facilitiesData.find(facility => facility.id === booking.facilities_id)?.name
-                                return  <ListItem key={booking.bookings_id}>
-                                            <ListItemText primary={`Facility: ${facilityName} - Booking Id: ${booking.bookings_id} - Name: ${booking.resources_name} - Date: ${date} - Start: ${startTime} - End: ${endTime}` }/>
-                                            <ListItemSecondaryAction>
-                                                <IconButton edge="end" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>}
-                            )}
-                        </List>
+                        <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">Id</TableCell>
+                                        <TableCell align="center">Facility</TableCell>
+                                        <TableCell align="center">Name</TableCell>
+                                        <TableCell align="center">Date</TableCell>                                    
+                                        <TableCell align="center">Start</TableCell>
+                                        <TableCell align="center">End</TableCell>
+                                        <TableCell align="center">Action</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {
+                                bookingsData.map(booking => {
+                                    const date = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'MM/dd/yyyy')
+                                    const startTime = format(utcToZonedTime(new Date(booking.start_time), 'UTC'), 'p')
+                                    const endTime = format(utcToZonedTime(new Date(booking.end_time), 'UTC'), 'p')
+                                    const facilityName = facilitiesData.find(facility => facility.id === booking.facilities_id)?.name
+                                    return  (
+                                            <TableRow key={booking.bookings_id}>
+                                                <TableCell component="th" scope="row">
+                                                    {booking.bookings_id}
+                                                </TableCell>
+                                                <TableCell align="right">{facilityName}</TableCell>
+                                                <TableCell align="right">{booking.resources_name}</TableCell>
+                                                <TableCell align="right">{date}</TableCell>
+                                                <TableCell align="right">{startTime}</TableCell>
+                                                <TableCell align="right">{endTime}</TableCell>
+                                                <TableCell align="right">
+                                                        <IconButton edge="end" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
+                                                            <DeleteIcon />
+                                                        </IconButton> 
+                                                </TableCell>
+                                            </TableRow>
+                                )}
+                                )}
+                                </TableBody>
+                            </Table>
+                         </TableContainer>
                         :
                         <Typography variant="h5" >
                             No bookings found.
