@@ -89,6 +89,16 @@ export const UserDashboard = () => {
                         direction="column"
                         alignItems="center"
                         justifyContent="center">
+                    <Grid item>
+                        <Typography variant="h4" align="center">
+                            Scheduling - {facility.name}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="h6" align="center">
+                            Create a booking using the calendar.
+                        </Typography>
+                    </Grid>
                   <Grid item>
                       <KeyboardDatePicker
                         disableToolbar

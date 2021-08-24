@@ -16,10 +16,11 @@ import { PrivateRoute } from './utils/PrivateRoute'
 import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 import MsgSnackbar from './utils/MsgSnackbar'
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
   root: {
-      margin: '20px'
+      marginTop: '20px'
   }
 });
 
@@ -30,40 +31,52 @@ function App() {
     <ThemeProvider theme={theme}>
       <MsgSnackbar />
       <Router>
-        <Header />
-        <div className={classes.root}>
-        <Switch>
 
-          <Route exact path="/" component={Landing} />
+        <Grid container>
 
-          <PrivateRoute path="/user-dashboard">
-            <Route component={UserDashboard} />
-          </PrivateRoute>
+          <Grid item xs={12}>
+            <Header />
+          </Grid>
+          
+          <Grid item 
+                container xs={12}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                className={classes.root}>
+            <Grid item>
+              <Switch>
+                <Route exact path="/" component={Landing} />
 
-          <PrivateRoute path="/manager-dashboard">
-            <Route component={ManagerDashboard} />
-          </PrivateRoute>
+                <PrivateRoute path="/user-dashboard">
+                  <Route component={UserDashboard} />
+                </PrivateRoute>
 
-          <PrivateRoute path="/account">
-            <Route component={Account} />
-          </PrivateRoute>
+                <PrivateRoute path="/manager-dashboard">
+                  <Route component={ManagerDashboard} />
+                </PrivateRoute>
 
-          <PrivateRoute exact path="/manager-facility-edit/:id">
-            <Route component={ManagerFacilityEdit} />
-          </PrivateRoute>
+                <PrivateRoute path="/account">
+                  <Route component={Account} />
+                </PrivateRoute>
 
-          <PrivateRoute exact path="/manager-facility-edit/:id/members">
-            <Route component={FacilityMemberList} />
-          </PrivateRoute>
+                <PrivateRoute exact path="/manager-facility-edit/:id">
+                  <Route component={ManagerFacilityEdit} />
+                </PrivateRoute>
 
-          <PrivateRoute path="/bookings">
-            <Route component={Bookings} />
-          </PrivateRoute>
+                <PrivateRoute exact path="/manager-facility-edit/:id/members">
+                  <Route component={FacilityMemberList} />
+                </PrivateRoute>
 
-          <Route path="/:id" component={FacilityLogin} />
+                <PrivateRoute path="/bookings">
+                  <Route component={Bookings} />
+                </PrivateRoute>
 
-        </Switch>
-        </div>
+                <Route path="/:id" component={FacilityLogin} />
+              </Switch>
+            </Grid>
+          </Grid>
+        </Grid>
       </Router>
     </ThemeProvider>
   );
