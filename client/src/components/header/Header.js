@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom'
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Container from '@material-ui/core/Container';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { UserRegisterDialog } from '../login/UserRegisterDialog';
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
       cursor: 'pointer'
-     }
+     },
   }));
 
 export const Header = () => {
@@ -64,57 +65,59 @@ export const Header = () => {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h5" className={classes.title} onClick={handleLogoClick}>
-                Calendar Booking App
-            </Typography>
-            {( showMenuButtons &&
-              <div>
-                { user ?
-                  <Button color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
-                  :
-                  <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
-                }
-                { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
-                { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
-                { user && <Button color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
-                { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
-                { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
-
-              </div> )}
-            {( !showMenuButtons &&
-            <div>
-              <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
-                <MenuIcon fontSize="large" />
-              </IconButton>
-              <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={handleClose}
-              >
+          <Container maxWidth="lg">
+            <Toolbar>
+              <Typography variant="h5" className={classes.title} onClick={handleLogoClick}>
+                  Calendar Booking App
+              </Typography>
+              {( showMenuButtons &&
+                <div>
                   { user ?
-                  <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
-                  :
-                  <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
+                    <Button color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
+                    :
+                    <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                   }
-                  { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
-                  { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }
-                  { user && <MenuItem onClick={handleManageClick}>Manage Facilities</MenuItem>}
-                  { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
-                  { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
-              </Menu>
-            </div> )}
-          </Toolbar>
+                  { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
+                  { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
+                  { user && <Button color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
+                  { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
+                  { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
+
+                </div> )}
+              {( !showMenuButtons &&
+              <div>
+                <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
+                  <MenuIcon fontSize="large" />
+                </IconButton>
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    { user ?
+                    <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                    :
+                    <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
+                    }
+                    { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
+                    { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }
+                    { user && <MenuItem onClick={handleManageClick}>Manage Facilities</MenuItem>}
+                    { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
+                    { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
+                </Menu>
+              </div> )}
+            </Toolbar>
+          </Container>
         </AppBar>
         <UserRegisterDialog open={openUserRegister} handleClose={handleCloseUserRegister} />
         <UserLoginDialog open={openUserLogin} handleClose={handleCloseUserLogin} />

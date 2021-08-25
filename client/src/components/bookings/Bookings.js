@@ -86,6 +86,9 @@ export const Bookings = () => {
                                                 <Typography variant="body1" align="center">
                                                     {startTime}-{endTime}
                                                 </Typography>
+                                                <Typography variant="body1" align="center">
+                                                    Booking id: {booking.bookings_id}
+                                                </Typography>
                                             </CardContent>
                                             <CardActions className={classes.actions}>
                                                 <IconButton className={classes.icons} size="small" aria-label="delete" value={booking.bookings_id} onClick={handleDeleteClick}>
