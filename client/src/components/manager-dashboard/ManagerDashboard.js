@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom'
-import { AddFacilityDialog } from './AddFacilityDialog'
+import { AddFacilityDialog } from './dialogs/AddFacilityDialog'
 import { useGetFacilitiesByUserQuery } from '../../services/api'
 
 export const ManagerDashboard = () => {

@@ -8,8 +8,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useDeleteFacilityMutation } from '../../services/api';
-import { showSnackbar } from '../../features/ui/uiSlice';
+import { useDeleteFacilityMutation } from '../../../services/api';
+import { showSnackbar } from '../../../features/ui/uiSlice';
 
 export const DeleteFacilityDialog = ({facilityId}) => {
   const history = useHistory()

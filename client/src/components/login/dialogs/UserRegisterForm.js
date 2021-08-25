@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useCreateUserMutation, useLoginMutation } from '../../services/api';
+import { useCreateUserMutation, useLoginMutation } from '../../../services/api';
 import { useForm, Controller } from "react-hook-form";
-import { showSnackbar } from '../../features/ui/uiSlice';
-import { setCredentials } from '../../features/auth/authSlice';
+import { showSnackbar } from '../../../features/ui/uiSlice';
+import { setCredentials } from '../../../features/auth/authSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {

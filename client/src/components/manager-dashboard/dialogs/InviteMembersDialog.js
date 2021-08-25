@@ -5,11 +5,11 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { closeInviteMemberDialog, openInviteMemberDialog, selectInviteMemberDialogOpen } from '../../features/ui/uiSlice';
+import { closeInviteMemberDialog, openInviteMemberDialog, selectInviteMemberDialogOpen } from '../../../features/ui/uiSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm, Controller } from "react-hook-form";
-import { useInviteUserMutation } from '../../services/api';
-import { showSnackbar } from '../../features/ui/uiSlice';
+import { useInviteUserMutation } from '../../../services/api';
+import { showSnackbar } from '../../../features/ui/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {

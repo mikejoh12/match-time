@@ -5,9 +5,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import { useCreateFacilityMutation } from '../../services/api'
+import { useCreateFacilityMutation } from '../../../services/api'
 import { useDispatch } from 'react-redux';
-import { showSnackbar } from '../../features/ui/uiSlice';
+import { showSnackbar } from '../../../features/ui/uiSlice';
 import { useForm, Controller } from "react-hook-form";
 
 export const AddFacilityDialog = () => {
