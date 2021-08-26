@@ -1,4 +1,5 @@
 import { Header } from './components/header/Header'
+import { Footer } from './components/footer/Footer'
 import { FacilityLogin } from './components/login/FacilityLogin'
 import { Landing } from './components/landing/Landing'
 import { UserDashboard } from './components/user-dashboard/UserDashboard'
@@ -20,8 +21,9 @@ import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
   root: {
-      marginTop: '20px'
-  }
+      marginTop: '20px',
+      minHeight: '400px'
+  },
 });
 
 function App() {
@@ -42,9 +44,9 @@ function App() {
                 container xs={12}
                 direction="column"
                 alignItems="center"
-                justifyContent="center"
                 className={classes.root}>
-            <Grid item>
+            <Grid item
+                className={classes.main}>
               <Switch>
                 <Route exact path="/" component={Landing} />
 
@@ -76,6 +78,11 @@ function App() {
               </Switch>
             </Grid>
           </Grid>
+
+          <Grid item xs={12}>
+              <Footer />
+          </Grid>
+
         </Grid>
       </Router>
     </ThemeProvider>
