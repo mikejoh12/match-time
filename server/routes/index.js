@@ -26,7 +26,7 @@ router
     .post('/facilities', validatePostFacility, passport.authenticate('jwt-customer', {session: false}), postFacility)
     .delete('/facilities/:facilityId',  validateDeleteFacility, passport.authenticate('jwt-manager', {session: false}), deleteFacility)
 
-    .get('/resources/by_facility/:facilityId', validateGetResources, passport.authenticate('jwt-customer', {session: false}), getResources)
+    .get('/resources/by_facility/:facilityId', validateGetResources, getResources)
     .post('/resources/by_facility/:facilityId', validatePostResource, passport.authenticate('jwt-manager', {session: false}), postResource)
     .delete('/resources/by_facility/:facilityId/:resourceId', validateDeleteResource, passport.authenticate('jwt-manager', {session: false}), deleteResource)
 
