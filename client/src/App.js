@@ -18,12 +18,19 @@ import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacil
 import MsgSnackbar from './utils/MsgSnackbar'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { Box } from '@material-ui/core'
 
 const useStyles = makeStyles({
   root: {
-      marginTop: '20px',
-      minHeight: '400px'
+    minHeight: '100vh'
   },
+  main: {
+      minHeight: '200px',
+      flex: 1
+  },
+  mainContent: {
+      marginTop: 30
+  }
 });
 
 function App() {
@@ -34,56 +41,59 @@ function App() {
       <MsgSnackbar />
       <Router>
 
-        <Grid container>
-
-          <Grid item xs={12}>
-            <Header />
-          </Grid>
+        <Box  display="flex"
+              flexDirection="column"
+              className={classes.root}>
           
-          <Grid item 
-                container xs={12}
-                direction="column"
-                alignItems="center"
-                className={classes.root}>
-            <Grid item
-                className={classes.main}>
-              <Switch>
-                <Route exact path="/" component={Landing} />
+          <Box className={classes.main}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Header />
+              </Grid>
+              
+              <Grid item 
+                    container xs={12}
+                    direction="column"
+                    alignItems="center"
+                    className={classes.mainContent}>
 
-                <PrivateRoute path="/user-dashboard">
-                  <Route component={UserDashboard} />
-                </PrivateRoute>
+                  <Switch>
+                    <Route exact path="/" component={Landing} />
 
-                <PrivateRoute path="/manager-dashboard">
-                  <Route component={ManagerDashboard} />
-                </PrivateRoute>
+                    <PrivateRoute path="/user-dashboard">
+                      <Route component={UserDashboard} />
+                    </PrivateRoute>
 
-                <PrivateRoute path="/account">
-                  <Route component={Account} />
-                </PrivateRoute>
+                    <PrivateRoute path="/manager-dashboard">
+                      <Route component={ManagerDashboard} />
+                    </PrivateRoute>
 
-                <PrivateRoute exact path="/manager-facility-edit/:id">
-                  <Route component={ManagerFacilityEdit} />
-                </PrivateRoute>
+                    <PrivateRoute path="/account">
+                      <Route component={Account} />
+                    </PrivateRoute>
 
-                <PrivateRoute exact path="/manager-facility-edit/:id/members">
-                  <Route component={FacilityMemberList} />
-                </PrivateRoute>
+                    <PrivateRoute exact path="/manager-facility-edit/:id">
+                      <Route component={ManagerFacilityEdit} />
+                    </PrivateRoute>
 
-                <PrivateRoute path="/bookings">
-                  <Route component={Bookings} />
-                </PrivateRoute>
+                    <PrivateRoute exact path="/manager-facility-edit/:id/members">
+                      <Route component={FacilityMemberList} />
+                    </PrivateRoute>
 
-                <Route path="/:id" component={FacilityLogin} />
-              </Switch>
+                    <PrivateRoute path="/bookings">
+                      <Route component={Bookings} />
+                    </PrivateRoute>
+
+                    <Route path="/:id" component={FacilityLogin} />
+                  </Switch>
+
+              </Grid>
             </Grid>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12}>
-              <Footer />
-          </Grid>
+          <Footer />
+        </Box>
 
-        </Grid>
       </Router>
     </ThemeProvider>
   );

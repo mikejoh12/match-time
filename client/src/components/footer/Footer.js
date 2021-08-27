@@ -4,8 +4,8 @@ import CopyrightIcon from '@material-ui/icons/Copyright';
 
 const useStyles = makeStyles({
     footer: {
-        minHeight: 150,
-        marginTop: 100,
+        height: 100,
+        marginTop: 50,
         backgroundColor: "rgba(20, 160, 140, 1)"
     },
     copyright: {
