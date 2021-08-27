@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
@@ -13,6 +14,7 @@ import { AddResourceDialog } from './dialogs/AddResourceDialog';
 import { InviteMembersDialog } from './dialogs/InviteMembersDialog';
 import { DeleteFacilityDialog } from './dialogs/DeleteFacilityDialog';
 import { useGetFacilityByIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api'
+import { facilityUpdated } from '../../features/current-facility/currentFacilitySlice';
 import { useDispatch } from 'react-redux';
 import { openDeleteResourceDialog } from '../../features/ui/uiSlice';
 import { DeleteResourceDialog } from './dialogs/DeleteResourceDialog';
@@ -21,8 +23,13 @@ export const ManagerFacilityEdit = () => {
     const { id } = useParams()
     const { data: facilityData, isError: facilityIsError, isLoading: facilityIsLoading } = useGetFacilityByIdQuery(id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
+    
     const dispatch = useDispatch()
     const history = useHistory()
+
+    useEffect(() => {
+        dispatch(facilityUpdated(facilityData))
+    }, [facilityData, dispatch])
 
     const handleDeleteClick = async event => dispatch(openDeleteResourceDialog(event.currentTarget.value))
     const handleMembersClick = () => history.push(`/manager-facility-edit/${id}/members`)

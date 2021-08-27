@@ -33,14 +33,14 @@ export const SingleCalendar = ({calendarsRefs, selectedResourceIdx}) => {
         xl={2}
         direction="column"
         alignItems="center"
-        key={resource.id}>
+        key={resource?.id}>
           <Grid item>
             <Typography variant="h5" >
-            {resource.name}
+            {resource?.name}
             </Typography>
           </Grid>
           <Typography variant="subtitle1" >
-            {resource.description}
+            {resource?.description}
             </Typography>
             <Grid item>
                 <FullCalendar
