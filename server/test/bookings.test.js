@@ -1,8 +1,38 @@
 const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
+let bookingsAgent = request.agent(app)
+let token = null;
 
 describe('/api/bookings', () => {
+
+  before(async() => {
+    await pool.query(
+      `CREATE TABLE "users" (
+        "id" SERIAL PRIMARY KEY,
+        "email" varchar(100) UNIQUE NOT NULL,
+        "first_name" varchar(100) NOT NULL,
+        "last_name" varchar(100) NOT NULL,
+        "pwd_hash" varchar(100),
+        "date_joined" timestamp DEFAULT (now()),
+        "active" boolean DEFAULT FALSE,
+        "user_role" varchar(100)
+      );`
+    )
+    await pool.query(`
+    CREATE TABLE "invitations" (
+      "email" varchar(100) NOT NULL,
+      "facilities_id" int,
+      PRIMARY KEY("email", "facilities_id")
+      )`
+    )
+  })
+
+  after(async () => {
+    await pool.query(`DROP TABLE users`)
+    await pool.query(`DROP TABLE invitations`)
+  })
+
   beforeEach(async() => {
     await pool.query(
         `CREATE TABLE "facilities" (
@@ -25,31 +55,43 @@ describe('/api/bookings', () => {
             "name" varchar(100),
             "description" varchar(100)
             );`)
-    await pool.query(
-      `CREATE TABLE "users" (
-        "id" SERIAL PRIMARY KEY,
-        "email" varchar(100) UNIQUE NOT NULL,
-        "pwd_hash" varchar(100),
-        "date_joined" timestamp DEFAULT (now()),
-        "active" boolean DEFAULT true,
-        "user_role" varchar(100)
-      );`)
+
     await pool.query(
         `INSERT INTO facilities (name, description) VALUES ('Smash Tennis Club', 'A private tennis club with well maintened indoor courts, hard courts, clay courts, and padel courts.')`
     )
     await pool.query(
         `INSERT INTO bookings (resources_id, organizer_id, start_time, end_time) VALUES (1, 1, '2021-06-02T10:00:00.000Z', '2021-06-02T11:00:00.000Z');`
     )
-    await pool.query(
-        `INSERT INTO users(email, pwd_hash, user_role) VALUES ('test@testmail.com', 'test-hash', 'customer')`
-    )
+
   })
 
   afterEach(async () => {
     await pool.query(`DROP TABLE facilities`)
     await pool.query(`DROP TABLE bookings`)
     await pool.query(`DROP TABLE resources`)
-    await pool.query('DROP TABLE users')
+  })
+
+  describe('create a user to access bookings', () => {
+    it('should respond with a 201 status code when creating new user', async() => {
+      await bookingsAgent
+        .post('/api/auth/signup')
+        .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'password'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+    })
+  })
+
+  describe('login', () => {
+    it('login user to access bookings', async() => {
+      const res = await bookingsAgent
+        .post('/api/auth/login')
+        .send({email: 'newuser@gmail.com', password: 'password'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      token = res.body.token
+    })
   })
 
   describe('GET /api/bookings/by_facility/{id}', () => {
@@ -57,6 +99,7 @@ describe('/api/bookings', () => {
       request(app)
         .get('/api/bookings/by_facility/1')
         .set('Accept', 'application/json')
+        .set('Authorization', `Bearer ${token}`)
         .expect('Content-Type', /json/)
         .expect(200, done);
     })
@@ -64,46 +107,38 @@ describe('/api/bookings', () => {
     it('should respond with a 422 status code for an invalid facility id', done => {
       request(app)
         .get('/api/bookings/by_facility/999')
+        .set('Authorization', `Bearer ${token}`)
         .expect(422, done);
     })
 
     it('should respond with a 422 status code for a non-integer facility id', done => {
       request(app)
         .get('/api/bookings/by_facility/wrong_id')
+        .set('Authorization', `Bearer ${token}`)
         .expect(422, done);
     })
   })
 
-  describe('GET /api/bookings/by_user/{id}', () => {
+  describe('GET /api/bookings/by_user', () => {
     it('should respond with JSON and a 200 status code for a valid user id', done => {
       request(app)
-        .get('/api/bookings/by_user/1')
+        .get('/api/bookings/by_user')
         .set('Accept', 'application/json')
+        .set('Authorization', `Bearer ${token}`)
         .expect('Content-Type', /json/)
         .expect(200, done);
     })
 
-    it('should respond with a 422 status code for an invalid userid', done => {
-      request(app)
-        .get('/api/bookings/by_user/999')
-        .expect(422, done);
-    })
-
-    it('should respond with a 422 status code for a non-integer user id', done => {
-      request(app)
-        .get('/api/bookings/by_user/wrong_id')
-        .expect(422, done);
-    })
   })
 
   describe('POST /api/bookings', () => {
     it('should respond with a 201 status code when creating a new booking', done => {
       request(app)
         .post('/api/bookings')
-        .send({resources_id: 1, organizer_id: 1, start_time: '2021-06-02T20:00:00.000Z', end_time: '2021-06-02T22:00:00.000Z'})
+        .send({resourceId: 1, organizerId: 1, startTime: '2021-06-02T20:00:00.000Z', endTime: '2021-06-02T22:00:00.000Z'})
         .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(201, done);
+        .set('Authorization', `Bearer ${token}`)
+        .expect(201, done)
     })
 
     it('should respond with a 422 status code when creating booking without required req-body data', done => {
@@ -111,6 +146,7 @@ describe('/api/bookings', () => {
         .post('/api/bookings')
         .send({test_data: "test"})
         .set('Accept', 'application/json')
+        .set('Authorization', `Bearer ${token}`)
         .expect('Content-Type', /json/)
         .expect(422, done);
     })
@@ -120,6 +156,7 @@ describe('/api/bookings', () => {
     it('should respond with a 204 status code when deleting booking', done => {
       request(app)
         .delete(`/api/bookings/1`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(204, done);
     })
   })
@@ -128,6 +165,7 @@ describe('/api/bookings', () => {
     it('should respond with 422 status code when given an invalid booking id', done => {
       request(app)
         .delete(`/api/bookings/999`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(422, done);
     })
   })

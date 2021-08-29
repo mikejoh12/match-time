@@ -19,7 +19,7 @@ const signUpUser = async (req, res, next) => {
 
     //Check if active user with this email exists
     const userDb = await fetchUserByEmail(email)  
-    if (userDb?.active === true) {
+    if (userDb) {
         return res.status(422).json({error:"User with this email already exists."})
     }
 
@@ -29,7 +29,8 @@ const signUpUser = async (req, res, next) => {
         firstName,
         lastName,
         pwdHash,
-        userRole: "customer"
+        userRole: "customer",
+        active: true
     }
     const newUser = await createUser(user)
 

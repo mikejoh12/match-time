@@ -12,10 +12,10 @@ const fetchUserByIdDb = async id => {
     return res.rows[0]
 }
 
-const createUserDb = async ({email, firstName, lastName, pwdHash, userRole}) => {
-    const text = `INSERT INTO users(email, first_name, last_name, pwd_hash, user_role)
-                  VALUES($1, $2, $3, $4, $5) RETURNING *`
-    const values = [email, firstName, lastName, pwdHash, userRole]
+const createUserDb = async ({email, firstName, lastName, pwdHash, userRole, active}) => {
+    const text = `INSERT INTO users(email, first_name, last_name, pwd_hash, user_role, active)
+                  VALUES($1, $2, $3, $4, $5, $6) RETURNING *`
+    const values = [email, firstName, lastName, pwdHash, userRole, active]
     const res = await pool.query(text, values)
     return res.rows[0]
 }

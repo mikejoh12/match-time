@@ -5,7 +5,7 @@ const { pool } = require('../config/config.js')
 
 describe('/api/auth/signup', () => {
   
-  beforeEach(async() => {
+  before(async() => {
     await pool.query(
       `CREATE TABLE "users" (
         "id" SERIAL PRIMARY KEY,
@@ -25,41 +25,54 @@ describe('/api/auth/signup', () => {
       PRIMARY KEY("email", "facilities_id")
       )`
     )
-    await pool.query(
-      `INSERT INTO users(email, first_name, last_name, pwd_hash, user_role, active)
-      VALUES('test@gmail.com', 'First', 'Last', 'testing-without-hash', 'customer', true)`
-    )
   })
 
-  afterEach(async () => {
+  after(async () => {
     await pool.query(`DROP TABLE users`)
     await pool.query(`DROP TABLE invitations`)
   })
 
-  it('should respond with a 201 status code when creating new user', done => {
-    request(app)
-      .post('/api/auth/signup')
-      .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'test-password'})
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(201, done);
+  describe('create a user', () => {
+    it('should respond with a 201 status code when creating new user', async() => {
+      await agent
+        .post('/api/auth/signup')
+        .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'password'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+    })
   })
 
-  it('should respond with a 422 status code for an already taken email', done => {
-    request(app)
-      .post('/api/auth/signup')
-      .send({email: 'test@gmail.com', firstName: 'first', lastName: 'last', password: 'test-password'})
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(422, done);
+  describe('login', () => {
+    it('should login and receive a token with correct credentials',async() => {
+      const res = await agent
+        .post('/api/auth/login')
+        .send({email: 'newuser@gmail.com', password: 'password'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200);
+    })
   })
 
-  it('should respond with a 422 status code for incorrect email format', done => {
-    request(app)
-      .post('/api/auth/signup')
-      .send({email: 'not_an_email_address', firstName: 'first', lastName: 'last', password: 'test-password'})
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(422, done);
+  describe('user validation - duplicate email', () => {
+    it('should respond with a 422 status code for an already taken email', done => {
+      request(app)
+        .post('/api/auth/signup')
+        .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'test-password'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422, done);
+    })
+  })
+
+  describe('user-validation - incorrect format', () => {
+    it('should respond with a 422 status code for incorrect email format', done => {
+      request(app)
+        .post('/api/auth/signup')
+        .send({email: 'not_an_email_address', firstName: 'first', lastName: 'last', password: 'test-password'})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422, done);
+    })
   })
 })
