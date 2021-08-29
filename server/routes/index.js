@@ -18,6 +18,8 @@ const { validateGetFacilityInfo,
 const { getResources, postResource, deleteResource } = require('../controllers/resources-controller.js')
 const { getUsersByFacility } = require('../controllers/users-controller.js')
 
+
+
 const router = new Router()
 
 router  
