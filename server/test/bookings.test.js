@@ -1,7 +1,7 @@
 const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
-const { createDbTables, removeDbTables } = require('./test-utils')
+const { createDbTables, removeDbTables, createUser, loginGetToken } = require('./test-utils')
 let token = null;
 
 describe('/api/bookings', () => {
@@ -14,22 +14,14 @@ describe('/api/bookings', () => {
     await pool.query(
       `INSERT INTO bookings (resources_id, organizer_id, start_time, end_time) VALUES (1, 1, '2021-06-02T10:00:00.000Z', '2021-06-02T11:00:00.000Z');`
     )
+    await createUser('newuser@gmail.com', 'password')
+    token = await loginGetToken('newuser@gmail.com', 'password')
   })
 
   after(async () => {
     await removeDbTables()
   })
 
-  describe('create a user to access bookings', async () => {
-    it('should respond with a 201 status code when creating new user', async() => {
-      await request(app)
-        .post('/api/auth/signup')
-        .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'password'})
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(201);
-    })
-  })
 
   describe('login', () => {
     it('login user to access bookings', async () => {

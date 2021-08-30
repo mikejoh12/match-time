@@ -1,6 +1,5 @@
 const request = require('supertest')
 const app = require('../app')
-const { pool } = require('../config/config.js')
 const { createDbTables, removeDbTables } = require('./test-utils')
 
 describe('/api/auth/signup', () => {

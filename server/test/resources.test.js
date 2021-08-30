@@ -1,40 +1,18 @@
 const request = require('supertest')
 const app = require('../app')
-const { createDbTables, removeDbTables } = require('./test-utils')
+const { createDbTables, removeDbTables, createUser, loginGetToken } = require('./test-utils')
 let token = null;
 
 describe('/api/resources', () => {
 
     before(async() => {
       await createDbTables()
+      await createUser('newuser@gmail.com', 'password')
+      token = await loginGetToken('newuser@gmail.com', 'password')
     })
     
-
     after(async () => {
         await removeDbTables()
-    })
-
-    describe('create a user to access resources', () => {
-      it('should respond with a 201 status code when creating new user', async() => {
-        await request(app)
-          .post('/api/auth/signup')
-          .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'password'})
-          .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
-          .expect(201);
-      })
-    })
-  
-    describe('login', () => {
-      it('login user to access resources', async() => {
-        const res = await request(app)
-          .post('/api/auth/login')
-          .send({email: 'newuser@gmail.com', password: 'password'})
-          .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
-          .expect(200);
-        token = res.body.token
-      })
     })
 
     describe('create facility for resources tests', () => {

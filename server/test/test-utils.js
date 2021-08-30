@@ -1,4 +1,6 @@
 const { pool } = require('../config/config.js')
+const request = require('supertest')
+const app = require('../app')
 
 const createDbTables = async() => {
     await pool.query(
@@ -61,7 +63,28 @@ const removeDbTables = async() => {
     await pool.query(`DROP TABLE users_facilities`)
 }
 
+const createUser = async(email, password) => {
+          await request(app)
+            .post('/api/auth/signup')
+            .send({email, password, firstName: 'first', lastName: 'last'})
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(201);
+}
+
+const loginGetToken = async(email, password) => {
+    const res = await request(app)
+    .post('/api/auth/login')
+    .send({email, password})
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .expect(200);
+    return res.body.token
+}
+
 module.exports = {
     createDbTables,
-    removeDbTables
+    removeDbTables,
+    createUser,
+    loginGetToken
 }
