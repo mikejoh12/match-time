@@ -1,7 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
-let bookingsAgent = request.agent(app)
 let token = null;
 
 describe('/api/bookings', () => {
@@ -71,9 +70,9 @@ describe('/api/bookings', () => {
     await pool.query(`DROP TABLE resources`)
   })
 
-  describe('create a user to access bookings', () => {
+  describe('create a user to access bookings', async () => {
     it('should respond with a 201 status code when creating new user', async() => {
-      await bookingsAgent
+      await request(app)
         .post('/api/auth/signup')
         .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'password'})
         .set('Accept', 'application/json')
@@ -83,8 +82,8 @@ describe('/api/bookings', () => {
   })
 
   describe('login', () => {
-    it('login user to access bookings', async() => {
-      const res = await bookingsAgent
+    it('login user to access bookings', async () => {
+      const res = await request(app)
         .post('/api/auth/login')
         .send({email: 'newuser@gmail.com', password: 'password'})
         .set('Accept', 'application/json')

@@ -1,6 +1,5 @@
 const request = require('supertest')
 const app = require('../app')
-let agent = request.agent(app)
 const { pool } = require('../config/config.js')
 
 describe('/api/auth/signup', () => {
@@ -33,24 +32,24 @@ describe('/api/auth/signup', () => {
   })
 
   describe('create a user', () => {
-    it('should respond with a 201 status code when creating new user', async() => {
-      await agent
+    it('should respond with a 201 status code when creating new user', (done) => {
+      request(app)
         .post('/api/auth/signup')
         .send({email: 'newuser@gmail.com', firstName: 'first', lastName: 'last', password: 'password'})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(201);
+        .expect(201, done);
     })
   })
 
   describe('login', () => {
-    it('should login and receive a token with correct credentials',async() => {
-      const res = await agent
+    it('should login and receive a token with correct credentials',(done) => {
+      const res = request(app)
         .post('/api/auth/login')
         .send({email: 'newuser@gmail.com', password: 'password'})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(200);
+        .expect(200, done);
     })
   })
 
