@@ -1,34 +1,16 @@
 const request = require('supertest')
 const app = require('../app')
 const { pool } = require('../config/config.js')
+const { createDbTables, removeDbTables } = require('./test-utils')
 
 describe('/api/auth/signup', () => {
   
   before(async() => {
-    await pool.query(
-      `CREATE TABLE "users" (
-        "id" SERIAL PRIMARY KEY,
-        "email" varchar(100) UNIQUE NOT NULL,
-        "first_name" varchar(100) NOT NULL,
-        "last_name" varchar(100) NOT NULL,
-        "pwd_hash" varchar(100),
-        "date_joined" timestamp DEFAULT (now()),
-        "active" boolean DEFAULT FALSE,
-        "user_role" varchar(100)
-      );`
-    )
-    await pool.query(`
-    CREATE TABLE "invitations" (
-      "email" varchar(100) NOT NULL,
-      "facilities_id" int,
-      PRIMARY KEY("email", "facilities_id")
-      )`
-    )
+    await createDbTables()
   })
 
   after(async () => {
-    await pool.query(`DROP TABLE users`)
-    await pool.query(`DROP TABLE invitations`)
+    await removeDbTables()
   })
 
   describe('create a user', () => {
