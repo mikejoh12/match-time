@@ -7,18 +7,18 @@ const useStyles = makeStyles({
     minWidth: 275,
   },
   cardmedia: {
-    height: 200
+    height: 250
   }
 });
 
-export const ImageCard = ({tennisImage}) => {
+export const ImageCard = ({image}) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardMedia
         className={classes.cardmedia}
-        image={tennisImage}
+        image={image}
         title="Tennis Courts"
       />
     </Card>

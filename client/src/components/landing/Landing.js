@@ -10,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import CheckIcon from '@material-ui/icons/Check';
 import { ImageCard } from "./ImageCard";
 import tennisImage from '../../images/tennis-courts.jpg'
+import courtsImage from '../../images/sports-courts.jpg'
 
 const useStyles = makeStyles({
     hero: {
@@ -47,7 +48,19 @@ export const Landing = () => {
                                         </Typography>
                                     </Grid>
                                     
-                                    <ImageCard tennisImage={tennisImage} />
+                                    <Grid
+                                        item
+                                        container
+                                        justifyContent="center"
+                                        direction="row"
+                                        spacing={2} >
+                                            <Grid item>
+                                                <ImageCard image={tennisImage} />
+                                            </Grid>
+                                            <Grid item>
+                                                <ImageCard image={courtsImage} />
+                                            </Grid>
+                                    </Grid>
 
                                     <List aria-label="site features">
                                         <ListItem>
