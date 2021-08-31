@@ -27,7 +27,7 @@ export const Footer = () => {
                 spacing={2}
                 className={classes.footer}>
                 <Typography variant="h6">
-                    <CopyrightIcon className={classes.copyright}/> 2021 Calendar Booking
+                    <CopyrightIcon className={classes.copyright}/> 2021 Sports Booker
                 </Typography>
 
             </Grid>

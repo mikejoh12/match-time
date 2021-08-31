@@ -18,17 +18,25 @@ import { logout } from '../../features/auth/authSlice';
 import { selectFacilityIsLoaded } from '../../features/current-facility/currentFacilitySlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'
+import { showSnackbar } from '../../features/ui/uiSlice';
+
+const font = "'Karla', sans-serif";
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+    },
+    appBar: {
+      backgroundColor: theme.palette.common.black
     },
     menuButton: {
       marginLeft: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      fontFamily: font,
+      color: theme.palette.primary.light
      },
   }));
 
@@ -49,7 +57,15 @@ export const Header = () => {
     const [openUserLogin, setOpenUserLogin] = useState(false)
     const handleOpenUserLogin = () => setOpenUserLogin(true)
     const handleCloseUserLogin = () => setOpenUserLogin(false)
-    const handleUserLogout = () => dispatch(logout())
+
+    const handleUserLogout = () => {
+      dispatch(logout())
+      dispatch(showSnackbar({
+        message: `User has been logged out`,
+        severity: 'success'
+        })
+      )
+    }
 
     const theme = useTheme();
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('md'))
@@ -64,11 +80,11 @@ export const Header = () => {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" className={classes.appBar}>
           <Container maxWidth="lg">
             <Toolbar>
-              <Typography variant="h5" className={classes.title} onClick={handleLogoClick}>
-                  Calendar Booking App
+              <Typography variant="h4" className={classes.title} onClick={handleLogoClick}>
+                  Sports Booker
               </Typography>
               {( showMenuButtons &&
                 <div>

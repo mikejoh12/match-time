@@ -7,7 +7,7 @@ export const LandingNotLoggedIn = () => {
     return (
                         <Grid item>
                             <Typography variant="h6" align="center">
-                                Please create an account or log in to enable functionality of app.
+                                Please create an account or log in to access facilities as a member or manager.
                             </Typography>
                         </Grid>
     )
