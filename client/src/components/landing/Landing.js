@@ -1,5 +1,4 @@
 import { LandingLoggedIn } from "./LandingLoggedIn";
-import { LandingNotLoggedIn } from './LandingNotLoggedIn'
 import { useAuth } from '../../hooks/useAuth'
 import { Paper, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
