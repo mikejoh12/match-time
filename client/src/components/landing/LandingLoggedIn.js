@@ -82,12 +82,12 @@ export const LandingLoggedIn = () => {
                                     </Select>
                                 </FormControl>
                                 <Grid item>
-                                    <Button variant="contained" color="primary" type="submit">Login as a member</Button>
+                                    <Button variant="contained" color="secondary" type="submit">Login as a member</Button>
                                 </Grid>
                             </form>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" color="primary" onClick={handleRegisterClick}>Manage Facilities</Button>
+                            <Button variant="contained" color="secondary" onClick={handleRegisterClick}>Manage Facilities</Button>
                         </Grid>
                     </Grid>
                     :

@@ -39,7 +39,7 @@ export const SingleCalendar = ({calendarsRefs, selectedResourceIdx}) => {
             <Grid item container justifyContent="center">
                 <CircularProgress />
             </Grid>
-        ) : (bookingsData && resourcesData.length && currentResource) ? (
+        ) : (bookingsData && resourcesData.length && resource) ? (
           <Grid container item
           xs={8}
           md={4}
@@ -74,7 +74,7 @@ export const SingleCalendar = ({calendarsRefs, selectedResourceIdx}) => {
                       dateClick={handleDateClick}
                       eventColor="rgba(20, 160, 140, 1)"
                       events={ 
-                        bookingsData[resource.id]?.map(booking => ({
+                        bookingsData[resource?.id]?.map(booking => ({
                         id: booking.bookings_id,
                         title: `Booked by user: ${booking.first_name} ${booking.last_name}`,
                         start: booking.start_time,

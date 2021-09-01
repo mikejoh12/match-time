@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
       color: 'white'
     },
     appBar: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: theme.palette.primary.light,
     },
     menuButton: {
       marginLeft: theme.spacing(2),
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       cursor: 'pointer',
       fontFamily: font,
-      color: theme.palette.primary.light
+      color: theme.palette.common.black
      },
   }));
 
@@ -98,16 +98,16 @@ export const Header = () => {
               { `${user.email} - `} { facility?.name ? facility?.name : 'No facility selected'} 
             </Typography>
           :    
-            <Typography variant="subtitle1" className={classes.topMsg}>
+            <Typography variant="subtitle1" align="center" className={classes.topMsg}>
               Log in to gain access to club manager/member features
             </Typography>
             }
           </Grid>
         </Grid>
         <AppBar position="static" className={classes.appBar}>
-          <Container maxWidth="lg">
+          <Container maxWidth="md">
             <Toolbar>
-              <Typography variant="h4" className={classes.title} onClick={handleLogoClick}>
+              <Typography variant="h3" className={classes.title} onClick={handleLogoClick}>
                   Sports Booker
               </Typography>
               {( showMenuButtons &&

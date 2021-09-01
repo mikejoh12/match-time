@@ -1,18 +1,17 @@
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CopyrightIcon from '@material-ui/icons/Copyright';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     footer: {
         height: 70,
         marginTop: 50,
-        backgroundColor: "rgba(20, 160, 140, 1)"
+        backgroundColor: theme.palette.primary.light
     },
     copyright: {
         position: "relative",
         top: "4px"
-    }
-  });
+    }}
+));
 
 export const Footer = () => {
     const classes = useStyles()
@@ -26,8 +25,8 @@ export const Footer = () => {
                 alignItems="center"
                 spacing={2}
                 className={classes.footer}>
-                <Typography variant="h6">
-                    <CopyrightIcon className={classes.copyright}/> 2021 Sports Booker
+                <Typography variant="subtitle1">
+                    Sports Booker - Developed by Mike Johansson
                 </Typography>
 
             </Grid>

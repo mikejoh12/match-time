@@ -63,7 +63,7 @@ export const InviteMembersDialog = ({facilityId}) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
         Invite New Member
       </Button>
       <Dialog open={inviteMemberDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">

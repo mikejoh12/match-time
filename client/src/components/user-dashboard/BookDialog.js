@@ -79,7 +79,7 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
         Book a Court
       </Button>
       <Dialog open={bookDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">

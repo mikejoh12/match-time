@@ -55,7 +55,7 @@ export const DeleteFacilityDialog = ({facilityId}) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
         Delete This Facility
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

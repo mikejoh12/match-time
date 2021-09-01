@@ -44,7 +44,7 @@ export const AddResourceDialog = ({facilityId}) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
         Add a Resource
       </Button>
       <Dialog open={open} onClose={handleClose}>

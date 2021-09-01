@@ -43,7 +43,7 @@ export const AddFacilityDialog = () => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
         Add a Facility
       </Button>
       <Dialog open={open} onClose={handleClose}>
