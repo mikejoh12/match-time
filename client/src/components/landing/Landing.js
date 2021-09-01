@@ -146,11 +146,7 @@ export const Landing = () => {
                             </Paper>
                             </Container>
                         </Grid>
-                {user ?
-                    <LandingLoggedIn />
-                    :
-                    <LandingNotLoggedIn />
-                }
+                {user && <LandingLoggedIn /> }
                 </Grid>
             </div>
     )

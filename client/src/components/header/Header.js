@@ -94,11 +94,11 @@ export const Header = () => {
               alignItems="center">
           <Grid item>
             { user ?
-            <Typography variant="h6" className={classes.topMsg}>
-              { user.email } { facility && facility.name} 
+            <Typography variant="subtitle1" className={classes.topMsg}>
+              { `${user.email} - `} { facility?.name ? facility?.name : 'No facility selected'} 
             </Typography>
           :    
-            <Typography variant="h6" className={classes.topMsg}>
+            <Typography variant="subtitle1" className={classes.topMsg}>
               Log in to gain access to club manager/member features
             </Typography>
             }
