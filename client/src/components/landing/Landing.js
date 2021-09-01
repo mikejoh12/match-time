@@ -16,7 +16,7 @@ import courtsImage from '../../images/sports-courts.jpg'
 const useStyles = makeStyles({
     hero: {
         padding: '30px',
-        margin: '10px'
+        margin: '10px',
     }
   });
 
@@ -34,7 +34,7 @@ export const Landing = () => {
                     spacing={2}>
                         <Grid item>
                             <Container maxWidth="md">
-                            <Paper className={classes.hero}>
+                            <Paper className={classes.hero} elevation={5}>
                                 <Grid
                                     container
                                     direction="column"

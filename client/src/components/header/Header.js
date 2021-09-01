@@ -15,10 +15,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { UserRegisterDialog } from '../login/dialogs/UserRegisterDialog';
 import { UserLoginDialog } from '../login/dialogs/UserLoginDialog';
 import { logout } from '../../features/auth/authSlice';
-import { selectFacilityIsLoaded } from '../../features/current-facility/currentFacilitySlice'
+import { selectFacilityIsLoaded, selectFacility } from '../../features/current-facility/currentFacilitySlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'
 import { showSnackbar } from '../../features/ui/uiSlice';
+import { Grid } from '@material-ui/core';
 
 const font = "'Karla', sans-serif";
 
@@ -26,8 +27,14 @@ const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
     },
+    topMsgBar: {
+      backgroundColor: theme.palette.primary.dark,
+    },
+    topMsg: {
+      color: 'white'
+    },
     appBar: {
-      backgroundColor: theme.palette.common.black
+      backgroundColor: theme.palette.common.black,
     },
     menuButton: {
       marginLeft: theme.spacing(2),
@@ -53,6 +60,7 @@ export const Header = () => {
 
     const { user } = useAuth()
     const facilityIsLoaded = useSelector(selectFacilityIsLoaded)
+    const facility = useSelector(selectFacility)
 
     const [openUserLogin, setOpenUserLogin] = useState(false)
     const handleOpenUserLogin = () => setOpenUserLogin(true)
@@ -80,6 +88,22 @@ export const Header = () => {
 
     return (
       <div className={classes.root}>
+        <Grid className={classes.topMsgBar}
+              container
+              direction="column"
+              alignItems="center">
+          <Grid item>
+            { user ?
+            <Typography variant="h6" className={classes.topMsg}>
+              { user.email } { facility && facility.name} 
+            </Typography>
+          :    
+            <Typography variant="h6" className={classes.topMsg}>
+              Log in to gain access to club manager/member features
+            </Typography>
+            }
+          </Grid>
+        </Grid>
         <AppBar position="static" className={classes.appBar}>
           <Container maxWidth="lg">
             <Toolbar>
