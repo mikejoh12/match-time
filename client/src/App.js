@@ -7,7 +7,7 @@ import { Bookings } from './components/bookings/Bookings'
 import { ManagerDashboard } from './components/manager-dashboard/ManagerDashboard'
 import { FacilityMemberList } from './components/manager-dashboard/FacilityMemberList'
 import { Account } from './components/account/Account'
-import { BrowserRouter as Router,
+import { BrowserRouter,
   Switch,
   Route
 } from 'react-router-dom'
@@ -33,69 +33,75 @@ const useStyles = makeStyles({
   }
 });
 
-function App() {
+export const Routes = () => {
   const classes = useStyles()
-
+  
   return (
     <ThemeProvider theme={theme}>
-      <MsgSnackbar />
-      <Router>
-
-        <Box  display="flex"
-              flexDirection="column"
-              className={classes.root}>
-          
-          <Box className={classes.main}>
-            <Grid container>
-              <Grid item xs={12}>
-                <Header />
-              </Grid>
-              
-              <Grid item 
-                    container xs={12}
-                    direction="column"
-                    alignItems="center"
-                    className={classes.mainContent}>
-
-                  <Switch>
-                    <Route exact path="/" component={Landing} />
-
-                    <PrivateRoute path="/user-dashboard">
-                      <Route component={UserDashboard} />
-                    </PrivateRoute>
-
-                    <PrivateRoute path="/manager-dashboard">
-                      <Route component={ManagerDashboard} />
-                    </PrivateRoute>
-
-                    <PrivateRoute path="/account">
-                      <Route component={Account} />
-                    </PrivateRoute>
-
-                    <PrivateRoute exact path="/manager-facility-edit/:id">
-                      <Route component={ManagerFacilityEdit} />
-                    </PrivateRoute>
-
-                    <PrivateRoute exact path="/manager-facility-edit/:id/members">
-                      <Route component={FacilityMemberList} />
-                    </PrivateRoute>
-
-                    <PrivateRoute path="/bookings">
-                      <Route component={Bookings} />
-                    </PrivateRoute>
-
-                    <Route path="/:id" component={FacilityLogin} />
-                  </Switch>
-
-              </Grid>
+    <MsgSnackbar />
+      <Box  display="flex"
+            flexDirection="column"
+            className={classes.root}>
+        
+        <Box className={classes.main}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Header />
             </Grid>
-          </Box>
+            
+            <Grid item 
+                  container xs={12}
+                  direction="column"
+                  alignItems="center"
+                  className={classes.mainContent}>
 
-          <Footer />
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+
+                  <PrivateRoute path="/user-dashboard">
+                    <Route component={UserDashboard} />
+                  </PrivateRoute>
+
+                  <PrivateRoute path="/manager-dashboard">
+                    <Route component={ManagerDashboard} />
+                  </PrivateRoute>
+
+                  <PrivateRoute path="/account">
+                    <Route component={Account} />
+                  </PrivateRoute>
+
+                  <PrivateRoute exact path="/manager-facility-edit/:id">
+                    <Route component={ManagerFacilityEdit} />
+                  </PrivateRoute>
+
+                  <PrivateRoute exact path="/manager-facility-edit/:id/members">
+                    <Route component={FacilityMemberList} />
+                  </PrivateRoute>
+
+                  <PrivateRoute path="/bookings">
+                    <Route component={Bookings} />
+                  </PrivateRoute>
+
+                  <Route path="/:id" component={FacilityLogin} />
+                </Switch>
+
+            </Grid>
+          </Grid>
         </Box>
 
-      </Router>
-    </ThemeProvider>
+        <Footer />
+      </Box>
+  </ThemeProvider>
+  )
+};
+
+const App = () => {
+  return (
+      <div>
+          <BrowserRouter>
+              <Routes/>
+          </BrowserRouter>
+      </div>
   );
 }
 

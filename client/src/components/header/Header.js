@@ -115,7 +115,7 @@ export const Header = () => {
                   { user ?
                     <Button color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
                     :
-                    <Button color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
+                    <Button data-testid='login' color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                   }
                   { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
                   { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
@@ -147,7 +147,7 @@ export const Header = () => {
                     { user ?
                     <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
                     :
-                    <MenuItem onClick={handleOpenUserLogin}>Login</MenuItem>
+                    <MenuItem data-testid='login' onClick={handleOpenUserLogin}>Login</MenuItem>
                     }
                     { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
                     { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }

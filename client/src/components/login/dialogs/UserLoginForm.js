@@ -44,9 +44,8 @@ export const UserLoginForm = ({ handleClose }) => {
           }
         ))
       } catch (err) {
-        console.log(err)
         dispatch(showSnackbar({
-          message: err.data.error.message,
+          message: err.data?.error?.message || 'There was a server error',
           severity: 'error'
         }))
       } finally {
@@ -69,6 +68,7 @@ export const UserLoginForm = ({ handleClose }) => {
             error={!!error}
             helperText={error ? error.message : null}
             type="email"
+            inputProps={{"data-testid":"login-email"}}
           />
         )}
         rules={{ required: 'Email required' }}
@@ -86,6 +86,7 @@ export const UserLoginForm = ({ handleClose }) => {
             error={!!error}
             helperText={error ? error.message : null}
             type="password"
+            inputProps={{"data-testid":"login-password"}}
           />
         )}
         rules={{ required: 'Password required' }}
@@ -94,7 +95,7 @@ export const UserLoginForm = ({ handleClose }) => {
         <Button variant="contained" onClick={handleClose}>
           Cancel
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <Button data-testid='login-user-submit' type="submit" variant="contained" color="primary">
           Login
         </Button>
       </div>
