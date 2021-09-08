@@ -1,5 +1,5 @@
 
-const { fetchFacilitiesByUserDb, fetchFacilityInfoDb, createFacilityDb, removeFacilityDb } = require('../db/facilities-db.js')
+const { fetchFacilitiesByUserDb, fetchFacilityInfoDb, createFacilityDb, removeFacilityDb, fetchFacilitiesManagingByUserDb } = require('../db/facilities-db.js')
 const { fetchResources, removeResource } = require('./resources-service.js')
 const { createFacilityManagerDb, removeFacilityManagerDb } = require('../db/users-db.js')
 
@@ -24,7 +24,10 @@ const removeFacility = async facilityId => {
     return await removeFacilityDb(facilityId)
 }
 
+const fetchFacilitiesManagingByUser = async (id) => await fetchFacilitiesManagingByUserDb(id)
+
 module.exports = {  fetchFacilitiesByUser,
                     fetchFacilityInfo,
                     createFacility,
-                    removeFacility }
+                    removeFacility,
+                    fetchFacilitiesManagingByUser }

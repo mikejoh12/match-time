@@ -116,12 +116,9 @@ describe('Manager Dashboard', () => {
             })
     )
 
-    // Verify new club name appear in the document
+    // Verify new club name removed (after form submit) and then appear in the document
     expect(screen.queryByText(/New Tennis Club/i)).not.toBeInTheDocument()    
-    await waitFor(() => {
-        expect(screen.getByText(/New Tennis Club/i)).toBeInTheDocument()
-    })
-
+    expect(await screen.findByText(/New Tennis Club/i)).toBeInTheDocument()
   });
 
 });

@@ -1,3 +1,4 @@
+const { fetchFacilitiesManagingByUserDb } = require('../db/facilities-db.js')
 const { fetchFacilitiesByUser, fetchFacilityInfo, createFacility, removeFacility } = require('../services/facilities-service.js')
 
 const getFacilitesByUser = async (req, res) => {
@@ -18,6 +19,13 @@ const getFacilityInfo = async (req, res) => {
 const postFacility = async (req, res) => {
     const { id: userId } = req.user
     const { name, description } = req.body
+
+    // Check if already managing 3 or more facilities
+    const facilities = await fetchFacilitiesManagingByUserDb(userId)
+    if (facilities.length >= 3) {
+        return res.status(403).json({error: "Max number of facilities to manage is 3"})
+    }
+
     const facility = {
         name,
         description
