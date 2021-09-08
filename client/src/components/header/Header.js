@@ -113,15 +113,15 @@ export const Header = () => {
               {( showMenuButtons &&
                 <div>
                   { user ?
-                    <Button color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
+                    <Button data-testid='logout-button' color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
                     :
                     <Button data-testid='login' color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
                   }
                   { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
                   { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
-                  { user && <Button color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
+                  { user && <Button data-testid='manage-nav-button' color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
                   { user && <Button data-testid='bookings-nav-button'color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
-                  { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
+                  { user && <Button data-testid='account-nav-button' color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
 
                 </div> )}
               {( !showMenuButtons &&
@@ -145,15 +145,15 @@ export const Header = () => {
                     onClose={handleClose}
                 >
                     { user ?
-                    <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+                    <MenuItem data-testid='logout-button' onClick={handleUserLogout}>Logout</MenuItem>
                     :
                     <MenuItem data-testid='login' onClick={handleOpenUserLogin}>Login</MenuItem>
                     }
                     { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
                     { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }
-                    { user && <MenuItem onClick={handleManageClick}>Manage Facilities</MenuItem>}
+                    { user && <MenuItem data-testid='manage-nav-button' onClick={handleManageClick}>Manage Facilities</MenuItem>}
                     { user && <MenuItem  data-testid='bookings-nav-button' onClick={handleBookingsClick}>Bookings</MenuItem> }
-                    { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
+                    { user && <MenuItem data-testid='account-nav-button' onClick={handleAccountClick}>Account</MenuItem> }
                 </Menu>
               </div> )}
             </Toolbar>

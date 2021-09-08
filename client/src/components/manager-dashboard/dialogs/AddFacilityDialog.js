@@ -43,7 +43,7 @@ export const AddFacilityDialog = () => {
 
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+      <Button data-testid='add-facility-button' variant="contained" color="secondary" onClick={handleClickOpen}>
         Add a Facility
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -64,6 +64,7 @@ export const AddFacilityDialog = () => {
                     onChange={onChange}
                     error={!!error}
                     helperText={error ? error.message : null}
+                    inputProps={{"data-testid":"add-facility-name"}}
                 />
               )}
               rules={{ required: 'Facility name required' }}
@@ -81,6 +82,7 @@ export const AddFacilityDialog = () => {
                     onChange={onChange}
                     error={!!error}
                     helperText={error ? error.message : null}
+                    inputProps={{"data-testid":"add-facility-description"}}
                 />
               )}
               rules={{ required: 'Facility description required' }}
@@ -90,7 +92,7 @@ export const AddFacilityDialog = () => {
             <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
-            <Button type="submit" color="primary">
+            <Button data-testid='add-facility-submit' type="submit" color="primary">
               Add Facility
             </Button>
           </DialogActions>

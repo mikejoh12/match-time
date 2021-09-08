@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, loginUser, render, screen } from '../test-utils/test-utils'
+import { loginUser, render, screen } from '../test-utils/test-utils'
 import { Router } from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 import userEvent from '@testing-library/user-event'
@@ -77,7 +77,7 @@ describe('Login', () => {
       }),
     )
     
-    fireEvent.click(screen.getByTestId('login'))
+    userEvent.click(screen.getByTestId('login'))
     expect(screen.getByText('Email')).toBeInTheDocument()
     expect(screen.getByText('Password')).toBeInTheDocument()
 
@@ -86,7 +86,19 @@ describe('Login', () => {
     expect(screen.getByTestId('login-email')).toHaveValue('testuser@gmail.com')
     expect(screen.getByTestId('login-password')).toHaveValue('password')
 
-    fireEvent.click(screen.getByTestId('login-user-submit'))
+    userEvent.click(screen.getByTestId('login-user-submit'))
     expect(await screen.findByText('There was a server error')).toBeInTheDocument()
+  });
+
+  test('logs out successfully and displays status msg', async() => {
+    const history = createMemoryHistory()
+    render(
+      <Router history={history}>
+        <Routes />
+      </Router>,
+    )
+    await loginUser("testuser@gmail.com", "password")
+    userEvent.click(screen.getByTestId('logout-button'))
+    expect(await screen.findByText(/User has been logged out/i)).toBeInTheDocument()
   });
 });
