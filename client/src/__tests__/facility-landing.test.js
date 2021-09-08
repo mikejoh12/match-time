@@ -1,5 +1,6 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom'
+import { Router } from 'react-router-dom'
+import {createMemoryHistory} from 'history'
 import { render, screen } from '../test-utils/test-utils'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
@@ -44,19 +45,23 @@ describe('Facility Landing Page', () => {
         return res(ctx.status(422), ctx.json({error: "Invalid facility id."}))
       }),
     )
+    const history = createMemoryHistory()
+    history.push('/99')
     render(
-        <MemoryRouter initialEntries={['/99']}>
-            <Routes/>
-        </MemoryRouter>
+      <Router history={history}>
+        <Routes />
+      </Router>,
     )
     expect(await screen.findByText(/No facility found/i)).toBeInTheDocument()
   });
 
   test('displays facility info for a valid facility-id route', async() => {
+    const history = createMemoryHistory()
+    history.push('/1')
     render(
-        <MemoryRouter initialEntries={['/1']}>
-            <Routes/>
-        </MemoryRouter>
+      <Router history={history}>
+        <Routes />
+      </Router>,
     )
     expect(await screen.findByText(/Smash Tennis Club/i)).toBeInTheDocument()
     expect(await screen.findByText(/Court 1/i)).toBeInTheDocument()

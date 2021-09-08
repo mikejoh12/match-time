@@ -85,7 +85,7 @@ export const FacilityLogin = () => {
                         </Grid>
                         <Grid item>
                             { user ?
-                            <Button variant="contained" color="secondary" onClick={handleUserLogin}>Go To Scheduling</Button>
+                            <Button data-testid='go-to-scheduling' variant="contained" color="secondary" onClick={handleUserLogin}>Go To Scheduling</Button>
                             :
                             <Typography variant="h5">
                                 Please log in to access club schedules.

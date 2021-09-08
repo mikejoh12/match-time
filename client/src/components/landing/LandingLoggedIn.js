@@ -82,7 +82,7 @@ export const LandingLoggedIn = () => {
                                     </Select>
                                 </FormControl>
                                 <Grid item>
-                                    <Button variant="contained" color="secondary" type="submit">Login as a member</Button>
+                                    <Button data-testid='login-as-member' variant="contained" color="secondary" type="submit">Login as a member</Button>
                                 </Grid>
                             </form>
                         </Grid>

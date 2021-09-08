@@ -19,6 +19,8 @@ import MsgSnackbar from './utils/MsgSnackbar'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Box } from '@material-ui/core'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = makeStyles({
   root: {
@@ -37,61 +39,63 @@ export const Routes = () => {
   const classes = useStyles()
   
   return (
-    <ThemeProvider theme={theme}>
-    <MsgSnackbar />
-      <Box  display="flex"
-            flexDirection="column"
-            className={classes.root}>
-        
-        <Box className={classes.main}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Header />
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <ThemeProvider theme={theme}>
+      <MsgSnackbar />
+        <Box  display="flex"
+              flexDirection="column"
+              className={classes.root}>
+          
+          <Box className={classes.main}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Header />
+              </Grid>
+              
+              <Grid item 
+                    container xs={12}
+                    direction="column"
+                    alignItems="center"
+                    className={classes.mainContent}>
+
+                  <Switch>
+                    <Route exact path="/" component={Landing} />
+
+                    <PrivateRoute path="/user-dashboard">
+                      <Route component={UserDashboard} />
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/manager-dashboard">
+                      <Route component={ManagerDashboard} />
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/account">
+                      <Route component={Account} />
+                    </PrivateRoute>
+
+                    <PrivateRoute exact path="/manager-facility-edit/:id">
+                      <Route component={ManagerFacilityEdit} />
+                    </PrivateRoute>
+
+                    <PrivateRoute exact path="/manager-facility-edit/:id/members">
+                      <Route component={FacilityMemberList} />
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/bookings">
+                      <Route component={Bookings} />
+                    </PrivateRoute>
+
+                    <Route path="/:id" component={FacilityLogin} />
+                  </Switch>
+
+              </Grid>
             </Grid>
-            
-            <Grid item 
-                  container xs={12}
-                  direction="column"
-                  alignItems="center"
-                  className={classes.mainContent}>
+          </Box>
 
-                <Switch>
-                  <Route exact path="/" component={Landing} />
-
-                  <PrivateRoute path="/user-dashboard">
-                    <Route component={UserDashboard} />
-                  </PrivateRoute>
-
-                  <PrivateRoute path="/manager-dashboard">
-                    <Route component={ManagerDashboard} />
-                  </PrivateRoute>
-
-                  <PrivateRoute path="/account">
-                    <Route component={Account} />
-                  </PrivateRoute>
-
-                  <PrivateRoute exact path="/manager-facility-edit/:id">
-                    <Route component={ManagerFacilityEdit} />
-                  </PrivateRoute>
-
-                  <PrivateRoute exact path="/manager-facility-edit/:id/members">
-                    <Route component={FacilityMemberList} />
-                  </PrivateRoute>
-
-                  <PrivateRoute path="/bookings">
-                    <Route component={Bookings} />
-                  </PrivateRoute>
-
-                  <Route path="/:id" component={FacilityLogin} />
-                </Switch>
-
-            </Grid>
-          </Grid>
+          <Footer />
         </Box>
-
-        <Footer />
-      </Box>
-  </ThemeProvider>
+    </ThemeProvider>
+  </MuiPickersUtilsProvider>
   )
 };
 

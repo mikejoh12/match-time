@@ -1,4 +1,4 @@
-import React, { BrowserRouter} from 'react'
+import React from 'react'
 import { render as rtlRender } from '@testing-library/react'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'

@@ -1,9 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '../test-utils/test-utils'
+import { Router } from 'react-router-dom'
+import {createMemoryHistory} from 'history'
 import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-import App from '../App';
+import { Routes } from '../App';
 
 export const handlers = [
   rest.post('/api/auth/login', (req, res, ctx) => {
@@ -34,18 +36,18 @@ export const handlers = [
 ]
 
 const server = setupServer(...handlers)
-// Enable API mocking before tests.
 beforeAll(() => server.listen())
-
-// Reset any runtime request handlers we may add during the tests.
 afterEach(() => server.resetHandlers())
-
-// Disable API mocking after the tests are done.
 afterAll(() => server.close())
 
 describe('App Component Startup', () => {
   test('renders Sports Booker title', () => {
-    render(<App />);
+    const history = createMemoryHistory()
+    render(
+      <Router history={history}>
+        <Routes />
+      </Router>,
+    )
     const linkElement = screen.getAllByText('Sports Booker');
     expect(linkElement[0]).toBeInTheDocument();
   });
@@ -53,7 +55,12 @@ describe('App Component Startup', () => {
 
 describe('Login', () => {
   test('Login successfully and display user email in navbar', async() => {
-    render(<App />);
+    const history = createMemoryHistory()
+    render(
+      <Router history={history}>
+        <Routes />
+      </Router>,
+    )
     
     fireEvent.click(screen.getByTestId('login'))
     expect(screen.getByText('Email')).toBeInTheDocument()
@@ -69,7 +76,12 @@ describe('Login', () => {
   });
 
   test('Handle server error on login', async() => {
-    render(<App />);
+    const history = createMemoryHistory()
+    render(
+      <Router history={history}>
+        <Routes />
+      </Router>,
+    )
     server.use(
       rest.post('/api/auth/login', (req, res, ctx) => {
         return res(ctx.status(500))
