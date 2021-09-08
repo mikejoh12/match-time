@@ -120,7 +120,7 @@ export const Header = () => {
                   { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
                   { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
                   { user && <Button color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
-                  { user && <Button color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
+                  { user && <Button data-testid='bookings-nav-button'color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
                   { user && <Button color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
 
                 </div> )}
@@ -152,7 +152,7 @@ export const Header = () => {
                     { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
                     { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }
                     { user && <MenuItem onClick={handleManageClick}>Manage Facilities</MenuItem>}
-                    { user && <MenuItem onClick={handleBookingsClick}>Bookings</MenuItem> }
+                    { user && <MenuItem  data-testid='bookings-nav-button' onClick={handleBookingsClick}>Bookings</MenuItem> }
                     { user && <MenuItem onClick={handleAccountClick}>Account</MenuItem> }
                 </Menu>
               </div> )}

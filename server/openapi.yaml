@@ -271,18 +271,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bookings'
 
-  /api/bookings/by_user/{id}:
+  /api/bookings/by_user:
     get:
       tags:
       - bookings
       description: Gets all bookings for a user
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: Numeric ID of the user
       responses:
         200:
           description: Returns an array of booking objects for the user

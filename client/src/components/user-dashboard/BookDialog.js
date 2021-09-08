@@ -79,7 +79,7 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
 
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+      <Button data-testid='open-book-dialog' variant="contained" color="secondary" onClick={handleClickOpen}>
         Book a Court
       </Button>
       <Dialog open={bookDialogOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -138,7 +138,7 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleCloseBook} color="primary">
+          <Button data-testid='book-court-submit' onClick={handleCloseBook} color="primary">
             Book Court
           </Button>
         </DialogActions>

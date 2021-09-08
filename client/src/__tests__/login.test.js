@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '../test-utils/test-utils'
+import { fireEvent, loginUser, render, screen } from '../test-utils/test-utils'
 import { Router } from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 import userEvent from '@testing-library/user-event'
@@ -54,28 +54,17 @@ describe('App Component Startup', () => {
 });
 
 describe('Login', () => {
-  test('Login successfully and display user email in navbar', async() => {
+  test('logs in successfully and display user email in navbar', async() => {
     const history = createMemoryHistory()
     render(
       <Router history={history}>
         <Routes />
       </Router>,
     )
-    
-    fireEvent.click(screen.getByTestId('login'))
-    expect(screen.getByText('Email')).toBeInTheDocument()
-    expect(screen.getByText('Password')).toBeInTheDocument()
-
-    userEvent.type(screen.getByTestId('login-email'), 'testuser@gmail.com')
-    userEvent.type(screen.getByTestId('login-password'), 'password')
-    expect(screen.getByTestId('login-email')).toHaveValue('testuser@gmail.com')
-    expect(screen.getByTestId('login-password')).toHaveValue('password')
-
-    fireEvent.click(screen.getByTestId('login-user-submit'))
-    expect(await screen.findByText('testuser@gmail.com - No facility selected')).toBeInTheDocument()
+    await loginUser("testuser@gmail.com", "password")
   });
 
-  test('Handle server error on login', async() => {
+  test('handles server error on login', async() => {
     const history = createMemoryHistory()
     render(
       <Router history={history}>

@@ -1,8 +1,8 @@
-
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '../test-utils/test-utils'
-import { MemoryRouter } from 'react-router-dom'
+import { render, screen, loginUser } from '../test-utils/test-utils'
 import userEvent from '@testing-library/user-event'
+import { Router } from 'react-router-dom'
+import {createMemoryHistory} from 'history'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import { Routes } from '../App';
@@ -70,43 +70,85 @@ export const handlers = [
   ]
 
 const server = setupServer(...handlers)
-// Enable API mocking before tests.
 beforeAll(() => server.listen())
-
-// Reset any runtime request handlers we may add during the tests.
 afterEach(() => server.resetHandlers())
-
-// Disable API mocking after the tests are done.
 afterAll(() => server.close())
 
-
 describe('Bookings', () => {
-  test('Login and enter booking calendar', async() => {
+  test('creates a new booking and displays it on bookings page', async() => {
+    const history = createMemoryHistory()
     render(
-        <MemoryRouter>
-            <Routes/>
-        </MemoryRouter>);
-
-    // Login      
-    fireEvent.click(screen.getByTestId('login'))
-    expect(screen.getByText('Email')).toBeInTheDocument()
-    expect(screen.getByText('Password')).toBeInTheDocument()
-
-    userEvent.type(screen.getByTestId('login-email'), 'testuser@gmail.com')
-    userEvent.type(screen.getByTestId('login-password'), 'password')
-    expect(screen.getByTestId('login-email')).toHaveValue('testuser@gmail.com')
-    expect(screen.getByTestId('login-password')).toHaveValue('password')
-
-    fireEvent.click(screen.getByTestId('login-user-submit'))
-    expect(await screen.findByText('testuser@gmail.com - No facility selected')).toBeInTheDocument()
+      <Router history={history}>
+        <Routes />
+      </Router>,
+    )
+  
+    await loginUser("testuser@gmail.com", "password")
 
     // Enter facility section
     expect(await screen.findByText(/Smash Tennis Club/i)).toBeInTheDocument()
-    fireEvent.click(screen.getByTestId('login-as-member'))
+    userEvent.click(screen.getByTestId('login-as-member'))
     expect(await screen.findByText(/Go to scheduling/i)).toBeInTheDocument()
 
     // Enter calendar section
-    fireEvent.click(screen.getByTestId('go-to-scheduling'))
+    userEvent.click(screen.getByTestId('go-to-scheduling'))
     expect(await screen.findByText(/Book a court/i)).toBeInTheDocument()
+
+    // Create a booking
+    server.use(
+      // Mock the api response of booking
+      rest.post('/api/bookings', (req, res, ctx) => {
+        return res(
+          ctx.json({
+              "bookings_id": 183,
+              "resources_id": 1,
+              "organizer_id": 99,
+              "start_time": "2021-09-30T14:00:00.000Z",
+              "end_time": "2021-09-30T15:00:00.000Z",
+              "facilities_id": 1,
+              "resources_name": "Court 1",
+              "first_name": "John",
+              "last_name": "Smith"
+          }),
+          ctx.status(201))
+      }),
+      // Mock the updated bookings array after we add a booking
+      rest.get('/api/bookings/by_user', (req, res, ctx) => {
+        return res(
+          ctx.json([{
+            "bookings_id": 183,
+            "resources_id": 1,
+            "organizer_id": 99,
+            "start_time": "2021-09-30T14:00:00.000Z",
+            "end_time": "2021-09-30T15:00:00.000Z",
+            "facilities_id": 1,
+            "resources_name": "Court 1",
+            "first_name": "John",
+            "last_name": "Smith"
+          }, {
+            "bookings_id": 182,
+            "resources_id": 1,
+            "organizer_id": 99,
+            "start_time": "2021-08-30T21:00:00.000Z",
+            "end_time": "2021-08-30T22:00:00.000Z",
+            "facilities_id": 1,
+            "resources_name": "Court 1",
+            "first_name": "John",
+            "last_name": "Smith"
+          }]),
+          ctx.status(200))
+      }),
+    )
+    userEvent.click(screen.getByTestId('open-book-dialog'))
+    expect(await screen.findByText(/Select Court/i)).toBeInTheDocument()    
+    userEvent.click(screen.getByTestId('book-court-submit'))
+
+    // Verify new booking message appears
+    expect(await screen.findByText(/Booking created successfully/i)).toBeInTheDocument()
+
+    // Verify new booking on bookings page
+    userEvent.click(screen.getByTestId('bookings-nav-button'))
+    expect(await screen.findByText(/183/)).toBeInTheDocument()
+
   });
 });
