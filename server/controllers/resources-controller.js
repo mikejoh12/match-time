@@ -14,6 +14,17 @@ const getResources = async (req, res) => {
 const postResource = async (req, res) => {
     const { facilityId } = req.params
     const { name, description } = req.body
+    const facilityInfo = await fetchFacilityInfo(facilityId);
+    if (!facilityInfo) {
+        return res.status(422).json({error: "Invalid facility id."})
+    }
+
+    // Allow max 10 resources per facility - check current number
+    const resources = await fetchResources(facilityId)
+    if (resources.length >= 10) {
+        return res.status(422).json({error: "Facility is limited to max 10 resources."})
+    }
+
     const newResource = await createResource({
                                 facilityId,
                                 name,

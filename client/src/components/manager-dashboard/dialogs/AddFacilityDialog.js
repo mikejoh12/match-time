@@ -32,7 +32,6 @@ export const AddFacilityDialog = () => {
         severity: 'success'
         }))
     } catch (err) {
-      console.log(err)
       dispatch(showSnackbar({
         message: err.data?.error || 'There was a problem when adding facility.',
         severity: 'error'

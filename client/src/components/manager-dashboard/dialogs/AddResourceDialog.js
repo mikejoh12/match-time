@@ -34,7 +34,7 @@ export const AddResourceDialog = ({facilityId}) => {
         }))
     } catch (err) {
       dispatch(showSnackbar({
-        message: 'There was a problem adding the resource',
+        message: err.data?.error || 'There was a problem adding the resource',
         severity: 'error'
       }))
     } finally {
