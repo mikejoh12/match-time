@@ -29,9 +29,28 @@ const fetchInvitationsByFacilityIdDb = async (facilityId) => {
     return res.rows
 }
 
+const resetTokenUpdateUsedDb = async (email) => {
+    const text = `  UPDATE reset_tokens
+                    SET used = 1
+                    WHERE email = $1`
+    values = [email]
+    const res = await pool.query(text, values)
+    return res.rows
+}
+
+const resetTokenCreateDb = async ({email, token, expiration, used}) => {
+    const text = `INSERT INTO reset_tokens(email, token, expiration, used)
+                  VALUES($1, $2, $3, $3) RETURNING *`
+    const values = [email, token, expiration, used]
+    const res = await pool.query(text, values)
+    return res.rows[0]
+}
+
 module.exports = {
     createUnregisteredFacilityInvitationDb,
     removeUnregisteredFacilityInvitationDb,
     fetchInvitationsByEmailDb,
-    fetchInvitationsByFacilityIdDb
+    fetchInvitationsByFacilityIdDb,
+    resetTokenUpdateUsedDb,
+    resetTokenCreateDb
 }

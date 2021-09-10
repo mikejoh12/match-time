@@ -42,6 +42,16 @@ CREATE TABLE "invitations" (
   PRIMARY KEY("email", "facilities_id")
 )
 
+CREATE TABLE "reset_tokens" (
+  "id" SERIAL PRIMARY KEY,
+  "email" varchar(255) DEFAULT NULL,
+  "token" varchar(255) DEFAULT NULL,
+  "expiration" timestamp DEFAULT NULL,
+  "createdAt" timestamp NOT NULL,
+  "updatedAt" timestamp NOT NULL,
+  "used" int NOT NULL DEFAULT '0'
+)
+
 ALTER TABLE "resources" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
 
 ALTER TABLE "bookings" ADD FOREIGN KEY ("resources_id") REFERENCES "resources" ("id");

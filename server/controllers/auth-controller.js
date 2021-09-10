@@ -1,5 +1,5 @@
 const { fetchUserByEmail, createUser, createFacilityMember } = require('../services/users-service')
-const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId } = require('../services/auth-service')
+const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId, createResetToken } = require('../services/auth-service')
 const { fetchFacilityInfo } = require('../services/facilities-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
@@ -120,4 +120,26 @@ const getInvitationsByFacilityId = async (req, res) => {
     res.status(200).json(invitations)
 }
 
-module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId }
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    const email = await fetchUserByEmail(email);
+    // Don't make it obvious that no email exists
+    if (email == null) {
+        console.log('No email match found')
+        return res.json({status: 'ok'});
+    }
+    console.log('Email match found')
+    const newToken = await createResetToken(email);
+
+    let msg = await transport.sendMail({
+        from: 'mike@calendar-booking.com',
+        to: email,
+        subject: `You are invited to our club: ${facilityInfo.name}`,
+        text:`To reset your password, please click the link below.\n\nhttps://${process.env.DOMAIN}/user/reset-password?token=${encodeURIComponent(token)}&email=${email}`
+        })
+    console.log(`Message sent: ${msg.messageId}`);
+
+    return res.json({status: 'ok'});
+}
+
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword }

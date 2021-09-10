@@ -54,51 +54,53 @@ export const UserLoginForm = ({ handleClose }) => {
   }
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            label="Email"
-            variant="filled"
-            value={value}
-            onChange={onChange}
-            error={!!error}
-            helperText={error ? error.message : null}
-            type="email"
-            inputProps={{"data-testid":"login-email"}}
-          />
-        )}
-        rules={{ required: 'Email required' }}
-      />
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            label="Password"
-            variant="filled"
-            value={value}
-            onChange={onChange}
-            error={!!error}
-            helperText={error ? error.message : null}
-            type="password"
-            inputProps={{"data-testid":"login-password"}}
-          />
-        )}
-        rules={{ required: 'Password required' }}
-      />
-      <div>
-        <Button variant="contained" onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button data-testid='login-user-submit' type="submit" variant="contained" color="primary">
-          Login
-        </Button>
-      </div>
-    </form>
+    <div>
+      <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <TextField
+              label="Email"
+              variant="filled"
+              value={value}
+              onChange={onChange}
+              error={!!error}
+              helperText={error ? error.message : null}
+              type="email"
+              inputProps={{"data-testid":"login-email"}}
+            />
+          )}
+          rules={{ required: 'Email required' }}
+        />
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <TextField
+              label="Password"
+              variant="filled"
+              value={value}
+              onChange={onChange}
+              error={!!error}
+              helperText={error ? error.message : null}
+              type="password"
+              inputProps={{"data-testid":"login-password"}}
+            />
+          )}
+          rules={{ required: 'Password required' }}
+        />
+        <div>
+          <Button variant="contained" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button data-testid='login-user-submit' type="submit" variant="contained" color="primary">
+            Login
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
