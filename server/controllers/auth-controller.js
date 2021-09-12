@@ -122,20 +122,20 @@ const getInvitationsByFacilityId = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
     const { email } = req.body;
-    const email = await fetchUserByEmail(email);
+    const user = await fetchUserByEmail(email);
     // Don't make it obvious that no email exists
-    if (email == null) {
+    if (user == null) {
         console.log('No email match found')
         return res.json({status: 'ok'});
     }
     console.log('Email match found')
-    const newToken = await createResetToken(email);
+    const token = await createResetToken(email);
 
     let msg = await transport.sendMail({
         from: 'mike@calendar-booking.com',
         to: email,
-        subject: `You are invited to our club: ${facilityInfo.name}`,
-        text:`To reset your password, please click the link below.\n\nhttps://${process.env.DOMAIN}/user/reset-password?token=${encodeURIComponent(token)}&email=${email}`
+        subject: `Password Reset`,
+        text:`To reset your password, please click the link below.\n\nhttp://localhost/reset-password?token=${encodeURIComponent(token)}&email=${email}`
         })
     console.log(`Message sent: ${msg.messageId}`);
 

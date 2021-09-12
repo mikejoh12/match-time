@@ -36,7 +36,7 @@ router
     .post('/auth/login', validateLoginUser, loginUser)
     .post('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false}), inviteUser)
     .get('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false}), getInvitationsByFacilityId)
-    .get('/auth/forgot-password', forgotPassword)
+    .post('/auth/password_reset', forgotPassword)
 
     .get('/users/by_facility/:facilityId', passport.authenticate('jwt-manager', {session: false}), getUsersByFacility )
 

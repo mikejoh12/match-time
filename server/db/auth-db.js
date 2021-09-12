@@ -31,7 +31,7 @@ const fetchInvitationsByFacilityIdDb = async (facilityId) => {
 
 const resetTokenUpdateUsedDb = async (email) => {
     const text = `  UPDATE reset_tokens
-                    SET used = 1
+                    SET used = 1, updated_at = NOW()
                     WHERE email = $1`
     values = [email]
     const res = await pool.query(text, values)
@@ -39,8 +39,8 @@ const resetTokenUpdateUsedDb = async (email) => {
 }
 
 const resetTokenCreateDb = async ({email, token, expiration, used}) => {
-    const text = `INSERT INTO reset_tokens(email, token, expiration, used)
-                  VALUES($1, $2, $3, $3) RETURNING *`
+    const text = `INSERT INTO reset_tokens(email, token, expiration, used, created_at, updated_at)
+                  VALUES($1, $2, $3, $4, NOW(), NOW()) RETURNING *`
     const values = [email, token, expiration, used]
     const res = await pool.query(text, values)
     return res.rows[0]

@@ -47,8 +47,8 @@ CREATE TABLE "reset_tokens" (
   "email" varchar(255) DEFAULT NULL,
   "token" varchar(255) DEFAULT NULL,
   "expiration" timestamp DEFAULT NULL,
-  "createdAt" timestamp NOT NULL,
-  "updatedAt" timestamp NOT NULL,
+  "created_at" timestamp NOT NULL,
+  "updated_at" timestamp NOT NULL,
   "used" int NOT NULL DEFAULT '0'
 )
 

@@ -2,15 +2,34 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { useForm, Controller } from "react-hook-form";
+import { useDispatch } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import Typography from '@material-ui/core/Typography';
+import { usePasswordResetMutation } from '../../services/api';
+import { showSnackbar } from '../../features/ui/uiSlice';
 
 export const PasswordReset = () => {
+  const dispatch = useDispatch();
   const { control, handleSubmit } = useForm(); 
+  const [ passwordReset ] = usePasswordResetMutation();
 
   const onSubmit = async (data) => {
     const { email } = data;
     console.log(email);
+    try {
+      const response = await passwordReset({email}).unwrap()
+      console.log(response);
+      dispatch(showSnackbar({
+        message: `Reset email for ${email} has been sent if that account exists.`,
+        severity: 'success'
+        }
+      ))
+    } catch (err) {
+      dispatch(showSnackbar({
+        message: err.data?.error?.message || 'There was a server error',
+        severity: 'error'
+      }))
+    }
   }
 
   return (
