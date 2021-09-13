@@ -129,6 +129,25 @@ const validateInvite = [
         } else next();
     }]
 
+    const validateForgotPassword = [
+        check('email').not().isEmpty().isEmail().isLength({max: 100}),
+        (req, res, next) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() })
+            } else next();
+        }]
+
+    const validateResetPassword = [
+        check('password').not().isEmpty().isLength({min: 6, max: 100}),
+        check('email').not().isEmpty().isEmail().isLength({max: 100}),
+        (req, res, next) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() })
+            } else next();
+        }]
+
 module.exports = {
     validateGetFacilitiesByUser,
     validateGetFacilityInfo,
@@ -141,5 +160,7 @@ module.exports = {
     validateLoginUser,
     validateGetBookings,
     validatePostBooking,
-    validateDeleteBooking
+    validateDeleteBooking,
+    validateForgotPassword,
+    validateResetPassword
 }

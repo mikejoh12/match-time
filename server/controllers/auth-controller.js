@@ -142,4 +142,8 @@ const forgotPassword = async (req, res) => {
     return res.json({status: 'ok'});
 }
 
-module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword }
+const resetPassword = async (req, res) => {
+    
+}
+
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword }
