@@ -135,8 +135,8 @@ const forgotPassword = async (req, res) => {
     let msg = await transport.sendMail({
         from: 'mike@calendar-booking.com',
         to: email,
-        subject: `Password Reset`,
-        html:`<p>To reset your password, please click <a href="http://localhost:3000/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>.</p>`
+        subject: `Sports Booker - Password Reset`,
+        html:`<p>To reset your password, please click <a href="http://localhost:3000/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>. This link is valid for 1 hr.</p>`
         })
     console.log(`Message sent: ${msg.messageId}`);
 

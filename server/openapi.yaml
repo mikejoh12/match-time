@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Calendar-Booking API
-  description: A platform for managing/reserving items such as sports courts, meeting rooms, and other resources.
+  description: A platform for managing/reserving sports resources such as courts and fields.
   version: 1.0.0
 servers:
 - url: http://localhost:5000
@@ -250,6 +250,50 @@ paths:
       responses:
         200:
           description: User added to the facility as a member
+
+  /api/auth/password_forgot:
+    post:
+      tags:
+      - auth
+      description: Starts the password reset flow. Sends email.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Ok
+
+  /api/auth/password_reset:
+    post:
+      tags:
+      - auth
+      description: Verifies reset token and changes user password.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - token
+              - password
+              properties:
+                email:
+                  type: string
+                token:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Ok
 
   /api/bookings/by_facility/{id}:
     get:
