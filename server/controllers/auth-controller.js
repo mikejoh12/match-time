@@ -132,13 +132,15 @@ const forgotPassword = async (req, res) => {
 
     const token = await createResetToken(email);
 
-    let msg = await transport.sendMail({
-        from: 'mike@calendar-booking.com',
-        to: email,
-        subject: `Sports Booker - Password Reset`,
-        html:`<p>To reset your password, please click <a href="http://localhost:3000/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>. This link is valid for 1 hr.</p>`
-        })
-    console.log(`Message sent: ${msg.messageId}`);
+    // Send email if environment is not set to test
+    if (process.env.NODE_ENV !== 'test') {
+        await transport.sendMail({
+            from: 'mike@calendar-booking.com',
+            to: email,
+            subject: `Sports Booker - Password Reset`,
+            html:`<p>To reset your password, please click <a href="http://localhost:3000/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>. This link is valid for 1 hr.</p>`
+            })
+    }
 
     return res.json({status: 'ok'});
 }
@@ -149,7 +151,7 @@ const resetPassword = async (req, res) => {
     // Check the submitted token for a record in db
     const record = await findValidResetToken({email, token});
     if (record == null) {
-        return res.json({status: 'error', message: 'Token not found. Please try the reset password process again.'});
+        return res.status(401).json({status: 'error', message: 'Token not found. Please try the reset password process again.'});
     }
 
     // Mark tokens associated with email as used

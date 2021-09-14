@@ -52,7 +52,18 @@ const createDbTables = async() => {
           "is_admin" boolean NOT NULL
         );`
       )
-}
+      await pool.query(
+        `CREATE TABLE "reset_tokens" (
+          "id" SERIAL PRIMARY KEY,
+          "email" varchar(255) DEFAULT NULL,
+          "token" varchar(255) DEFAULT NULL,
+          "expiration" timestamptz DEFAULT NULL,
+          "created_at" timestamptz NOT NULL,
+          "updated_at" timestamptz NOT NULL,
+          "used" int NOT NULL DEFAULT '0'
+        )`
+      )
+    }
 
 const removeDbTables = async() => {
     await pool.query(`DROP TABLE users`)
@@ -61,24 +72,20 @@ const removeDbTables = async() => {
     await pool.query(`DROP TABLE resources`)
     await pool.query(`DROP TABLE bookings`)
     await pool.query(`DROP TABLE users_facilities`)
+    await pool.query(`DROP TABLE reset_tokens`)
 }
 
 const createUser = async(email, password) => {
-          await request(app)
-            .post('/api/auth/signup')
-            .send({email, password, firstName: 'first', lastName: 'last'})
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(201);
+    await request(app)
+      .post('/api/auth/signup')
+      .send({email, password, firstName: 'first', lastName: 'last'})
+      .set('Accept', 'application/json')
 }
 
 const loginGetToken = async(email, password) => {
     const res = await request(app)
     .post('/api/auth/login')
     .send({email, password})
-    .set('Accept', 'application/json')
-    .expect('Content-Type', /json/)
-    .expect(200);
     return res.body.token
 }
 

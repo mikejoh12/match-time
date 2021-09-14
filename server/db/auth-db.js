@@ -51,10 +51,10 @@ const findValidResetTokenDb = async ({email, token}) => {
                     WHERE email = $1 AND
                     token = $2 AND
                     expiration::timestamptz > now() AND
-                    used = 0`
-    const values = [email, token]
-    const res = await pool.query(text, values)
-    return res.rows[0]
+                    used = 0`;
+    const values = [email, token];
+    const res = await pool.query(text, values);
+    return res.rows[0];
 }
 
 module.exports = {
