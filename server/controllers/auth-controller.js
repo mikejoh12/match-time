@@ -1,9 +1,11 @@
 const { fetchUserByEmail, createUser, createFacilityMember } = require('../services/users-service')
-const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId, createResetToken } = require('../services/auth-service')
+const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId, createResetToken, findValidResetToken } = require('../services/auth-service')
 const { fetchFacilityInfo } = require('../services/facilities-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const { resetTokenUpdateUsedDb } = require('../db/auth-db');
+const { updateUserPwdDb } = require('../db/users-db');
 
 let transport = nodemailer.createTransport({
     host: 'smtp.mailtrap.io',
@@ -125,17 +127,16 @@ const forgotPassword = async (req, res) => {
     const user = await fetchUserByEmail(email);
     // Don't make it obvious that no email exists
     if (user == null) {
-        console.log('No email match found')
         return res.json({status: 'ok'});
     }
-    console.log('Email match found')
+
     const token = await createResetToken(email);
 
     let msg = await transport.sendMail({
         from: 'mike@calendar-booking.com',
         to: email,
         subject: `Password Reset`,
-        text:`To reset your password, please click the link below.\n\nhttp://localhost/reset-password?token=${encodeURIComponent(token)}&email=${email}`
+        html:`<p>To reset your password, please click <a href="http://localhost:3000/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>.</p>`
         })
     console.log(`Message sent: ${msg.messageId}`);
 
@@ -143,7 +144,23 @@ const forgotPassword = async (req, res) => {
 }
 
 const resetPassword = async (req, res) => {
+    const { email, password, token } = req.body;
     
+    // Check the submitted token for a record in db
+    const record = await findValidResetToken({email, token});
+    if (record == null) {
+        return res.json({status: 'error', message: 'Token not found. Please try the reset password process again.'});
+    }
+
+    // Mark tokens associated with email as used
+    await resetTokenUpdateUsedDb(email);
+
+    const pwdHash = await getPwdHash(password);
+    await updateUserPwdDb({email, pwdHash});
+    return res.json({
+        status: 'ok',
+        message: 'Password reset. Please login with your new password.'
+    });
 }
 
 module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword }

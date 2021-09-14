@@ -46,11 +46,23 @@ const resetTokenCreateDb = async ({email, token, expiration, used}) => {
     return res.rows[0]
 }
 
+const findValidResetTokenDb = async ({email, token}) => {
+    const text = `  SELECT * FROM reset_tokens
+                    WHERE email = $1 AND
+                    token = $2 AND
+                    expiration::timestamptz > now() AND
+                    used = 0`
+    const values = [email, token]
+    const res = await pool.query(text, values)
+    return res.rows[0]
+}
+
 module.exports = {
     createUnregisteredFacilityInvitationDb,
     removeUnregisteredFacilityInvitationDb,
     fetchInvitationsByEmailDb,
     fetchInvitationsByFacilityIdDb,
     resetTokenUpdateUsedDb,
-    resetTokenCreateDb
+    resetTokenCreateDb,
+    findValidResetTokenDb
 }

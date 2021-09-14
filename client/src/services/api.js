@@ -32,11 +32,18 @@ export const api = createApi({
         body: credentials,
       }),
     }),
-    passwordReset: build.mutation({
+    passwordForgot: build.mutation({
       query: (email) => ({
-        url: 'auth/password_reset',
+        url: 'auth/password_forgot',
         method: 'POST',
         body: email,
+      }),
+    }),
+    passwordReset: build.mutation({
+      query: (body) => ({
+        url: 'auth/password_reset',
+        method: 'POST',
+        body,
       }),
     }),
     getFacilitiesByUser: build.query({
@@ -140,6 +147,7 @@ export const api = createApi({
 })
 
 export const {  useLoginMutation,
+                usePasswordForgotMutation,
                 usePasswordResetMutation,
                 useCreateUserMutation,
                 useGetFacilitiesByUserQuery,

@@ -7,6 +7,7 @@ import { Bookings } from './components/bookings/Bookings'
 import { ManagerDashboard } from './components/manager-dashboard/ManagerDashboard'
 import { FacilityMemberList } from './components/manager-dashboard/FacilityMemberList'
 import { Account } from './components/account/Account'
+import { PasswordForgot } from './components/login/PasswordForgot'
 import { PasswordReset } from './components/login/PasswordReset'
 import { BrowserRouter,
   Switch,
@@ -86,7 +87,9 @@ export const Routes = () => {
                       <Route component={Bookings} />
                     </PrivateRoute>
 
-                    <Route path="/password-reset" component={PasswordReset} />
+                    <Route path="/password-forgot" component={PasswordForgot} />
+                    <Route path="/password-reset/:email/:token" component={PasswordReset} />
+
                     <Route path="/:id" component={FacilityLogin} />
                     
                   </Switch>

@@ -9,7 +9,7 @@ export const UserLoginDialog = ({ open, handleClose }) => {
 
   const handlePasswordReset = () => {
     handleClose();
-    history.push('/password-reset');
+    history.push('/password-forgot');
   }
 
   return (

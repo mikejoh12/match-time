@@ -14,10 +14,18 @@ const fetchUserByIdDb = async id => {
 
 const createUserDb = async ({email, firstName, lastName, pwdHash, userRole, active}) => {
     const text = `INSERT INTO users(email, first_name, last_name, pwd_hash, user_role, active)
-                  VALUES($1, $2, $3, $4, $5, $6) RETURNING *`
+                  VALUES($1, $2, $3, $4, $5, $6) RETURNING id`
     const values = [email, firstName, lastName, pwdHash, userRole, active]
     const res = await pool.query(text, values)
     return res.rows[0]
+}
+
+const updateUserPwdDb = async({pwdHash, email}) => {
+        const text = `  UPDATE users
+                        SET pwd_hash = $1 WHERE email = $2`
+        values = [pwdHash, email]
+        const res = await pool.query(text, values)
+        return res.rows
 }
 
 const createFacilityManagerDb = async ({facilityId, userId}) => {
@@ -60,9 +68,12 @@ const fetchMembersByFacilityIdDb = async facilityId => {
     return res.rows
 }
 
+
+
 module.exports = {  fetchUserByEmailDb,
                     fetchUserByIdDb,
                     createUserDb,
+                    updateUserPwdDb,
                     createFacilityManagerDb,
                     fetchManagerByIdDb,
                     removeFacilityManagerDb,

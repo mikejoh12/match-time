@@ -46,9 +46,9 @@ CREATE TABLE "reset_tokens" (
   "id" SERIAL PRIMARY KEY,
   "email" varchar(255) DEFAULT NULL,
   "token" varchar(255) DEFAULT NULL,
-  "expiration" timestamp DEFAULT NULL,
-  "created_at" timestamp NOT NULL,
-  "updated_at" timestamp NOT NULL,
+  "expiration" timestamptz DEFAULT NULL,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
   "used" int NOT NULL DEFAULT '0'
 )
 

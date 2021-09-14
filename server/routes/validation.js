@@ -141,6 +141,7 @@ const validateInvite = [
     const validateResetPassword = [
         check('password').not().isEmpty().isLength({min: 6, max: 100}),
         check('email').not().isEmpty().isEmail().isLength({max: 100}),
+        check('token').not().isEmpty().isLength({max: 100}),
         (req, res, next) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
