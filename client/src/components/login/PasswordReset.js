@@ -31,14 +31,14 @@ export const PasswordReset = () => {
       ))
     } catch (err) {
       dispatch(showSnackbar({
-        message: err.message || 'There was a server error',
+        message: err.data?.message || 'There was a server error',
         severity: 'error'
       }))
     }
   }
 
   return (
-        <Grid   container xs={6}
+        <Grid   container item xs={6}
                 spacing={2}
                 direction="column"
                 alignItems="center"
@@ -75,6 +75,7 @@ export const PasswordReset = () => {
                                 error={!!error}
                                 helperText={error ? error.message : null}
                                 type="password"
+                                inputProps={{"data-testid":"reset-password-enterPassword"}}
                             />
                             )}
                             rules={{  required: 'Password required',
@@ -96,6 +97,7 @@ export const PasswordReset = () => {
                                 error={!!error}
                                 helperText={error ? error.message : null}
                                 type="password"
+                                inputProps={{"data-testid":"reset-password-confirmPassword"}}
                             />
                             )}
                             rules={{  required: 'Password required',
@@ -106,7 +108,7 @@ export const PasswordReset = () => {
                         />
                     </Grid>
                     <Grid item>
-                    <Button type="submit" color="primary" variant="contained" autoFocus>
+                    <Button data-testid='reset-password-submit' type="submit" color="primary" variant="contained" autoFocus>
                         Reset Password
                     </Button>
                     </Grid>

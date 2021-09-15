@@ -15,10 +15,8 @@ export const PasswordForgot = () => {
 
   const onSubmit = async (data) => {
     const { email } = data;
-    console.log(email);
     try {
-      const response = await passwordForgot({email}).unwrap()
-      console.log(response);
+      await passwordForgot({email}).unwrap()
       dispatch(showSnackbar({
         message: `Reset email for ${email} has been sent if that account exists.`,
         severity: 'success'
@@ -33,7 +31,7 @@ export const PasswordForgot = () => {
   }
 
   return (
-        <Grid   container xs={6}
+        <Grid   container item xs={6}
                 spacing={2}
                 direction="column"
                 alignItems="center"
@@ -70,22 +68,20 @@ export const PasswordForgot = () => {
                               error={!!error}
                               helperText={error ? error.message : null}
                               type="email"
+                              inputProps={{"data-testid":"forgot-password-email"}}
                             />
                           )}
                           rules={{ required: 'Email required' }}
                         />
                       </Grid>
                       <Grid item>
-                        <Button type="submit" color="primary" variant="contained" autoFocus>
+                        <Button data-testid='forgot-password-submit' type="submit" color="primary" variant="contained" autoFocus>
                           Reset Password
                         </Button>
                       </Grid>
                     </Grid>
                   </form>
             </Grid>
-
         </Grid>
-
-
   );
 }
