@@ -1,4 +1,3 @@
-import { LandingLoggedIn } from "./LandingLoggedIn";
 import { useAuth } from '../../hooks/useAuth'
 import { Paper, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import { ImageCard } from "./ImageCard";
 import tennisImage from '../../images/tennis-courts.jpg'
 import courtsImage from '../../images/sports-courts.jpg'
+import { SelectFacility } from "../select-facility/SelectFacility";
 
 const useStyles = makeStyles({
     hero: {
@@ -145,7 +145,7 @@ export const Landing = () => {
                             </Paper>
                             </Container>
                         </Grid>
-                {user && <LandingLoggedIn /> }
+                {user && <SelectFacility /> }
                 </Grid>
             </div>
     )

@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     topMsgBar: {
       backgroundColor: theme.palette.primary.dark,
+      padding: 6
     },
     topMsg: {
       color: 'white'
@@ -79,6 +80,7 @@ export const Header = () => {
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('md'))
 
     const handleLogoClick = () => history.push('/')
+    const handleSelectFacilityClick = () => history.push('/select-facility')
     const handleUserDashBoardClick = () => history.push('/user-dashboard')
     const handleManageClick = () => history.push('/manager-dashboard')
     const handleBookingsClick = () => history.push('/bookings')
@@ -113,15 +115,16 @@ export const Header = () => {
               {( showMenuButtons &&
                 <div>
                   { user ?
-                    <Button data-testid='logout-button' color="inherit" size="large" onClick={handleUserLogout}>Logout</Button>
+                    <Button data-testid='logout-button' color="inherit" size="medium" onClick={handleUserLogout}>Logout</Button>
                     :
-                    <Button data-testid='login' color="inherit" size="large" onClick={handleOpenUserLogin}>Login</Button>
+                    <Button data-testid='login' color="inherit" size="medium" onClick={handleOpenUserLogin}>Login</Button>
                   }
-                  { !user && <Button color="inherit" size="large" onClick={handleOpenUserRegister}>Register</Button> }
-                  { (user && facilityIsLoaded) && <Button color="inherit" size="large" onClick={handleUserDashBoardClick}>Scheduling</Button> }
-                  { user && <Button data-testid='manage-nav-button' color="inherit" size="large" onClick={handleManageClick}>Manage Facilities</Button>}
-                  { user && <Button data-testid='bookings-nav-button'color="inherit" size="large" onClick={handleBookingsClick}>Bookings</Button> }
-                  { user && <Button data-testid='account-nav-button' color="inherit" size="large" onClick={handleAccountClick}>Account</Button> }
+                  { !user && <Button color="inherit" size="medium" onClick={handleOpenUserRegister}>Register</Button> }
+                  { user && <Button color="inherit" size="medium" onClick={handleSelectFacilityClick}>Select Facility</Button>}
+                  { (user && facilityIsLoaded) && <Button color="inherit" size="medium" onClick={handleUserDashBoardClick}>Schedule</Button> }
+                  { user && <Button data-testid='manage-nav-button' color="inherit" size="medium" onClick={handleManageClick}>Manage</Button>}
+                  { user && <Button data-testid='bookings-nav-button'color="inherit" size="medium" onClick={handleBookingsClick}>Bookings</Button> }
+                  { user && <Button data-testid='account-nav-button' color="inherit" size="medium" onClick={handleAccountClick}>Account</Button> }
 
                 </div> )}
               {( !showMenuButtons &&
@@ -150,8 +153,9 @@ export const Header = () => {
                     <MenuItem data-testid='login' onClick={handleOpenUserLogin}>Login</MenuItem>
                     }
                     { !user && <MenuItem onClick={handleOpenUserRegister}>Register</MenuItem> }
-                    { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Scheduling</MenuItem> }
-                    { user && <MenuItem data-testid='manage-nav-button' onClick={handleManageClick}>Manage Facilities</MenuItem>}
+                    { user && <MenuItem onClick={handleSelectFacilityClick}>Select Facility</MenuItem> }
+                    { (user && facilityIsLoaded) && <MenuItem onClick={handleUserDashBoardClick}>Schedule</MenuItem> }
+                    { user && <MenuItem data-testid='manage-nav-button' onClick={handleManageClick}>Manage</MenuItem>}
                     { user && <MenuItem  data-testid='bookings-nav-button' onClick={handleBookingsClick}>Bookings</MenuItem> }
                     { user && <MenuItem data-testid='account-nav-button' onClick={handleAccountClick}>Account</MenuItem> }
                 </Menu>

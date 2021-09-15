@@ -23,6 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import { Box } from '@material-ui/core'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
+import { SelectFacility } from './components/select-facility/SelectFacility'
 
 const useStyles = makeStyles({
   root: {
@@ -87,6 +88,7 @@ export const Routes = () => {
                       <Route component={Bookings} />
                     </PrivateRoute>
 
+                    <Route path="/select-facility" component={SelectFacility} />
                     <Route path="/password-forgot" component={PasswordForgot} />
                     <Route path="/password-reset/:email/:token" component={PasswordReset} />
 

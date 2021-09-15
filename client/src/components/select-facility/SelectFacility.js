@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const LandingLoggedIn = () => {
+export const SelectFacility = () => {
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const classes = useStyles()
     const [clubId, setClubId] = useState('')
