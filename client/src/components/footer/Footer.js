@@ -1,5 +1,6 @@
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
@@ -10,6 +11,13 @@ const useStyles = makeStyles((theme) => ({
     copyright: {
         position: "relative",
         top: "4px"
+    },
+    gitLink: {
+        color: 'black',
+        cursor: 'pointer',
+        '&:hover': {
+        color: theme.palette.secondary.dark,
+        }
     }}
 ));
 
@@ -28,7 +36,7 @@ export const Footer = () => {
                 <Typography variant="subtitle1">
                     Sports Booker - Developed by Mike Johansson
                 </Typography>
-
+                <GitHubIcon className={classes.gitLink} onClick={event => window.open('https://www.github.com/mikejoh12', '_blank')}/>
             </Grid>
     )
 }

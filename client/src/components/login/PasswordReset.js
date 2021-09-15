@@ -8,12 +8,14 @@ import Typography from '@material-ui/core/Typography';
 import { showSnackbar } from '../../features/ui/uiSlice';
 import { usePasswordResetMutation } from '../../services/api';
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export const PasswordReset = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit, watch } = useForm(); 
   const password = useRef({})
   password.current = watch("password", "")
+  const history = useHistory()
 
   const { email, token } = useParams();
   const decodedToken = decodeURIComponent(token);
@@ -34,6 +36,8 @@ export const PasswordReset = () => {
         message: err.data?.message || 'There was a server error',
         severity: 'error'
       }))
+    } finally {
+      history.push('/')
     }
   }
 

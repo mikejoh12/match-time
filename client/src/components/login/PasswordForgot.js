@@ -7,11 +7,13 @@ import Grid from "@material-ui/core/Grid";
 import Typography from '@material-ui/core/Typography';
 import { usePasswordForgotMutation } from '../../services/api';
 import { showSnackbar } from '../../features/ui/uiSlice';
+import { useHistory } from 'react-router-dom'
 
 export const PasswordForgot = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm(); 
   const [ passwordForgot ] = usePasswordForgotMutation();
+  const history = useHistory()
 
   const onSubmit = async (data) => {
     const { email } = data;
@@ -27,6 +29,8 @@ export const PasswordForgot = () => {
         message: err.data?.error?.message || 'There was a server error',
         severity: 'error'
       }))
+    } finally {
+      history.push('/')
     }
   }
 
