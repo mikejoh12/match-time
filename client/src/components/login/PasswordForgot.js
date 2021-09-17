@@ -26,7 +26,7 @@ export const PasswordForgot = () => {
       ))
     } catch (err) {
       dispatch(showSnackbar({
-        message: err.data?.error?.message || 'There was a server error',
+        message: err.data?.error?.data || 'There was a server error',
         severity: 'error'
       }))
     } finally {

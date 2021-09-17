@@ -25,28 +25,28 @@ const { getUsersByFacility } = require('../controllers/users-controller.js')
 const router = new Router()
 
 router  
-    .get('/facilities/by_user', passport.authenticate('jwt-customer', {session: false}), getFacilitesByUser)
+    .get('/facilities/by_user', passport.authenticate('jwt-customer', {session: false, failWithError: true}), getFacilitesByUser)
     .get('/facilities/:facilityId', validateGetFacilityInfo, getFacilityInfo)
-    .post('/facilities', validatePostFacility, passport.authenticate('jwt-customer', {session: false}), postFacility)
-    .delete('/facilities/:facilityId',  validateDeleteFacility, passport.authenticate('jwt-manager', {session: false}), deleteFacility)
+    .post('/facilities', validatePostFacility, passport.authenticate('jwt-customer', {session: false, failWithError: true}), postFacility)
+    .delete('/facilities/:facilityId',  validateDeleteFacility, passport.authenticate('jwt-manager', {session: false, failWithError: true}), deleteFacility)
 
     .get('/resources/by_facility/:facilityId', validateGetResources, getResources)
-    .post('/resources/by_facility/:facilityId', validatePostResource, passport.authenticate('jwt-manager', {session: false}), postResource)
-    .delete('/resources/by_facility/:facilityId/:resourceId', validateDeleteResource, passport.authenticate('jwt-manager', {session: false}), deleteResource)
+    .post('/resources/by_facility/:facilityId', validatePostResource, passport.authenticate('jwt-manager', {session: false, failWithError: true}), postResource)
+    .delete('/resources/by_facility/:facilityId/:resourceId', validateDeleteResource, passport.authenticate('jwt-manager', {session: false, failWithError: true}), deleteResource)
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
     .post('/auth/login', validateLoginUser, loginUser)
-    .post('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false}), inviteUser)
-    .get('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false}), getInvitationsByFacilityId)
+    .post('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false, failWithError: true}), inviteUser)
+    .get('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false, failWithError: true}), getInvitationsByFacilityId)
     .post('/auth/password_forgot', validateForgotPassword, forgotPassword)
     .post('/auth/password_reset', validateResetPassword, resetPassword)
 
-    .get('/users/by_facility/:facilityId', passport.authenticate('jwt-manager', {session: false}), getUsersByFacility )
+    .get('/users/by_facility/:facilityId', passport.authenticate('jwt-manager', {session: false, failWithError: true}), getUsersByFacility )
 
-    .get('/bookings/by_facility/:facilityId', validateGetBookings, passport.authenticate('jwt-customer', {session: false}), getBookingsByFacility)
-    .get('/bookings/by_user', passport.authenticate('jwt-customer', {session: false}), getBookingsByUser)
-    .post('/bookings', validatePostBooking, passport.authenticate('jwt-customer', {session: false}), postBooking)
-    .delete('/bookings/:bookingId', validateDeleteBooking, passport.authenticate('jwt-customer', {session: false}), deleteBooking)
+    .get('/bookings/by_facility/:facilityId', validateGetBookings, passport.authenticate('jwt-customer', {session: false, failWithError: true}), getBookingsByFacility)
+    .get('/bookings/by_user', passport.authenticate('jwt-customer', {session: false, failWithError: true}), getBookingsByUser)
+    .post('/bookings', validatePostBooking, passport.authenticate('jwt-customer', {session: false, failWithError: true}), postBooking)
+    .delete('/bookings/:bookingId', validateDeleteBooking, passport.authenticate('jwt-customer', {session: false, failWithError: true}), deleteBooking)
 
 
 module.exports = router

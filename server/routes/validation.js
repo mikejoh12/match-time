@@ -1,153 +1,99 @@
 const { check, param, validationResult } = require('express-validator')
 
+// Function that validates and sends back response
+const validationHandler = (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() })
+    } else next();
+}
+
 const validateGetFacilitiesByUser = [
-    param('id').isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    param('id').isInt(), validationHandler
+]
 
 const validateGetFacilityInfo = [
-    param('facilityId').isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    param('facilityId').isInt(), validationHandler
+]
 
 const validatePostFacility = [
     check('name').not().isEmpty(),
     check('description').not().isEmpty(),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateDeleteFacility = [
     param('facilityId').isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateGetResources = [
     param('facilityId').isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateDeleteResource = [
     param('facilityId').not().isEmpty().isInt(),
     param('resourceId').not().isEmpty().isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validatePostResource = [
     param('facilityId').isInt(),
     check('name').not().isEmpty(),
     check('description').not().isEmpty(),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateSignUpUser = [
     check('firstName').not().isEmpty().isLength({max: 100}),
     check('lastName').not().isEmpty().isLength({max: 100}),
     check('password').not().isEmpty().isLength({min: 6, max: 100}),
     check('email').not().isEmpty().isEmail().isLength({max: 100}),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateLoginUser = [
     check('password').not().isEmpty().isLength({max: 100}),
     check('email').not().isEmpty().isEmail().isLength({max: 100}),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateGetBookings = [
     param('facilityId').isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next()
-    }]
+    validationHandler
+]
 
 const validatePostBooking = [
     check('resourceId').not().isEmpty().isInt(),
     check('organizerId').not().isEmpty().isInt(),
     check('startTime').not().isEmpty().isLength({max: 100}),
     check('endTime').not().isEmpty().isLength({max: 100}),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        } else next();
-    }]
+    validationHandler
+]
 
 const validateDeleteBooking = [
     param('bookingId').isInt(),
-    (req, res, next) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next()
-    }]
+    validationHandler
+]
 
 const validateInvite = [
     param('facilityId').isInt(),
     check('email').not().isEmpty().isEmail(),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        } else next();
-    }]
+    validationHandler
+]
 
-    const validateForgotPassword = [
-        check('email').not().isEmpty().isEmail().isLength({max: 100}),
-        (req, res, next) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ errors: errors.array() })
-            } else next();
-        }]
+const validateForgotPassword = [
+    check('email').not().isEmpty().isEmail().isLength({max: 100}),
+    validationHandler
+]
 
-    const validateResetPassword = [
-        check('password').not().isEmpty().isLength({min: 6, max: 100}),
-        check('email').not().isEmpty().isEmail().isLength({max: 100}),
-        check('token').not().isEmpty().isLength({max: 100}),
-        (req, res, next) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ errors: errors.array() })
-            } else next();
-        }]
+const validateResetPassword = [
+    check('password').not().isEmpty().isLength({min: 6, max: 100}),
+    check('email').not().isEmpty().isEmail().isLength({max: 100}),
+    check('token').not().isEmpty().isLength({max: 100}),
+    validationHandler
+]
 
 module.exports = {
     validateGetFacilitiesByUser,

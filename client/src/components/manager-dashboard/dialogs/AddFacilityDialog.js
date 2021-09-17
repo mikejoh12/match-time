@@ -33,7 +33,7 @@ export const AddFacilityDialog = () => {
         }))
     } catch (err) {
       dispatch(showSnackbar({
-        message: err.data?.error || 'There was a problem when adding facility.',
+        message: err.data?.error?.data || 'There was a problem when adding facility.',
         severity: 'error'
       }))
     } finally {

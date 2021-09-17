@@ -22,7 +22,9 @@ const signUpUser = async (req, res, next) => {
     //Check if active user with this email exists
     const userDb = await fetchUserByEmail(email)  
     if (userDb) {
-        return res.status(422).json({error:"User with this email already exists."})
+        return res.status(422).json({
+            error: { status: 422, data: "User with this email already exists."}
+        })
     }
 
     const pwdHash = await getPwdHash(password)
@@ -55,7 +57,11 @@ const loginUser = async (req, res, next) => {
                     if (error) return next(error);
 
                     const body = { id: user.id };
-                    const token = jwt.sign({ user: body }, 'TOP_SECRET'); // TODO: Change secret
+                    const token = jwt.sign(
+                        { user: body },
+                        'TOP_SECRET', // TODO: Change secret
+                        { expiresIn: 60 * 60 } // Expires in 30 sec
+                        );
                     return res.json({
                         token,
                         user: {
@@ -81,7 +87,8 @@ const inviteUser = async (req, res, next) => {
     const { facilityId } = req.params;
     const facilityInfo = await fetchFacilityInfo(facilityId)
     if (!facilityInfo) {
-        return res.status(422).json({error: "Invalid facility id."})
+        return res.status(422).json({error: { status: 422, data: "Invalid facility id." }
+        })
     }
     const user = await fetchUserByEmail(inviteEmail)
     
@@ -115,7 +122,9 @@ const getInvitationsByFacilityId = async (req, res) => {
     const { facilityId } = req.params
     const facilityInfo = await fetchFacilityInfo(facilityId)
     if (!facilityInfo) {
-        return res.status(422).json({error: "Invalid facility id."})
+        return res.status(422).json({
+            error: { status: 422, data: "Invalid facility id."}
+        })
     }
 
     const invitations = await fetchInvitationsByFacilityId(facilityId)
@@ -151,7 +160,9 @@ const resetPassword = async (req, res) => {
     // Check the submitted token for a record in db
     const record = await findValidResetToken({email, token});
     if (record == null) {
-        return res.status(401).json({status: 'error', message: 'Token not found. Please try the reset password process again.'});
+        return res.status(401).json({
+            error: { status: 401, data: 'Token not found. Please try the reset password process again.'}
+        });
     }
 
     // Mark tokens associated with email as used

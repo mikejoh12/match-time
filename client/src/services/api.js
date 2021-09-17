@@ -1,21 +1,31 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { logout } from '../features/auth/authSlice';
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: '/api/',
+  prepareHeaders: (headers, { getState }) => {
+    // If we have a token in the store, let's use it for authenticated requests
+    const token = getState().auth.token
+    if (token) {
+      headers.set('authorization', `Bearer ${token}`)
+    }
+    return headers
+  },  
+})
+
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions)
+  if (result.error && result.error.status === 401) {
+    console.log('Token expired')
+    api.dispatch(logout())
+  }
+  return result
+}
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({
-      baseUrl: '/api/',
-      prepareHeaders: (headers, { getState }) => {
-        // If we have a token in the store, let's use it for authenticated requests
-        const token = getState().auth.token
-        if (token) {
-          headers.set('authorization', `Bearer ${token}`)
-        }
-        return headers
-      },  
-    }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Facilities', 'currentFacility','Resources', 'Bookings', 'User', 'FacilityUsers'],
-
   endpoints: (build) => ({
-
     createUser: build.mutation({
       query: (body) => ({
         url: `auth/signup`,
@@ -60,7 +70,6 @@ export const api = createApi({
         method: 'POST',
         body,
       }),
-      transformResponse: (response) => response.data,
       invalidatesTags: ['Facilities'],
     }),
     deleteFacility: build.mutation({
@@ -82,7 +91,6 @@ export const api = createApi({
         body: { name: resource_name,
                 description },
       }),
-      transformResponse: (response) => response.data,
       invalidatesTags: ['Resources'],
       }), 
     deleteResource: build.mutation({
@@ -117,7 +125,6 @@ export const api = createApi({
         method: 'POST',
         body,
       }),
-      transformResponse: (response) => response.data,
       invalidatesTags: ['Bookings'],
     }),
     deleteBooking: build.mutation({

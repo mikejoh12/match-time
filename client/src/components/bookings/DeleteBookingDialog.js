@@ -28,7 +28,7 @@ export const DeleteBookingDialog = () => {
               }))
         } catch(err) {
             dispatch(showSnackbar({
-                message: err.data.error,
+                message: err.data?.error?.data,
                 severity: 'error'
               }))
         } finally {

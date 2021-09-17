@@ -33,7 +33,7 @@ export const PasswordReset = () => {
       ))
     } catch (err) {
       dispatch(showSnackbar({
-        message: err.data?.message || 'There was a server error',
+        message: err.data?.error?.data || 'There was a server error',
         severity: 'error'
       }))
     } finally {
