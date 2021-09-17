@@ -60,7 +60,7 @@ const loginUser = async (req, res, next) => {
                     const token = jwt.sign(
                         { user: body },
                         'TOP_SECRET', // TODO: Change secret
-                        { expiresIn: 60 * 60 } // Expires in 30 sec
+                        { expiresIn: 60 * 60 } // Expires in 1 hr sec
                         );
                     return res.json({
                         token,
