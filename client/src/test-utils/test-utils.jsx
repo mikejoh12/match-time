@@ -4,6 +4,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import { api } from '../services/api'
 import authReducer from '../features/auth/authSlice'
+import persistedAuthReducer from '../features/auth/persistedAuthSlice'
 import currentFacilityReducer from '../features/current-facility/currentFacilitySlice'
 import uiReducer from '../features/ui/uiSlice'
 import { fireEvent, screen } from '../test-utils/test-utils'
@@ -12,6 +13,7 @@ import userEvent from '@testing-library/user-event'
 const combinedReducer = combineReducers({
     currentFacility: currentFacilityReducer,
     auth: authReducer,
+    persistedAuth: persistedAuthReducer,
     ui: uiReducer,
     [api.reducerPath]: api.reducer,
   });

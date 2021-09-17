@@ -30,7 +30,7 @@ passport.use(
     'jwt-customer',
     new JWTstrategy(
       {
-        secretOrKey: 'TOP_SECRET',
+        secretOrKey: process.env.AUTH_SECRET,
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
       },
       async (token, done) => {
@@ -43,7 +43,7 @@ passport.use(
     'jwt-manager',
     new JWTstrategy(
       {
-        secretOrKey: 'TOP_SECRET',
+        secretOrKey: process.env.AUTH_SECRET,
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         passReqToCallback: true
       },

@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useLoginMutation } from '../../../services/api';
 import { setCredentials } from '../../../features/auth/authSlice';
+import { setToken } from '../../../features/auth/persistedAuthSlice';
 import { useForm, Controller } from "react-hook-form";
 import { showSnackbar } from '../../../features/ui/uiSlice';
 
@@ -38,6 +39,8 @@ export const UserLoginForm = ({ handleClose }) => {
       try {
         const user = await login({email, password}).unwrap()
         dispatch(setCredentials(user))
+        dispatch(setToken(user))
+        //sessionStorage.setItem('at-lim', user.token)
         dispatch(showSnackbar({
           message: `Login Successful for ${user.user.email}`,
           severity: 'success'

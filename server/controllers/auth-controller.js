@@ -59,11 +59,17 @@ const loginUser = async (req, res, next) => {
                     const body = { id: user.id };
                     const token = jwt.sign(
                         { user: body },
-                        'TOP_SECRET', // TODO: Change secret
-                        { expiresIn: 60 * 60 } // Expires in 1 hr sec
-                        );
+                        process.env.AUTH_SECRET,
+                        { expiresIn: 30 } // Expiration in s
+                    );
+                    const refreshToken = jwt.sign(
+                        { user: body },
+                        process.env.REFRESH_AUTH_SECRET,
+                        { expiresIn: 60 * 60 * 24 } // Expiration 1 day
+                    );
                     return res.json({
                         token,
+                        refreshToken,
                         user: {
                             id: user.id,
                             email: user.email,

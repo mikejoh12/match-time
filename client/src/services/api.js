@@ -5,7 +5,8 @@ const baseQuery = fetchBaseQuery({
   baseUrl: '/api/',
   prepareHeaders: (headers, { getState }) => {
     // If we have a token in the store, let's use it for authenticated requests
-    const token = getState().auth.token
+    const token = getState().persistedAuth.token
+    //const token = sessionStorage.getItem('at-lim')
     if (token) {
       headers.set('authorization', `Bearer ${token}`)
     }
