@@ -3,8 +3,8 @@ import { render as rtlRender } from '@testing-library/react'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import { api } from '../services/api'
-import authReducer from '../features/auth/authUserSlice'
-import persistedAuthReducer from '../features/auth/authTokenSlice'
+import authUserReducer from '../features/auth/authUserSlice'
+import authRefreshReducer from '../features/auth/authRefreshSlice'
 import currentFacilityReducer from '../features/current-facility/currentFacilitySlice'
 import uiReducer from '../features/ui/uiSlice'
 import { fireEvent, screen } from '../test-utils/test-utils'
@@ -12,8 +12,8 @@ import userEvent from '@testing-library/user-event'
 
 const combinedReducer = combineReducers({
     currentFacility: currentFacilityReducer,
-    auth: authReducer,
-    persistedAuth: persistedAuthReducer,
+    authUser: authUserReducer,
+    authRefresh: authRefreshReducer,
     ui: uiReducer,
     [api.reducerPath]: api.reducer,
   });

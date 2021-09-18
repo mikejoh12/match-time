@@ -2,7 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { api } from './services/api'
 import currentFacilityReducer from './features/current-facility/currentFacilitySlice'
 import authUserReducer from './features/auth/authUserSlice'
-import authTokenReducer from './features/auth/authTokenSlice'
+import authRefreshReducer from './features/auth/authRefreshSlice'
 import uiReducer from './features/ui/uiSlice'
 import storageSession from 'redux-persist/lib/storage/session'
 import {
@@ -18,13 +18,14 @@ import {
 
 const persistConfig = {
   key: 'root',
-  storage: storageSession
+  storage: storageSession,
+  blacklist: [api.reducerPath, 'authRefresh'],
 }
 
 const combinedReducer = combineReducers({
   currentFacility: currentFacilityReducer,
   authUser: authUserReducer,
-  authToken: authTokenReducer,
+  authRefresh: authRefreshReducer,
   ui: uiReducer,
   [api.reducerPath]: api.reducer,
 });
