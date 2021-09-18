@@ -73,8 +73,7 @@ describe('Password Reset', () => {
         // Mock the api response for an invalid token
         rest.post('/api/auth/password_reset', (req, res, ctx) => {
             return res(ctx.json({
-                    status: 'failure',
-                    message: 'Token not found. Please try the reset password process again.'
+                    error: { status: 'failure', data: 'Token not found. Please try the reset password process again.' }
                 }),
                 ctx.delay(150),
                 ctx.status(401))
