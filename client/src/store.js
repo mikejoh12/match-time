@@ -1,14 +1,30 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { api } from './services/api'
 import currentFacilityReducer from './features/current-facility/currentFacilitySlice'
-import authReducer from './features/auth/authSlice'
-import persistedAuthReducer from './features/auth/persistedAuthSlice'
+import authUserReducer from './features/auth/authUserSlice'
+import authTokenReducer from './features/auth/authTokenSlice'
 import uiReducer from './features/ui/uiSlice'
+import storageSession from 'redux-persist/lib/storage/session'
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+
+const persistConfig = {
+  key: 'root',
+  storage: storageSession
+}
 
 const combinedReducer = combineReducers({
   currentFacility: currentFacilityReducer,
-  auth: authReducer,
-  persistedAuth: persistedAuthReducer,
+  authUser: authUserReducer,
+  authToken: authTokenReducer,
   ui: uiReducer,
   [api.reducerPath]: api.reducer,
 });
@@ -23,7 +39,15 @@ const rootReducer = (state, action) => {
   return combinedReducer(state, action);
 };
 
-export default configureStore({
-  reducer: rootReducer,
-  middleware: (gDM) => gDM().concat(api.middleware),
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (gDM) => gDM({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(api.middleware),
 })
+
+export let persistor = persistStore(store)

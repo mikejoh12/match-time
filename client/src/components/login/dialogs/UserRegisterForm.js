@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { useCreateUserMutation, useLoginMutation } from '../../../services/api';
 import { useForm, Controller } from "react-hook-form";
 import { showSnackbar } from '../../../features/ui/uiSlice';
-import { setCredentials } from '../../../features/auth/authSlice';
+import { setCredentials } from '../../../features/auth/authUserSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {

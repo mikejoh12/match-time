@@ -14,7 +14,7 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { UserRegisterDialog } from '../login/dialogs/UserRegisterDialog';
 import { UserLoginDialog } from '../login/dialogs/UserLoginDialog';
-import { logout } from '../../features/auth/authSlice';
+import { logout } from '../../features/auth/authUserSlice';
 import { selectFacilityIsLoaded, selectFacility } from '../../features/current-facility/currentFacilitySlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'

@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { logout } from '../features/auth/authSlice';
+import { logout } from '../features/auth/authUserSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/api/',
   prepareHeaders: (headers, { getState }) => {
     // If we have a token in the store, let's use it for authenticated requests
-    const token = getState().persistedAuth.token
-    //const token = sessionStorage.getItem('at-lim')
+    const token = getState().authToken.token
     if (token) {
       headers.set('authorization', `Bearer ${token}`)
     }

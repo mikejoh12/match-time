@@ -4,8 +4,8 @@ const initialState = {
   token: null,
 }
 
-export const persistedAuthSlice = createSlice({
-    name: 'persistedAuth',
+export const authTokenSlice = createSlice({
+    name: 'authToken',
     initialState,
     reducers: {
         setToken: (state, { payload: { token }}) => {
@@ -14,6 +14,6 @@ export const persistedAuthSlice = createSlice({
     },
 })
 
-export const { setToken } = persistedAuthSlice.actions
+export const { setToken } = authTokenSlice.actions
 
-export default persistedAuthSlice.reducer
+export default authTokenSlice.reducer

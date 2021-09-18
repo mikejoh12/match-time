@@ -60,7 +60,7 @@ const loginUser = async (req, res, next) => {
                     const token = jwt.sign(
                         { user: body },
                         process.env.AUTH_SECRET,
-                        { expiresIn: 30 } // Expiration in s
+                        { expiresIn: 60 * 60 } // Expiration in s
                     );
                     const refreshToken = jwt.sign(
                         { user: body },
