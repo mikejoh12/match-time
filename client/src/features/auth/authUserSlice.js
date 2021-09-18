@@ -13,8 +13,8 @@ export const authUserSlice = createSlice({
             state.user = user
             state.token = token
         },
-        logout:  (state) => {}
-    },       
+        logout() {}
+    },  
 })
 
 export const { setCredentials, logout } = authUserSlice.actions
