@@ -60,12 +60,59 @@ const loginUser = async (req, res, next) => {
                     const token = jwt.sign(
                         { user: body },
                         process.env.AUTH_SECRET,
-                        { expiresIn: 60 * 60 } // Expiration in s
+                        { expiresIn: 60 * 10 } // Expiration in s
                     );
                     const refreshToken = jwt.sign(
                         { user: body },
                         process.env.REFRESH_AUTH_SECRET,
-                        { expiresIn: 60 * 60 * 24 } // Expiration 1 day
+                        { expiresIn: 60 * 60 * 24 } // Expiration in s
+                    );
+                    return res.json({
+                        token,
+                        refreshToken,
+                        user: {
+                            id: user.id,
+                            email: user.email,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            date_joined: user.date_joined,
+                            user_role: user.user_role
+                            }
+                        });
+                }
+            );
+        } catch (error) {
+            return next(error);
+            }
+        }
+    )(req, res, next);
+}
+
+const refreshToken = async (req, res, next) => {
+    passport.authenticate(
+        'jwt-refresh',
+        async (err, user, info) => {
+        try {
+                if (err || !user) {
+                    const error = new Error(info.message);
+                return next(error);
+            }
+            req.login(
+                user,
+                { session: false },
+                async (error) => {
+                    if (error) return next(error);
+
+                    const body = { id: user.id };
+                    const token = jwt.sign(
+                        { user: body },
+                        process.env.AUTH_SECRET,
+                        { expiresIn: 60 * 10 } // Expiration in s
+                    );
+                    const refreshToken = jwt.sign(
+                        { user: body },
+                        process.env.REFRESH_AUTH_SECRET,
+                        { expiresIn: 60 * 60 * 24 } // Expiration in s
                     );
                     return res.json({
                         token,
@@ -182,4 +229,4 @@ const resetPassword = async (req, res) => {
     });
 }
 
-module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword }
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken }

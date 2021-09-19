@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const { fetchUserByEmail, fetchManagerById } = require('../services/users-service')
+const { fetchUserByEmail, fetchManagerById, fetchUserById } = require('../services/users-service')
 
 passport.use(
     'login',
@@ -25,6 +25,23 @@ passport.use(
         }
         return done(null, user, { message: 'Logged in Successfully' });
 }))
+
+passport.use(
+  'jwt-refresh',
+  new JWTstrategy(
+    {
+      secretOrKey: process.env.REFRESH_AUTH_SECRET,
+      jwtFromRequest: ExtractJwt.fromHeader('refreshtoken'),
+    },
+    async (token, done) => {
+      const user = await fetchUserById(token.user.id)
+      if (!user) {
+        return done(null, false, { message: 'Incorrect email or password.' });
+      }
+      console.log(user)
+      return done(null, user, { message: 'Token refreshed' });
+  }
+))
 
 passport.use(
     'jwt-customer',
