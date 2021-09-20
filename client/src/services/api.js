@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { setRefreshToken } from '../features/auth/authRefreshSlice';
 import { logout, setCredentials } from '../features/auth/authUserSlice';
 
 const baseQuery = fetchBaseQuery({
@@ -17,21 +16,17 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
   if (result.error && result.error.status === 401) {
-    console.log('Token expired - trying to use refreshToken')
     // try to get a new token
     const refreshResult = await baseQuery({
       url: '/auth/refresh_token/',
       method: 'POST',
-      headers: {
-        'refreshtoken':  api.getState().authRefresh.refreshToken
-      }
     }, api, extraOptions);
 
     if (refreshResult.data) {
+      
       // store the new token
-      console.log('Refresh-token result:', refreshResult.data)
       api.dispatch(setCredentials(refreshResult.data))
-      api.dispatch(setRefreshToken(refreshResult.data))
+      
       // retry the initial query
       result = await baseQuery(args, api, extraOptions)
     } else {

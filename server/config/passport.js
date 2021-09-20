@@ -31,12 +31,20 @@ passport.use(
   new JWTstrategy(
     {
       secretOrKey: process.env.REFRESH_AUTH_SECRET,
-      jwtFromRequest: ExtractJwt.fromHeader('refreshtoken'),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => {
+          let token = null;
+          if (req && req.cookies)
+          {
+              token = req.cookies['SB_REFR']
+          }
+          return token;
+      }])
     },
     async (token, done) => {
       const user = await fetchUserById(token.user.id)
       if (!user) {
-        return done(null, false, { message: 'Incorrect email or password.' });
+        return done(null, false, { message: 'No user found associated with token.' });
       }
       console.log(user)
       return done(null, user, { message: 'Token refreshed' });

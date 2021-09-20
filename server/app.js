@@ -8,11 +8,13 @@ const passport = require('passport')
 require('./config/passport')
 const routes = require('./routes')
 const morgan = require('morgan')
-const rateLimit = require("express-rate-limit");
+const rateLimit = require("express-rate-limit")
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(morgan('dev'))
 

@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+// Not currently implemented - using http only cookie instead
+
 const initialState = {
   refreshToken: null,
 }

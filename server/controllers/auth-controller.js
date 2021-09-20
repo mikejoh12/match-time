@@ -7,6 +7,8 @@ const nodemailer = require('nodemailer');
 const { resetTokenUpdateUsedDb } = require('../db/auth-db');
 const { updateUserPwdDb } = require('../db/users-db');
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 let transport = nodemailer.createTransport({
     host: 'smtp.mailtrap.io',
     port: 2525,
@@ -60,16 +62,24 @@ const loginUser = async (req, res, next) => {
                     const token = jwt.sign(
                         { user: body },
                         process.env.AUTH_SECRET,
-                        { expiresIn: 60 * 10 } // Expiration in s
+                        { expiresIn: 20 } // Expiration in s
                     );
+
+                    // Refresh-token in cookie
                     const refreshToken = jwt.sign(
                         { user: body },
                         process.env.REFRESH_AUTH_SECRET,
                         { expiresIn: 60 * 60 * 24 } // Expiration in s
                     );
+
+                    res.cookie('SB_REFR', refreshToken, {
+                        httpOnly: true,
+                        sameSite: isProduction ? 'none' : 'lax',
+                        secure: isProduction ? true : false,
+                      })
+
                     return res.json({
                         token,
-                        refreshToken,
                         user: {
                             id: user.id,
                             email: user.email,

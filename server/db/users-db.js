@@ -7,7 +7,7 @@ const fetchUserByEmailDb = async (email) => {
 }
 
 const fetchUserByIdDb = async id => {
-    const res = await pool.query(`SELECT id, email, date_joined, user_role, active
+    const res = await pool.query(`SELECT id, email, first_name, last_name, date_joined, user_role, active
                                   FROM users WHERE id = $1`, [id])
     return res.rows[0]
 }
