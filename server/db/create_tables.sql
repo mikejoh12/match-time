@@ -40,7 +40,7 @@ CREATE TABLE "invitations" (
   "email" varchar(100) NOT NULL,
   "facilities_id" int,
   PRIMARY KEY("email", "facilities_id")
-)
+);
 
 CREATE TABLE "reset_tokens" (
   "id" SERIAL PRIMARY KEY,
@@ -50,7 +50,7 @@ CREATE TABLE "reset_tokens" (
   "created_at" timestamptz NOT NULL,
   "updated_at" timestamptz NOT NULL,
   "used" int NOT NULL DEFAULT '0'
-)
+);
 
 ALTER TABLE "resources" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
 

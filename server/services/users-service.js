@@ -29,6 +29,12 @@ const createUser = async user => {
         })
     }))
 
+    // Give the new user membership to demo facility with id 1
+    await createFacilityMemberDb({
+        userId: newUser.id,
+        facilityId: 1
+    })
+
     return newUser
 }
 
