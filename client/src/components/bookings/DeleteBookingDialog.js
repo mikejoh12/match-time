@@ -49,10 +49,10 @@ export const DeleteBookingDialog = () => {
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleClose} color="secondary">
                 Cancel
             </Button>
-            <Button onClick={handleDeleteClick} color="primary" autoFocus>
+            <Button onClick={handleDeleteClick} color="secondary" autoFocus>
                 Delete Booking
             </Button>
             </DialogActions>

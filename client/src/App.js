@@ -14,7 +14,7 @@ import { BrowserRouter,
   Route
 } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { theme } from './theme'
+import { theme } from './theme/theme'
 import { PrivateRoute } from './utils/PrivateRoute'
 import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 import MsgSnackbar from './utils/MsgSnackbar'
@@ -27,14 +27,14 @@ import { SelectFacility } from './components/select-facility/SelectFacility'
 
 const useStyles = makeStyles({
   root: {
-    minHeight: '100vh'
+    minHeight: '100vh',
   },
   main: {
       minHeight: '200px',
       flex: 1
   },
   mainContent: {
-      marginTop: 30
+      marginTop: 20
   }
 });
 

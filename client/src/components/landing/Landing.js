@@ -1,5 +1,7 @@
 import { useAuth } from '../../hooks/useAuth'
 import { Paper, Grid, Typography } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -22,6 +24,9 @@ const useStyles = makeStyles({
 export const Landing = () => {
     const { user } = useAuth()
     const classes = useStyles()
+
+    const theme = useTheme();
+    const showSecondImg = useMediaQuery(theme.breakpoints.up('md'))
 
     return (
             <div>
@@ -58,9 +63,11 @@ export const Landing = () => {
                                             <Grid item>
                                                 <ImageCard image={tennisImage} />
                                             </Grid>
+                                            { showSecondImg &&
                                             <Grid item>
                                                 <ImageCard image={courtsImage} />
                                             </Grid>
+                                            }
                                     </Grid>
 
                                     <Grid   item
@@ -84,13 +91,13 @@ export const Landing = () => {
                                                     <ListItemIcon>
                                                         <CheckIcon />
                                                     </ListItemIcon>
-                                                    <ListItemText primary="Invite users by email to join your facility." />
+                                                    <ListItemText primary="Get a unique Internet URL address for your facility and link to it." />
                                                 </ListItem>
                                                 <ListItem>
                                                     <ListItemIcon>
                                                         <CheckIcon />
                                                     </ListItemIcon>
-                                                    <ListItemText primary="Get a unique Internet URL address for your facility on Sports Booking. Link to this address from your club website for easy access to scheduling for your members." />
+                                                    <ListItemText primary="Invite users by email to join your facility." />
                                                 </ListItem>
                                             </List>
                                         </Grid>
@@ -130,13 +137,7 @@ export const Landing = () => {
                                                     <ListItemIcon>
                                                         <CheckIcon />
                                                     </ListItemIcon>
-                                                    <ListItemText primary="This is only a demo site and it can therefore be taken offline at any time." />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon>
-                                                        <CheckIcon />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="The project was developed with a stack of Postgres, Express, React, and Node.js." />
+                                                    <ListItemText primary="The project is a demo site and was developed using a stack of Postgres, Express, React, and Node.js." />
                                                 </ListItem>
                                             </List>
                                         </Grid>

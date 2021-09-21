@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     footer: {
         height: 70,
         marginTop: 50,
-        backgroundColor: theme.palette.primary.light
+        backgroundColor: theme.palette.primary.main
     },
     copyright: {
         position: "relative",

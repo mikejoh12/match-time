@@ -25,12 +25,14 @@ import { useGetBookingsByFacilityIdQuery, useGetResourcesByFacilityIdQuery } fro
 import { openBookDialog, closeBookDialog } from '../../features/ui/uiSlice';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1)
+    }  
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
   },
 }));
 
@@ -77,7 +79,7 @@ export const UserDashboard = () => {
     const selectedResourceIdx = resourcesData?.findIndex(resource => resource.id === currentResource)
  
     return (
-          <div>
+          <div className={classes.root}>
                 {(bookingsIsError || resourcesIsError) ? (
                     <>Oh no, there was an error</>
                 ) : (bookingsIsLoading || resourcesIsLoading) ? (
@@ -90,14 +92,12 @@ export const UserDashboard = () => {
                         alignItems="center"
                         justifyContent="center">
                     <Grid item>
-                        <Typography variant="h4" align="center">
+                        <Typography variant="h5" align="center">
                             Scheduling - {facility.name}
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="h6" align="center">
-                            Create a booking using the calendar.
-                        </Typography>
+
                     </Grid>
                   <Grid item>
                       <KeyboardDatePicker

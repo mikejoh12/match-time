@@ -155,10 +155,10 @@ export const UserRegisterForm = ({ handleClose }) => {
                 }}
       />
       <div>
-        <Button variant="contained" onClick={handleClose}>
+        <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <Button type="submit" variant="contained" color="secondary">
           Signup
         </Button>
       </div>

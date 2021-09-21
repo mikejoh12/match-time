@@ -28,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     topMsgBar: {
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: theme.palette.common.black,
       padding: 6
     },
     topMsg: {
-      color: 'white'
+      color: theme.palette.primary.light
     },
     appBar: {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.primary.main,
     },
     menuButton: {
       marginLeft: theme.spacing(2),

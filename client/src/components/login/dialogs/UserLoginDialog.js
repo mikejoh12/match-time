@@ -15,7 +15,7 @@ export const UserLoginDialog = ({ open, handleClose }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <UserLoginForm handleClose={handleClose} />
-      <Button data-testid='forgot-password-button' size="small" color="primary" onClick={handlePasswordReset}>
+      <Button data-testid='forgot-password-button' size="small" color="secondary" onClick={handlePasswordReset}>
         Forgot password
       </Button>
     </Dialog>

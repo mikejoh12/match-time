@@ -95,10 +95,10 @@ export const UserLoginForm = ({ handleClose }) => {
           rules={{ required: 'Password required' }}
         />
         <div>
-          <Button variant="contained" onClick={handleClose}>
+          <Button variant="contained" color="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button data-testid='login-user-submit' type="submit" variant="contained" color="primary">
+          <Button data-testid='login-user-submit' type="submit" variant="contained" color="secondary">
             Login
           </Button>
         </div>

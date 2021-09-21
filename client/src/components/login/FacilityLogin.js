@@ -93,11 +93,7 @@ export const FacilityLogin = () => {
                             }
                         </Grid>
                     </Grid>
-                ) :
-                <Typography variant="h5">
-                    No facility found with id: {id}.
-                </Typography>}
-
+                ) : null }
         </div>
     )
 }

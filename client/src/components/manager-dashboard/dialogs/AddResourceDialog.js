@@ -88,10 +88,10 @@ export const AddResourceDialog = ({facilityId}) => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleClose} color="secondary">
               Cancel
             </Button>
-            <Button type="submit" color="primary">
+            <Button type="submit" color="secondary">
               Add Resource
             </Button>
           </DialogActions>
