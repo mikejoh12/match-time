@@ -21,7 +21,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { showSnackbar } from '../../features/ui/uiSlice';
 import { Grid } from '@material-ui/core';
 
-const font = "'Karla', sans-serif";
+const font = "'Rubik', sans-serif;";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
     topMsgBar: {
       backgroundColor: theme.palette.common.black,
-      padding: 6,
     },
     topMsg: {
-      color: theme.palette.primary.light
+      color: theme.palette.primary.light,
+      padding: 2
     },
     appBar: {
       backgroundColor: theme.palette.primary.light,
@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       cursor: 'pointer',
       fontFamily: font,
-      color: theme.palette.secondary.dark
+      color: theme.palette.secondary.dark,
+      //paddingLeft: theme.spacing(4)
      },
   }));
 
@@ -110,8 +111,8 @@ export const Header = () => {
         <AppBar position="static" className={classes.appBar}>
           <Container maxWidth="md">
             <Toolbar>
-              <Typography variant="h3" className={classes.title} onClick={handleLogoClick}>
-                  Sports Booker
+              <Typography variant="h4" className={classes.title} onClick={handleLogoClick}>
+                  SPORTS BOOKER
               </Typography>
               {( showMenuButtons &&
                 <>
