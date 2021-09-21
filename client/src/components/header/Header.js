@@ -29,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
     },
     topMsgBar: {
       backgroundColor: theme.palette.common.black,
-      padding: 6
+      padding: 6,
     },
     topMsg: {
       color: theme.palette.primary.light
     },
     appBar: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
     },
     menuButton: {
       marginLeft: theme.spacing(2),
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       cursor: 'pointer',
       fontFamily: font,
-      color: theme.palette.common.black
+      color: theme.palette.secondary.dark
      },
   }));
 
@@ -74,6 +74,7 @@ export const Header = () => {
         severity: 'success'
         })
       )
+      history.push('/')
     }
 
     const theme = useTheme();
@@ -113,7 +114,7 @@ export const Header = () => {
                   Sports Booker
               </Typography>
               {( showMenuButtons &&
-                <div>
+                <>
                   { user ?
                     <Button data-testid='logout-button' color="inherit" size="medium" onClick={handleUserLogout}>Logout</Button>
                     :
@@ -126,9 +127,9 @@ export const Header = () => {
                   { user && <Button data-testid='bookings-nav-button'color="inherit" size="medium" onClick={handleBookingsClick}>Bookings</Button> }
                   { user && <Button data-testid='account-nav-button' color="inherit" size="medium" onClick={handleAccountClick}>Account</Button> }
 
-                </div> )}
+                </> )}
               {( !showMenuButtons &&
-              <div>
+              <>
                 <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
                   <MenuIcon fontSize="large" />
                 </IconButton>
@@ -159,7 +160,7 @@ export const Header = () => {
                     { user && <MenuItem  data-testid='bookings-nav-button' onClick={handleBookingsClick}>Bookings</MenuItem> }
                     { user && <MenuItem data-testid='account-nav-button' onClick={handleAccountClick}>Account</MenuItem> }
                 </Menu>
-              </div> )}
+              </> )}
             </Toolbar>
           </Container>
         </AppBar>

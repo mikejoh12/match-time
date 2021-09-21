@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux'
+import { useLocation, useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -29,7 +30,8 @@ const useStyles = makeStyles(theme => ({
 
 export const UserLoginForm = ({ handleClose }) => {
   const dispatch = useDispatch()
-  const classes = useStyles();
+  const history = useHistory()
+  const classes = useStyles()
   const { control, handleSubmit } = useForm() 
 
   const [login] = useLoginMutation()
@@ -45,6 +47,9 @@ export const UserLoginForm = ({ handleClose }) => {
           severity: 'success'
           }
         ))
+        if (history.location.pathname === '/') {
+          history.push('/select-facility')
+        }
       } catch (err) {
         dispatch(showSnackbar({
           message: err.data?.error?.data || 'There was a server error',
@@ -56,7 +61,7 @@ export const UserLoginForm = ({ handleClose }) => {
   }
 
   return (
-    <div>
+    <>
       <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"
@@ -103,6 +108,6 @@ export const UserLoginForm = ({ handleClose }) => {
           </Button>
         </div>
       </form>
-    </div>
+    </>
   );
 };

@@ -29,7 +29,7 @@ export const Landing = () => {
     const showSecondImg = useMediaQuery(theme.breakpoints.up('md'))
 
     return (
-            <div>
+            <>
                 <Grid
                     container
                     justifyContent="center"
@@ -148,6 +148,6 @@ export const Landing = () => {
                         </Grid>
                 {user && <SelectFacility /> }
                 </Grid>
-            </div>
+            </>
     )
 }

@@ -154,14 +154,14 @@ export const UserRegisterForm = ({ handleClose }) => {
                     value === password.current || 'The passwords do not match'
                 }}
       />
-      <div>
+      <>
         <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel
         </Button>
         <Button type="submit" variant="contained" color="secondary">
           Signup
         </Button>
-      </div>
+      </>
     </form>
   );
 };

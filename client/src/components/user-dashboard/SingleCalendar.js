@@ -9,12 +9,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetBookingsByFacilityIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
+import { useTheme } from '@material-ui/styles';
 
 export const SingleCalendar = ({calendarsRefs, selectedResourceIdx}) => {
   const dispatch = useDispatch()
   const calViewDate = useSelector(selectCalViewDate)
   const currentResource = useSelector(selectCurrentResource)
   const facility = useSelector(selectFacility)
+  const theme = useTheme();
 
   const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByFacilityIdQuery(facility.id)
   const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(facility.id)
@@ -72,7 +74,7 @@ export const SingleCalendar = ({calendarsRefs, selectedResourceIdx}) => {
                       height="auto"
                       initialDate={calViewDate}
                       dateClick={handleDateClick}
-                      eventColor="#006edb"
+                      eventColor={theme.palette.secondary.main}
                       events={ 
                         bookingsData[resource?.id]?.map(booking => ({
                         id: booking.bookings_id,

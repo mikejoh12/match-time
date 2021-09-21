@@ -15,11 +15,17 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
+
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
-  }));
+    chooseLabel: {
+      color: theme.palette.common.black,
+      "&.Mui-focused": {
+        color: theme.palette.common.black
+      }}
+    }));
 
 export const SelectFacility = () => {
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
@@ -43,7 +49,7 @@ export const SelectFacility = () => {
 
     const handleRegisterClick = () => history.push('/manager-dashboard')
 
-    return ( <div>
+    return ( <>
                 {isError ? (
                     <>Oh no, there was an error</>
                 ) : isLoading ? (
@@ -53,25 +59,20 @@ export const SelectFacility = () => {
                 ) : facilitiesData ? (
                     facilitiesData.length ?
                     <Grid   container
-                    spacing={2}
+                    spacing={1}
                     direction="column"
                     alignItems="center"
-                    justifyContent="center">
-                        <Grid item>
-                            <Typography variant="h6" >
-                                You are a member of the following facilities:
-                            </Typography>
-                        </Grid>        
+                    justifyContent="center">     
                         <Grid item container
                                 direction="column"
                                 alignItems="center"
                                 justifyContent="center">
                             <form onSubmit={handleSubmit} align="center">
                                 <FormControl className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-label">Choose a club:</InputLabel>
+                                <InputLabel id="choose-label" className={classes.chooseLabel}>Choose a club:</InputLabel>
                                     <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
+                                    labelId="choose-label"
+                                    id="choose-select"
                                     value={clubId}
                                     onChange={handleChange}
                                     >
@@ -104,6 +105,6 @@ export const SelectFacility = () => {
                     </Grid>
 
                 ) : null}
-        </div>
+        </>
     )
 }
