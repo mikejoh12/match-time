@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     footer: {
         height: 70,
         marginTop: 50,
-        backgroundColor: theme.palette.primary.light
+        backgroundColor: theme.palette.primary.main
     },
     copyright: {
         position: "relative",
@@ -18,8 +18,11 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
         color: theme.palette.secondary.dark,
         }
-    }}
-));
+    },
+    footerText: {
+        color: theme.palette.common.white
+    }
+}));
 
 export const Footer = () => {
     const classes = useStyles()
@@ -32,7 +35,7 @@ export const Footer = () => {
                 direction="column"
                 alignItems="center"
                 className={classes.footer}>
-                <Typography variant="subtitle1">
+                <Typography className={classes.footerText} variant="subtitle1">
                     Sports Booker - Developed by Mike Johansson
                 </Typography>
                 <GitHubIcon className={classes.gitLink} onClick={event => window.open('https://www.github.com/mikejoh12', '_blank')}/>

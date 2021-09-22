@@ -59,7 +59,7 @@ export const FacilityLogin = () => {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant="h5">
+                            <Typography variant="h5" align="center">
                                 {facilityData.description}
                             </Typography>
                         </Grid>

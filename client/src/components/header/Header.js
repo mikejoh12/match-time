@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     topMsgBar: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: theme.palette.primary.dark,
     },
     topMsg: {
-      color: theme.palette.primary.light,
+      color: theme.palette.common.white,
       padding: 2
     },
     appBar: {
@@ -44,8 +44,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       cursor: 'pointer',
       fontFamily: font,
-      color: theme.palette.secondary.dark,
-      //paddingLeft: theme.spacing(4)
+      color: theme.palette.common.logo
      },
   }));
 

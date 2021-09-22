@@ -20,18 +20,19 @@ const greenBlueTheme = {
   palette: {
     common: {
       black: "#000",
-      white: "#fff"
+      white: "#fff",
+      logo: '#F2B138'
     },
-  background: {
-    "paper": "#fff",
-    "default": "#fafafa"
-  },
-  primary: {
-    main: '#00db6e',
-  },
-  secondary: {
-    main: '#006edb',
-  },
+    background: {
+      "paper": "#fff",
+      "default": "#fafafa"
+    },
+    primary: {
+      main: '#003F63',
+    },
+    secondary: {
+      main: '#A1A5A6',
+    },
 }}
 
 export { greenTheme, greenBlueTheme }
