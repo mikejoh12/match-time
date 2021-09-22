@@ -1,7 +1,7 @@
 import { createTheme, responsiveFontSizes } from '@material-ui/core/styles'
-import { greenTheme, greenBlueTheme } from './themeObjects';
+import { blueOrangeTheme } from './themeObjects';
 
-export let theme = createTheme(greenBlueTheme);
+export let theme = createTheme(blueOrangeTheme);
 
 theme.typography.html = {
   fontSize: '1.2rem',

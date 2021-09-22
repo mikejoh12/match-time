@@ -11,7 +11,9 @@ const initialState = {
     bookingIdToDelete: null,
     deleteResourceDialogOpen: false,
     resourceIdToDelete: null,
-    inviteMemberDialogOpen: false
+    inviteMemberDialogOpen: false,
+    registerDialogOpen: false,
+    loginDialogOpen: false
 }
 
 export const uiSlice = createSlice({
@@ -52,6 +54,18 @@ export const uiSlice = createSlice({
       },
       closeInviteMemberDialog(state, action) {
             state.inviteMemberDialogOpen = false
+      },
+      openRegisterDialog(state, action) {
+            state.registerDialogOpen = true
+      },
+      closeRegisterDialog(state, action) {
+            state.registerDialogOpen = false
+      },
+      openLoginDialog(state, action) {
+            state.loginDialogOpen = true
+      },
+      closeLoginDialog(state, action) {
+            state.loginDialogOpen = false
       }
     }
 })
@@ -59,7 +73,9 @@ export const uiSlice = createSlice({
 export const {    showSnackbar, clearSnackbar, openBookDialog, closeBookDialog,
                   openDeleteBookingDialog, closeDeleteBookingDialog,
                   openDeleteResourceDialog, closeDeleteResourceDialog,
-                  openInviteMemberDialog, closeInviteMemberDialog } = uiSlice.actions
+                  openInviteMemberDialog, closeInviteMemberDialog,
+                  openRegisterDialog, closeRegisterDialog,
+                  openLoginDialog, closeLoginDialog } = uiSlice.actions
 
 export const selectSnackBarOpen = state => state.ui.snackbarOpen
 export const selectSnackbarMessage = state => state.ui.snackbarMessage
@@ -69,4 +85,6 @@ export const selectBookingIdToDelete = state => state.ui.bookingIdToDelete
 export const selectDeleteResourceDialogOpen = state => state.ui.deleteResourceDialogOpen
 export const selectResourceIdToDelete = state => state.ui.resourceIdToDelete
 export const selectInviteMemberDialogOpen = state => state.ui.inviteMemberDialogOpen
+export const selectRegisterDialogOpen = state => state.ui.registerDialogOpen
+export const selectLoginDialogOpen = state => state.ui.loginDialogOpen
 export default uiSlice.reducer

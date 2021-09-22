@@ -18,7 +18,7 @@ import { logout } from '../../features/auth/authUserSlice';
 import { selectFacilityIsLoaded, selectFacility } from '../../features/current-facility/currentFacilitySlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'
-import { showSnackbar } from '../../features/ui/uiSlice';
+import { openLoginDialog, openRegisterDialog, showSnackbar } from '../../features/ui/uiSlice';
 import { Grid } from '@material-ui/core';
 
 const font = "'Rubik', sans-serif;";
@@ -55,17 +55,12 @@ export const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
-    const [openUserRegister, setOpenUserRegister] = useState(false)
-    const handleOpenUserRegister = () => setOpenUserRegister(true)
-    const handleCloseUserRegister = () => setOpenUserRegister(false)
+    const handleOpenUserRegister = () => dispatch(openRegisterDialog())
+    const handleOpenUserLogin = () => dispatch(openLoginDialog())
 
     const { user } = useAuth()
     const facilityIsLoaded = useSelector(selectFacilityIsLoaded)
     const facility = useSelector(selectFacility)
-
-    const [openUserLogin, setOpenUserLogin] = useState(false)
-    const handleOpenUserLogin = () => setOpenUserLogin(true)
-    const handleCloseUserLogin = () => setOpenUserLogin(false)
 
     const handleUserLogout = () => {
       dispatch(logout())
@@ -164,8 +159,8 @@ export const Header = () => {
             </Toolbar>
           </Container>
         </AppBar>
-        <UserRegisterDialog open={openUserRegister} handleClose={handleCloseUserRegister} />
-        <UserLoginDialog open={openUserLogin} handleClose={handleCloseUserLogin} />
+        <UserRegisterDialog />
+        <UserLoginDialog />
       </div>
     );
   }

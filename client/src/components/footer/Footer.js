@@ -4,23 +4,23 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
-        height: 70,
         marginTop: 50,
+        padding: 10,
         backgroundColor: theme.palette.primary.main
     },
-    copyright: {
-        position: "relative",
-        top: "4px"
-    },
     gitLink: {
-        color: 'black',
+        color: theme.palette.common.white,
         cursor: 'pointer',
         '&:hover': {
         color: theme.palette.secondary.dark,
         }
     },
+    gitLinkContainer: {
+        margin: 5
+    },
     footerText: {
-        color: theme.palette.common.white
+        color: theme.palette.common.white,
+        textAlign: 'center'
     }
 }));
 
@@ -35,10 +35,19 @@ export const Footer = () => {
                 direction="column"
                 alignItems="center"
                 className={classes.footer}>
-                <Typography className={classes.footerText} variant="subtitle1">
-                    Sports Booker - Developed by Mike Johansson
-                </Typography>
-                <GitHubIcon className={classes.gitLink} onClick={event => window.open('https://www.github.com/mikejoh12', '_blank')}/>
+                <Grid item>
+                    <Typography className={classes.footerText} variant="subtitle1">
+                        Sports Booker - by Mike Johansson
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography className={classes.footerText} variant="subtitle1">
+                        Demo site developed using Postgres, Express, React, and Node.js.
+                    </Typography>  
+                </Grid>
+                <Grid item className={classes.gitLinkContainer}>
+                    <GitHubIcon className={classes.gitLink} onClick={event => window.open('https://www.github.com/mikejoh12', '_blank')}/>
+                </Grid>         
             </Grid>
     )
 }

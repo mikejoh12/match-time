@@ -124,23 +124,6 @@ export const Landing = () => {
                                                 </ListItem>
                                             </List>
                                         </Grid>
-
-                                        <Grid item>
-                                            <Typography variant="h6" align="center">
-                                                Development:
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <List aria-label="member features">
-                                                <ListItem>
-                                                    <ListItemIcon>
-                                                        <CheckIcon />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="The project is a demo site and was developed using a stack of Postgres, Express, React, and Node.js." />
-                                                </ListItem>
-                                            </List>
-                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Paper>

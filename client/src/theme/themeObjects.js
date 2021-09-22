@@ -1,22 +1,5 @@
-const greenTheme = {
-    palette: {
-      common: {
-        black: "#000",
-        white: "#fff"
-      },
-    background: {
-      "paper": "#fff",
-      "default": "#fafafa"
-    },
-    primary: {
-      main: '#00695c',
-    },
-    secondary: {
-      main: '#c8e6c9',
-    },
-}}
 
-const greenBlueTheme = {
+const blueOrangeTheme = {
   palette: {
     common: {
       black: "#000",
@@ -35,4 +18,4 @@ const greenBlueTheme = {
     },
 }}
 
-export { greenTheme, greenBlueTheme }
+export { blueOrangeTheme }

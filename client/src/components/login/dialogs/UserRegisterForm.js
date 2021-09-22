@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useCreateUserMutation, useLoginMutation } from '../../../services/api';
 import { useForm, Controller } from "react-hook-form";
-import { showSnackbar } from '../../../features/ui/uiSlice';
+import { showSnackbar, closeRegisterDialog } from '../../../features/ui/uiSlice';
 import { setCredentials } from '../../../features/auth/authUserSlice';
 
 const useStyles = makeStyles(theme => ({
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const UserRegisterForm = ({ handleClose }) => {
+export const UserRegisterForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [createUser] = useCreateUserMutation()
@@ -35,6 +35,8 @@ export const UserRegisterForm = ({ handleClose }) => {
   const { control, handleSubmit, watch } = useForm()  
   const password = useRef({})
   password.current = watch("password", "")
+
+  const handleClose = () => dispatch(closeRegisterDialog())
 
   const onSubmit = async data => {
     const { firstName, lastName, email, password } = data;

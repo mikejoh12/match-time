@@ -9,6 +9,7 @@ import { setCredentials } from '../../../features/auth/authUserSlice';
 import { setRefreshToken } from '../../../features/auth/authRefreshSlice'
 import { useForm, Controller } from "react-hook-form";
 import { showSnackbar } from '../../../features/ui/uiSlice';
+import { closeLoginDialog } from '../../../features/ui/uiSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,7 +57,7 @@ export const UserLoginForm = ({ handleClose }) => {
           severity: 'error'
         }))
       } finally {
-        handleClose()
+        dispatch(closeLoginDialog())
       }
   }
 
