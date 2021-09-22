@@ -89,10 +89,10 @@ export const AddFacilityDialog = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="secondary">
+            <Button onClick={handleClose} color="secondary" variant="contained">
               Cancel
             </Button>
-            <Button data-testid='add-facility-submit' type="submit" color="secondary">
+            <Button data-testid='add-facility-submit' type="submit" color="secondary" variant="contained">
               Add Facility
             </Button>
           </DialogActions>

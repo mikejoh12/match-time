@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const UserLoginForm = ({ handleClose }) => {
+export const UserLoginForm = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const classes = useStyles()
@@ -60,6 +60,8 @@ export const UserLoginForm = ({ handleClose }) => {
         dispatch(closeLoginDialog())
       }
   }
+
+  const handleCancelClick = () => dispatch(closeLoginDialog())
 
   return (
     <>
@@ -101,7 +103,7 @@ export const UserLoginForm = ({ handleClose }) => {
           rules={{ required: 'Password required' }}
         />
         <div>
-          <Button variant="contained" color="secondary" onClick={handleClose}>
+          <Button variant="contained" color="secondary" onClick={handleCancelClick}>
             Cancel
           </Button>
           <Button data-testid='login-user-submit' type="submit" variant="contained" color="secondary">

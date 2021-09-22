@@ -48,7 +48,11 @@ export const UserDashboard = () => {
       dispatch(openBookDialog())
     }
     
-    const handleClose = () => dispatch(closeBookDialog())
+    const handleClose = (event, reason) => {
+      if (reason !== 'backdropClick') {
+        dispatch(closeBookDialog())
+      }
+    }
 
     const classes = useStyles()
 

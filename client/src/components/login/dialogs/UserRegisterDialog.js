@@ -9,7 +9,11 @@ export const UserRegisterDialog = () => {
 
   const registerDialogOpen = useSelector(selectRegisterDialogOpen)
 
-  const handleClose = () => dispatch(closeRegisterDialog())
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      dispatch(closeRegisterDialog())
+    }
+  }
 
   return (
     <Dialog open={registerDialogOpen} onClose={handleClose}>

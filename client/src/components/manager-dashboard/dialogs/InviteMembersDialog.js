@@ -110,10 +110,10 @@ export const InviteMembersDialog = ({facilityId}) => {
         />  
 
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleClose} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button type="submit" color="secondary">
+          <Button type="submit" color="secondary" variant="contained">
             Invite
           </Button>
         </DialogActions>

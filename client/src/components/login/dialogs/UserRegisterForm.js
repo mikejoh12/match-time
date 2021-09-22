@@ -36,7 +36,7 @@ export const UserRegisterForm = () => {
   const password = useRef({})
   password.current = watch("password", "")
 
-  const handleClose = () => dispatch(closeRegisterDialog())
+  const handleCancelClick = () => dispatch(closeRegisterDialog())
 
   const onSubmit = async data => {
     const { firstName, lastName, email, password } = data;
@@ -60,7 +60,7 @@ export const UserRegisterForm = () => {
         severity: 'error'
       }))
     } finally {
-      handleClose();
+      dispatch(closeRegisterDialog())
     }
   };
 
@@ -156,14 +156,14 @@ export const UserRegisterForm = () => {
                     value === password.current || 'The passwords do not match'
                 }}
       />
-      <>
-        <Button variant="contained" color="secondary" onClick={handleClose}>
+      <div>
+        <Button variant="contained" color="secondary" onClick={handleCancelClick}>
           Cancel
         </Button>
         <Button type="submit" variant="contained" color="secondary">
           Signup
         </Button>
-      </>
+      </div>
     </form>
   );
 };

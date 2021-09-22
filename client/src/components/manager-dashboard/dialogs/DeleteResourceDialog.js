@@ -52,10 +52,10 @@ export const DeleteResourceDialog = ({facilityId}) => {
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleClose} color="secondary" variant="contained">
                 Cancel
             </Button>
-            <Button onClick={handleDeleteClick} color="primary" autoFocus>
+            <Button onClick={handleDeleteClick} color="secondary" variant="contained" autoFocus>
                 Delete Resource
             </Button>
             </DialogActions>

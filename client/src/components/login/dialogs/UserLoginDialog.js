@@ -17,7 +17,11 @@ export const UserLoginDialog = () => {
     history.push('/password-forgot');
   }
 
-  const handleClose = () => dispatch(closeLoginDialog())
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      dispatch(closeLoginDialog())
+    }
+  }
 
   return (
     <Dialog open={loginDialogOpen} onClose={handleClose}>

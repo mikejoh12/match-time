@@ -74,10 +74,10 @@ export const DeleteFacilityDialog = ({facilityId}) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleClose} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleDeleteClick} color="secondary">
+          <Button onClick={handleDeleteClick} color="secondary" variant="contained">
             Delete Facility
           </Button>
         </DialogActions>
