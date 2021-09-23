@@ -9,14 +9,25 @@ const { updateUserPwdDb } = require('../db/users-db');
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-let transport = nodemailer.createTransport({
+let transport = nodemailer.createTransport(
+    isProduction ? 
+    {
+    host: process.env.MAIL_PROD_SERVICE,
+    auth:   { 
+            user: process.env.MAIL_PROD_USER,
+            pass: process.env.MAIL_PROD_PASS
+            }
+    }
+    :
+    {
     host: 'smtp.mailtrap.io',
     port: 2525,
-    auth: {
-       user: process.env.MAIL_USER,
-       pass: process.env.MAIL_PASS
+    auth:   {
+            user: process.env.MAILTRAP_USER,
+            pass: process.env.MAILTRAP_PASS
+            }
     }
-});
+);
 
 const signUpUser = async (req, res, next) => {
     const { email, firstName, lastName, password } = req.body
@@ -48,8 +59,8 @@ const loginUser = async (req, res, next) => {
         'login',
         async (err, user, info) => {
         try {
-                if (err || !user) {
-                    const error = new Error(info.message);
+            if (err || !user) {
+                const error = new Error(info.message);
                 return next(error);
             }
             req.login(
@@ -85,15 +96,13 @@ const loginUser = async (req, res, next) => {
                             email: user.email,
                             first_name: user.first_name,
                             last_name: user.last_name,
-                            date_joined: user.date_joined,
-                            user_role: user.user_role
                             }
                         });
                 }
             );
         } catch (error) {
             return next(error);
-            }
+          }
         }
     )(req, res, next);
 }

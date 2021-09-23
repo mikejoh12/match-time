@@ -32,7 +32,7 @@ export const handlers = [
           "is_admin": true
       }
     ]))
-  })
+  }), 
 ]
 
 const server = setupServer(...handlers)

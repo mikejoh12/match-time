@@ -5,6 +5,11 @@ const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const { fetchUserByEmail, fetchManagerById, fetchUserById } = require('../services/users-service')
 
+/*
+Easy way to generate key on Linux using crypto:
+node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
+*/
+
 passport.use(
     'login',
     new LocalStrategy(

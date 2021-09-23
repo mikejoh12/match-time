@@ -74,7 +74,7 @@ export const SingleCalendar = ({calendarsRefs, selectedResourceIdx}) => {
                       height="auto"
                       initialDate={calViewDate}
                       dateClick={handleDateClick}
-                      eventColor={theme.palette.secondary.main}
+                      eventColor={theme.palette.secondary.light}
                       eventTextColor={theme.palette.common.black}
                       events={ 
                         bookingsData[resource?.id]?.map(booking => ({

@@ -86,7 +86,7 @@ describe('Bookings', () => {
     await loginUser("testuser@gmail.com", "password")
 
     // Enter facility section
-    expect(await screen.findByText(/Smash Tennis Club/i)).toBeInTheDocument()
+    expect(await screen.findByText(/Welcome John Smith/i)).toBeInTheDocument()
     userEvent.click(screen.getByTestId('login-as-member'))
     expect(await screen.findByText(/Go to scheduling/i)).toBeInTheDocument()
 

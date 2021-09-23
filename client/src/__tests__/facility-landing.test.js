@@ -36,29 +36,6 @@ afterAll(() => server.close())
 
 describe('Facility Landing Page', () => {
 
-  test(`displays "No facility found" message for an invalid facility-id route`, async() => {
-    server.use(
-      rest.get('/api/facilities/99', (req, res, ctx) => {
-        return res(ctx.status(422), ctx.json({
-          error: { status: 422, data: "Invalid facility id."}
-        }))
-      }),
-      rest.get('/api/resources/by_facility/99', (req, res, ctx) => {
-        return res(ctx.status(422), ctx.json({
-          error: { status: 422, data: "Invalid facility id." }
-        }))
-      }),
-    )
-    const history = createMemoryHistory()
-    history.push('/99')
-    render(
-      <Router history={history}>
-        <Routes />
-      </Router>,
-    )
-    expect(await screen.findByText(/No facility found/i)).toBeInTheDocument()
-  });
-
   test('displays facility info for a valid facility-id route', async() => {
     const history = createMemoryHistory()
     history.push('/1')

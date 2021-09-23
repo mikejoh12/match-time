@@ -16,7 +16,30 @@ export const handlers = [
             status: 'ok',
             message: 'Password reset. Please login with your new password.'
         }), ctx.delay(150))
-      })
+      }),
+    rest.post('/api/auth/refresh_token', (req, res, ctx) => {
+      return res(ctx.json({
+        token: 'refresh-testing-token',
+        user: {
+          email: "testuser@gmail.com",
+          first_name: "John",
+          id: 99,
+          last_name: "Smith",
+        }
+      }))
+      }),
+    rest.get('/api/facilities/by_user', (req, res, ctx) => {
+      return res(ctx.json([
+        {
+            "id": 1,
+            "name": "Testing Tennis Club",
+            "description": "Good Club",
+            "users_id": 99,
+            "facilities_id": 1,
+            "is_admin": true
+        }
+      ]))
+    }),
   ]
 
 const server = setupServer(...handlers)
