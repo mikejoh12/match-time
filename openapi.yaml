@@ -219,7 +219,30 @@ paths:
         required: true
       responses:
         200:
-          description: Returns a JWT under the token key.
+          description: Returns a JWT access token, user info and a refresh token in cookie
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: SB_REFR=JWTSTRING; Path=/api/auth/refresh_token; HttpOnly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+
+  /api/auth/refresh_token:
+    post:
+      tags:
+      - auth
+      description: Gets a new access token using refresh token
+      responses:
+        200:
+          description: Returns a new access token, refresh token cookie and user
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: SB_REFR=JWTSTRING; Path=/api/auth/refresh_token; HttpOnly
           content:
             application/json:
               schema:
@@ -438,6 +461,9 @@ components:
       properties:
         token:
           type: string
+        user:
+          type: object
+          $ref: '#/components/schemas/User'
     Bookings:
       type: array
       items:
@@ -478,9 +504,7 @@ components:
           type: integer
         email:
           type: string
-        date_joined:
+        first_name:
           type: string
-        user_role:
+        last_name:
           type: string
-        active:
-          type: boolean

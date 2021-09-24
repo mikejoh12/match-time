@@ -43,6 +43,14 @@ app.use("/api/", rateLimiter);
 app.use(passport.initialize())
 app.use('/api', routes);
 
+// Serve React static files
+if(isProduction) {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 // Improved error handling
 app.use((error, req, res, next) => {
     res.status(error.status || 500).send({

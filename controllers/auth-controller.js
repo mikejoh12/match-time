@@ -85,8 +85,9 @@ const loginUser = async (req, res, next) => {
 
                     res.cookie('SB_REFR', refreshToken, {
                         httpOnly: true,
-                        sameSite: isProduction ? 'none' : 'lax',
+                        sameSite: 'strict',
                         secure: isProduction ? true : false,
+                        path: '/api/auth/refresh_token'
                       })
 
                     return res.json({
@@ -133,16 +134,21 @@ const refreshToken = async (req, res, next) => {
                         process.env.REFRESH_AUTH_SECRET,
                         { expiresIn: 60 * 60 * 24 } // Expiration in s
                     );
+
+                    res.cookie('SB_REFR', refreshToken, {
+                        httpOnly: true,
+                        sameSite: 'strict',
+                        secure: isProduction ? true : false,
+                        path: '/api/auth/refresh_token'
+                      })
+
                     return res.json({
                         token,
-                        refreshToken,
                         user: {
                             id: user.id,
                             email: user.email,
                             first_name: user.first_name,
                             last_name: user.last_name,
-                            date_joined: user.date_joined,
-                            user_role: user.user_role
                             }
                         });
                 }

@@ -29,8 +29,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --runInBand --verbose",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"npm start\" \"cd ../server && npm start dev\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

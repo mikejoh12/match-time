@@ -45,9 +45,6 @@ export const Landing = () => {
                                     alignItems="center"
                                     spacing={2}
                                     >
-                                    <Typography variant="h4" >
-                                        Sports Booker
-                                    </Typography>
                                     <Grid item>
                                         <Typography variant="h6" align="center">
                                             A demo scheduling platform for sports facility managers and players

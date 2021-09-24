@@ -1,6 +1,7 @@
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import EmailIcon from '@material-ui/icons/Email';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
@@ -8,14 +9,14 @@ const useStyles = makeStyles((theme) => ({
         padding: 10,
         backgroundColor: theme.palette.primary.main
     },
-    gitLink: {
+    icons: {
         color: theme.palette.common.white,
         cursor: 'pointer',
         '&:hover': {
         color: theme.palette.secondary.dark,
         }
     },
-    gitLinkContainer: {
+    linkContainers: {
         margin: 5
     },
     footerText: {
@@ -37,7 +38,7 @@ export const Footer = () => {
                 className={classes.footer}>
                 <Grid item>
                     <Typography className={classes.footerText} variant="subtitle1">
-                        Sports Booker - by Mike Johansson
+                        MATCHTIME - by Mike Johansson
                     </Typography>
                 </Grid>
                 <Grid item>
@@ -45,9 +46,18 @@ export const Footer = () => {
                         Demo site developed using Postgres, Express, React, and Node.js.
                     </Typography>  
                 </Grid>
-                <Grid item className={classes.gitLinkContainer}>
-                    <GitHubIcon className={classes.gitLink} onClick={event => window.open('https://www.github.com/mikejoh12', '_blank')}/>
-                </Grid>         
+                <Grid item container justifyContent="center">
+                    <Grid item className={classes.linkContainers}>
+                        <GitHubIcon className={classes.icons} onClick={event => window.open('https://www.github.com/mikejoh12', '_blank')}/>
+                    </Grid>
+                    <Grid item className={classes.linkContainers}>
+                    <a target="_top"
+                        rel="noopener noreferrer"
+                        href="mailto:mikejoh12@gmail.com">
+                        <EmailIcon className={classes.icons}/>
+                    </a>
+                    </Grid>
+                </Grid>
             </Grid>
     )
 }

@@ -51,7 +51,6 @@ passport.use(
       if (!user) {
         return done(null, false, { message: 'No user found associated with token.' });
       }
-      console.log(user)
       return done(null, user, { message: 'Token refreshed' });
   }
 ))

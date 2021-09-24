@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -106,7 +106,7 @@ export const Header = () => {
           <Container maxWidth="md">
             <Toolbar>
               <Typography variant="h4" className={classes.title} onClick={handleLogoClick}>
-                  SPORTS BOOKER
+                  MATCHTIME
               </Typography>
               {( showMenuButtons &&
                 <>

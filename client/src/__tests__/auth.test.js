@@ -48,7 +48,7 @@ describe('App Component Startup', () => {
         <Routes />
       </Router>,
     )
-    const linkElement = screen.getAllByText('Sports Booker');
+    const linkElement = screen.getAllByText(/MATCHTIME/i);
     expect(linkElement[0]).toBeInTheDocument();
   });
 });
