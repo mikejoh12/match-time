@@ -12,8 +12,8 @@ const isProduction = process.env.NODE_ENV === 'production'
 let transport = nodemailer.createTransport(
     isProduction ? 
     {
-        service: MAIL_PROD_SERVICE,
-                auth:   { 
+        service: process.env.MAIL_PROD_SERVICE,
+        auth:   { 
                 user: process.env.MAIL_PROD_USER,
                 pass: process.env.MAIL_PROD_PASS
                 }
