@@ -117,7 +117,7 @@ export const Landing = () => {
                                                     <ListItemIcon>
                                                         <CheckIcon />
                                                     </ListItemIcon>
-                                                    <ListItemText primary="You can be a member of many facilities while also at the same time being a manager of facilities that you add to the platform." />
+                                                    <ListItemText primary="You can be a member of facilities while at the same time being a managing of facilities where you have management access." />
                                                 </ListItem>
                                             </List>
                                         </Grid>

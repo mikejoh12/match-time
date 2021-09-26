@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useHistory } from 'react-router-dom'
 import { AddFacilityDialog } from './dialogs/AddFacilityDialog'
 import { useGetFacilitiesByUserQuery } from '../../services/api'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const ManagerDashboard = () => {
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
@@ -23,7 +24,9 @@ export const ManagerDashboard = () => {
             {isError ? (
             <>Oh no, there was an error</>
             ) : isLoading ? (
-            <>Loading...</>
+                <Grid item container justifyContent="center">
+                    <CircularProgress />
+                </Grid>
             ) : facilitiesData ? (
                 <Grid   container
                         spacing={2}
@@ -31,12 +34,12 @@ export const ManagerDashboard = () => {
                         alignItems="center"
                         justifyContent="center">
                     <Grid item>
-                        <Typography variant="h4" >
+                        <Typography variant="h4" align="center">
                             Manager Dashboard
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="h6" >
+                        <Typography variant="h6" align="center">
                             You are managing the following facilities. Select a facility to edit or add a new facility.
                         </Typography>
                     </Grid>

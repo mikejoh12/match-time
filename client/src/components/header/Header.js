@@ -76,12 +76,34 @@ export const Header = () => {
     const showMenuButtons = useMediaQuery(theme.breakpoints.up('md'))
 
     const handleLogoClick = () => history.push('/')
-    const handleSelectFacilityClick = () => history.push('/select-facility')
-    const handleUserDashBoardClick = () => history.push('/user-dashboard')
-    const handleManageClick = () => history.push('/manager-dashboard')
-    const handleBookingsClick = () => history.push('/bookings')
-    const handleAccountClick = () => history.push('/account')
-    const handleMenu = event => setAnchorEl(event.currentTarget);
+    
+    const handleSelectFacilityClick = () => {
+      history.push('/select-facility');
+      setAnchorEl(null);
+    }
+
+    const handleUserDashBoardClick = () => {
+      history.push('/user-dashboard');
+      setAnchorEl(null);
+    }
+
+    const handleManageClick = () => {
+      history.push('/manager-dashboard');
+      setAnchorEl(null);
+    }
+
+    const handleBookingsClick = () => {
+      history.push('/bookings');
+      setAnchorEl(null);
+    }
+
+    const handleAccountClick = () => {
+      history.push('/account');
+      setAnchorEl(null);
+    }
+
+    const handleMenu = event => setAnchorEl(event.currentTarget)
+
     const handleClose = () => setAnchorEl(null);
 
     return (

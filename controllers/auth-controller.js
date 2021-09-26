@@ -12,7 +12,8 @@ const isProduction = process.env.NODE_ENV === 'production'
 let transport = nodemailer.createTransport(
     isProduction ? 
     {
-    host: process.env.MAIL_PROD_SERVICE,
+        host: process.env.MAIL_PROD_HOST,
+        port: process.env.MAIL_PROD_PORT,
     auth:   { 
             user: process.env.MAIL_PROD_USER,
             pass: process.env.MAIL_PROD_PASS
@@ -179,10 +180,10 @@ const inviteUser = async (req, res, next) => {
             })
 
         let info = await transport.sendMail({
-            from: 'mike@calendar-booking.com',
+            from: 'info@matchtime.herokuapp.com',
             to: inviteEmail,
             subject: `You are invited to our club: ${facilityInfo.name}`,
-            text: `Go to http://calendar-booking.com/${facilityId} and create an account with Calendar-Booking to access the club scheduling features.`
+            text: `Go to https://matchtime.herokuapp.com/${facilityId} and create an account with MatchTime to access the club scheduling features.`
             })
         console.log(`Message sent: ${info.messageId}`);
 
@@ -222,10 +223,10 @@ const forgotPassword = async (req, res) => {
     // Send email if environment is not set to test
     if (process.env.NODE_ENV !== 'test') {
         await transport.sendMail({
-            from: 'mike@calendar-booking.com',
+            from: 'info@matchtime.herokuapp.com',
             to: email,
-            subject: `Sports Booker - Password Reset`,
-            html:`<p>To reset your password, please click <a href="http://localhost:3000/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>. This link is valid for 1 hr.</p>`
+            subject: `MatchTime - Password Reset`,
+            html:`<p>To reset your password, please click <a href="https://matchtime.herokuapp.com/password-reset/${email}/${encodeURIComponent(token)}"/>here</a>. This link is valid for 1 hr.</p>`
             })
     }
 
