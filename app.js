@@ -1,5 +1,5 @@
 const express = require('express')
-const cors = require('cors')
+const path = require('path');
 
 require('./config/config')
 const isProduction = process.env.NODE_ENV === 'production'
