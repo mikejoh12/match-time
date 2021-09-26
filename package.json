@@ -2,7 +2,7 @@
   "name": "calendar-booking-server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.mjs",
+  "main": "server.js",
   "engines": {
     "node": "14.x"
   },
@@ -10,7 +10,7 @@
     "start": "node server.js",
     "dev": "concurrently \"npm start\" \"cd ./client && npm start\"",
     "test": "NODE_ENV=test mocha -w --sort",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "author": "",
   "license": "ISC",
