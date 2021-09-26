@@ -26,12 +26,6 @@ app.use(compression())
 const helmet = require("helmet")
 app.use(helmet())
 
-// Cors config
-const origin = {
-  origin: isProduction ? 'https://www.example.com' : '*',
-}
-app.use(cors(origin))
-
 // Rate limiting
 const rateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
