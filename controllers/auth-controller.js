@@ -12,21 +12,20 @@ const isProduction = process.env.NODE_ENV === 'production'
 let transport = nodemailer.createTransport(
     isProduction ? 
     {
-        host: process.env.MAIL_PROD_HOST,
-        port: process.env.MAIL_PROD_PORT,
-    auth:   { 
-            user: process.env.MAIL_PROD_USER,
-            pass: process.env.MAIL_PROD_PASS
-            }
+        service: MAIL_PROD_SERVICE,
+                auth:   { 
+                user: process.env.MAIL_PROD_USER,
+                pass: process.env.MAIL_PROD_PASS
+                }
     }
     :
     {
-    host: 'smtp.mailtrap.io',
-    port: 2525,
-    auth:   {
-            user: process.env.MAILTRAP_USER,
-            pass: process.env.MAILTRAP_PASS
-            }
+        host: 'smtp.mailtrap.io',
+        port: 2525,
+        auth:   {
+                user: process.env.MAILTRAP_USER,
+                pass: process.env.MAILTRAP_PASS
+                }
     }
 );
 
