@@ -10,7 +10,7 @@ const { updateUserPwdDb } = require('../db/users-db');
 const isProduction = process.env.NODE_ENV === 'production'
 
 let transport = nodemailer.createTransport(
-    isProduction ? 
+    /* isProduction ? */
     {
         service: process.env.MAIL_PROD_SERVICE,
         auth:   { 
@@ -18,6 +18,7 @@ let transport = nodemailer.createTransport(
                 pass: process.env.MAIL_PROD_PASS
                 }
     }
+    /*
     :
     {
         host: 'smtp.mailtrap.io',
@@ -27,6 +28,7 @@ let transport = nodemailer.createTransport(
                 pass: process.env.MAILTRAP_PASS
                 }
     }
+    */
 );
 
 const signUpUser = async (req, res, next) => {
@@ -225,7 +227,7 @@ const forgotPassword = async (req, res) => {
             from: 'info@matchtime.herokuapp.com',
             to: email,
             subject: `MatchTime - Password Reset`,
-            html:`<html><head></head><body><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${email}/${encodeURIComponent(token)}'/>here</a>. This link is valid for 1 hr.</p></body></html>`
+            html:`<html><head></head><body><h1>MatchTime Password Reset</h1><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${email}/${encodeURIComponent(token)}'>here</a>. This link is valid for 1 hr.</p></body></html>`
             })
     }
 

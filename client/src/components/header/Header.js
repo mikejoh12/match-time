@@ -55,8 +55,15 @@ export const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
-    const handleOpenUserRegister = () => dispatch(openRegisterDialog())
-    const handleOpenUserLogin = () => dispatch(openLoginDialog())
+    const handleOpenUserRegister = () => {
+      dispatch(openRegisterDialog());
+      setAnchorEl(null);
+    }
+
+    const handleOpenUserLogin = () => {
+      dispatch(openLoginDialog());
+      setAnchorEl(null);
+    }
 
     const { user } = useAuth()
     const facilityIsLoaded = useSelector(selectFacilityIsLoaded)
