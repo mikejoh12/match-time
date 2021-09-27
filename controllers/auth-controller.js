@@ -225,7 +225,7 @@ const forgotPassword = async (req, res) => {
             from: 'info@matchtime.herokuapp.com',
             to: email,
             subject: `MatchTime - Password Reset`,
-            html:`<p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${email}/${encodeURIComponent(token)}'/>here</a>. This link is valid for 1 hr.</p>`
+            html:`<html><head></head><body><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${email}/${encodeURIComponent(token)}'/>here</a>. This link is valid for 1 hr.</p></body></html>`
             })
     }
 
