@@ -10,7 +10,7 @@ const { updateUserPwdDb } = require('../db/users-db');
 const isProduction = process.env.NODE_ENV === 'production'
 
 let transport = nodemailer.createTransport(
-    /* isProduction ? */
+    isProduction ?
     {
         service: process.env.MAIL_PROD_SERVICE,
         auth:   { 
@@ -18,7 +18,6 @@ let transport = nodemailer.createTransport(
                 pass: process.env.MAIL_PROD_PASS
                 }
     }
-    /*
     :
     {
         host: 'smtp.mailtrap.io',
@@ -28,7 +27,6 @@ let transport = nodemailer.createTransport(
                 pass: process.env.MAILTRAP_PASS
                 }
     }
-    */
 );
 
 const signUpUser = async (req, res, next) => {
