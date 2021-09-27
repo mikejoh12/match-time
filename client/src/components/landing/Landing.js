@@ -10,8 +10,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import CheckIcon from '@material-ui/icons/Check';
 import Container from '@material-ui/core/Container';
 import { ImageCard } from "./ImageCard";
-import tennisImage from '../../images/tennis-courts.jpg'
-import courtsImage from '../../images/sports-courts.jpg'
+import tennisImage from '../../images/deva-darshan-b2ET6ZIDFBo-unsplash.jpg'
+import courtsImage from '../../images/leslie-wong-yoIt3Wxe0sI-unsplash.jpg'
 import { SelectFacility } from "../select-facility/SelectFacility";
 
 const useStyles = makeStyles({
