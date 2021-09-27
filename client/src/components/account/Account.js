@@ -2,7 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { useAuth } from '../../hooks/useAuth'
 
-export const Account = () => {
+const Account = () => {
     const { user } = useAuth()
     return (
         <>
@@ -35,3 +35,5 @@ export const Account = () => {
       </>
       )
   }
+
+export default Account

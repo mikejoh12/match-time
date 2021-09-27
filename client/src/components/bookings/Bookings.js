@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     },
 });
 
-export const Bookings = () => {
+const Bookings = () => {
     const { data: facilitiesData, isError: facilitiesIsError, isLoading: facilitiesIsLoading } = useGetFacilitiesByUserQuery()
     const { data: bookingsData, isError: bookingsIsError, isLoading: bookingsIsLoading } = useGetBookingsByUserQuery()
 
@@ -112,3 +112,5 @@ export const Bookings = () => {
         </div>
     );
 }
+
+export default Bookings

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const UserDashboard = () => {
+const UserDashboard = () => {
     const dispatch = useDispatch()
     const facility = useSelector(selectFacility)
     const calViewDate = useSelector(selectCalViewDate)
@@ -165,3 +165,5 @@ export const UserDashboard = () => {
         </div>
     )
   }
+
+export default UserDashboard

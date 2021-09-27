@@ -9,7 +9,7 @@ import { usePasswordForgotMutation } from '../../services/api';
 import { showSnackbar } from '../../features/ui/uiSlice';
 import { useHistory } from 'react-router-dom';
 
-export const PasswordForgot = () => {
+const PasswordForgot = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm(); 
   const [ passwordForgot ] = usePasswordForgotMutation();
@@ -89,3 +89,5 @@ export const PasswordForgot = () => {
         </Grid>
   );
 }
+
+export default PasswordForgot

@@ -78,10 +78,10 @@ describe('Password Reset', () => {
     )
     const testEmail = "testuser@gmail.com"
     const testToken = "test-token"
-    history.push(`/password-reset/${testEmail}/:${testToken}`)
-    userEvent.type(screen.getByTestId("reset-password-enterPassword"), 'test-password')
-    userEvent.type(screen.getByTestId("reset-password-confirmPassword"), 'test-password')
-    userEvent.click(screen.getByTestId('reset-password-submit'))
+    history.push(`/password-reset/${testEmail}/${testToken}`)
+    userEvent.type(await screen.findByTestId("reset-password-enterPassword"), 'test-password')
+    userEvent.type(await screen.findByTestId("reset-password-confirmPassword"), 'test-password')
+    userEvent.click(await screen.findByTestId('reset-password-submit'))
     expect(await screen.findByText('Password reset. Please login with your new password.')).toBeInTheDocument()
   })
 
@@ -107,9 +107,9 @@ describe('Password Reset', () => {
     const testToken = "wrong-token"
     history.push(`/password-reset/${testEmail}/:${testToken}`)
 
-    userEvent.type(screen.getByTestId("reset-password-enterPassword"), 'test-password')
-    userEvent.type(screen.getByTestId("reset-password-confirmPassword"), 'test-password')
-    userEvent.click(screen.getByTestId('reset-password-submit'))
+    userEvent.type(await screen.findByTestId("reset-password-enterPassword"), 'test-password')
+    userEvent.type(await screen.findByTestId("reset-password-confirmPassword"), 'test-password')
+    userEvent.click(await screen.findByTestId('reset-password-submit'))
     expect(await screen.findByText('Token not found. Please try the reset password process again.')).toBeInTheDocument()
   })
 });

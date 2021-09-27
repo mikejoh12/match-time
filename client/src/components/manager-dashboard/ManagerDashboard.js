@@ -8,7 +8,7 @@ import { AddFacilityDialog } from './dialogs/AddFacilityDialog'
 import { useGetFacilitiesByUserQuery } from '../../services/api'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export const ManagerDashboard = () => {
+const ManagerDashboard = () => {
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const history = useHistory()
     
@@ -63,4 +63,6 @@ export const ManagerDashboard = () => {
 
       )
   }
+
+  export default ManagerDashboard
   

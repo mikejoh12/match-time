@@ -1,14 +1,6 @@
+import React, { Suspense } from 'react'
 import { Header } from './components/header/Header'
 import { Footer } from './components/footer/Footer'
-import { FacilityLogin } from './components/login/FacilityLogin'
-import { Landing } from './components/landing/Landing'
-import { UserDashboard } from './components/user-dashboard/UserDashboard'
-import { Bookings } from './components/bookings/Bookings'
-import { ManagerDashboard } from './components/manager-dashboard/ManagerDashboard'
-import { FacilityMemberList } from './components/manager-dashboard/FacilityMemberList'
-import { Account } from './components/account/Account'
-import { PasswordForgot } from './components/login/PasswordForgot'
-import { PasswordReset } from './components/login/PasswordReset'
 import { BrowserRouter,
   Switch,
   Route
@@ -16,14 +8,26 @@ import { BrowserRouter,
 import { ThemeProvider } from '@material-ui/core/styles'
 import { theme } from './theme/theme'
 import { PrivateRoute } from './utils/PrivateRoute'
-import { ManagerFacilityEdit } from './components/manager-dashboard/ManagerFacilityEdit'
 import MsgSnackbar from './utils/MsgSnackbar'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Box, CssBaseline } from '@material-ui/core'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { LoginWelcome } from './components/login/LoginWelcome'
+
+// Dynamically imported components
+const FacilityLogin = React.lazy(() => import('./components/login/FacilityLogin'))
+const LoginWelcome = React.lazy(() => import('./components/login/LoginWelcome'))
+const Landing = React.lazy(() => import('./components/landing/Landing'))
+const UserDashboard = React.lazy(() => import('./components/user-dashboard/UserDashboard'))
+const Bookings = React.lazy(() => import('./components/bookings/Bookings'))
+const ManagerDashboard = React.lazy(() => import('./components/manager-dashboard/ManagerDashboard'))
+const ManagerFacilityEdit = React.lazy(() => import('./components/manager-dashboard/ManagerFacilityEdit'))
+const FacilityMemberList = React.lazy(() => import('./components/manager-dashboard/FacilityMemberList'))
+const Account = React.lazy(() => import('./components/account/Account'))
+const PasswordForgot = React.lazy(() => import('./components/login/PasswordForgot'))
+const PasswordReset = React.lazy(() => import('./components/login/PasswordReset'))
 
 const useStyles = makeStyles({
   root: {
@@ -64,38 +68,51 @@ export const Routes = () => {
                       className={classes.mainContent}>
 
                     <Switch>
-                      <Route exact path="/" component={Landing} />
 
-                      <PrivateRoute path="/user-dashboard">
-                        <Route component={UserDashboard} />
-                      </PrivateRoute>
+                      <Suspense fallback={
+                        <Grid item container justifyContent="center">
+                          <CircularProgress />
+                        </Grid>
+                      }>
 
-                      <PrivateRoute path="/manager-dashboard">
-                        <Route component={ManagerDashboard} />
-                      </PrivateRoute>
+                        <Route exact path="/" component={Landing} />
 
-                      <PrivateRoute path="/account">
-                        <Route component={Account} />
-                      </PrivateRoute>
+                        <PrivateRoute exact path="/user-dashboard">
+                          <Route component={UserDashboard} />
+                        </PrivateRoute>
 
-                      <PrivateRoute exact path="/manager-facility-edit/:id">
-                        <Route component={ManagerFacilityEdit} />
-                      </PrivateRoute>
+                        <PrivateRoute exact path="/manager-dashboard">
+                          <Route component={ManagerDashboard} />
+                        </PrivateRoute>
 
-                      <PrivateRoute exact path="/manager-facility-edit/:id/members">
-                        <Route component={FacilityMemberList} />
-                      </PrivateRoute>
+                        <PrivateRoute exact path="/account">
+                          <Route component={Account} />
+                        </PrivateRoute>
 
-                      <PrivateRoute path="/bookings">
-                        <Route component={Bookings} />
-                      </PrivateRoute>
+                        <PrivateRoute exact path="/manager-facility-edit/:id">
+                          <Route component={ManagerFacilityEdit} />
+                        </PrivateRoute>
 
-                      <Route path="/select-facility" component={LoginWelcome} />
-                      <Route path="/password-forgot" component={PasswordForgot} />
-                      <Route path="/password-reset/:email/:token" component={PasswordReset} />
+                        <PrivateRoute exact path="/manager-facility-edit/:id/members">
+                          <Route component={FacilityMemberList} />
+                        </PrivateRoute>
 
-                      <Route path="/:id" component={FacilityLogin} />
+                        <PrivateRoute exact path="/bookings">
+                          <Route component={Bookings} />
+                        </PrivateRoute>
+
+                        <PrivateRoute exact path="/select-facility">
+                          <Route component={LoginWelcome} />
+                        </PrivateRoute>
+
+
+                        <Route exact path="/password-forgot" component={PasswordForgot} />
+                        <Route path="/password-reset/:email/:token" component={PasswordReset} />
+
+                        <Route path="/facilities/:id" component={FacilityLogin} />
                       
+                      </Suspense>
+
                     </Switch>
 
                 </Grid>

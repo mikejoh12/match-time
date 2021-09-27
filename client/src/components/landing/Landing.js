@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     }
   });
 
-export const Landing = () => {
+const Landing = () => {
     const { user } = useAuth()
     const classes = useStyles()
 
@@ -131,3 +131,5 @@ export const Landing = () => {
             </>
     )
 }
+
+export default Landing

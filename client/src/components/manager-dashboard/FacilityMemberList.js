@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     }
 });
 
-export const FacilityMemberList = () => {
+const FacilityMemberList = () => {
     const { id } = useParams()
     const classes = useStyles()
 
@@ -112,3 +112,5 @@ export const FacilityMemberList = () => {
         </div>
     );
 }
+
+export default FacilityMemberList

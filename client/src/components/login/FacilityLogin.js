@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     }
 });
 
-export const FacilityLogin = () => {
+const FacilityLogin = () => {
     const { id } = useParams()
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -97,3 +97,5 @@ export const FacilityLogin = () => {
         </div>
     )
 }
+
+export default FacilityLogin

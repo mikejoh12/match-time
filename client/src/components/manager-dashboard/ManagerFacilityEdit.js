@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux';
 import { openDeleteResourceDialog } from '../../features/ui/uiSlice';
 import { DeleteResourceDialog } from './dialogs/DeleteResourceDialog';
 
-export const ManagerFacilityEdit = () => {
+const ManagerFacilityEdit = () => {
     const { id } = useParams()
     const { data: facilityData, isError: facilityIsError, isLoading: facilityIsLoading } = useGetFacilityByIdQuery(id)
     const { data: resourcesData, isError: resourcesIsError, isLoading: resourcesIsLoading } = useGetResourcesByFacilityIdQuery(id)
@@ -107,3 +107,5 @@ export const ManagerFacilityEdit = () => {
       </div>
       )
   }
+
+  export default ManagerFacilityEdit

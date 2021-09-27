@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export const LoginWelcome = () => {
+const LoginWelcome = () => {
     const { user } = useAuth()
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const classes = useStyles()
@@ -83,3 +83,5 @@ export const LoginWelcome = () => {
       </>
       )
   }
+
+  export default LoginWelcome

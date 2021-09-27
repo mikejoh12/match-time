@@ -38,7 +38,7 @@ describe('Facility Landing Page', () => {
 
   test('displays facility info for a valid facility-id route', async() => {
     const history = createMemoryHistory()
-    history.push('/1')
+    history.push('/facilities/1')
     render(
       <Router history={history}>
         <Routes />

@@ -43,7 +43,7 @@ export const SelectFacility = () => {
     const handleChange = event => setClubId(event.target.value)
     
     const handleSubmit = event => {
-        history.push(`/${clubId}`)
+        history.push(`/facilities/${clubId}`)
         event.preventDefault()
     }
 

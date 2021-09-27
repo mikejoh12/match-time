@@ -10,7 +10,7 @@ import { usePasswordResetMutation } from '../../services/api';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-export const PasswordReset = () => {
+const PasswordReset = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit, watch } = useForm(); 
   const password = useRef({})
@@ -121,7 +121,7 @@ export const PasswordReset = () => {
             </Grid>
 
         </Grid>
-
-
   );
 }
+
+export default PasswordReset
