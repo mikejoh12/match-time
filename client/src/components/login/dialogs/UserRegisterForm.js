@@ -3,10 +3,9 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useCreateUserMutation, useLoginMutation } from '../../../services/api';
+import { useCreateUserMutation } from '../../../services/api';
 import { useForm, Controller } from "react-hook-form";
 import { showSnackbar, closeRegisterDialog } from '../../../features/ui/uiSlice';
-import { setCredentials } from '../../../features/auth/authUserSlice';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +29,6 @@ export const UserRegisterForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [createUser] = useCreateUserMutation()
-  const [login] = useLoginMutation()
 
   const { control, handleSubmit, watch } = useForm()  
   const password = useRef({})
@@ -47,10 +45,8 @@ export const UserRegisterForm = () => {
         lastName,
         password
       }).unwrap()
-      const user = await login({email, password}).unwrap()
-      dispatch(setCredentials(user))
       dispatch(showSnackbar({
-          message: `User created: ${user.user.email}`,
+          message: `User created for ${email}. An email with a confirmation link has been sent to your email. Please use the link to confirm your account and then log in.`,
           severity: 'success'
         }
       ))

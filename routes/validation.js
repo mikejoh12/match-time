@@ -95,6 +95,15 @@ const validateResetPassword = [
     validationHandler
 ]
 
+const validateConfirmEmail = [
+    check('email').not().isEmpty().isEmail().isLength({max: 100}),
+    check('token').not().isEmpty().isLength({max: 100}),
+]
+
+const validateResendConfirmEmail = [
+    check('email').not().isEmpty().isEmail().isLength({max: 100}),  
+]
+
 module.exports = {
     validateGetFacilitiesByUser,
     validateGetFacilityInfo,
@@ -109,5 +118,7 @@ module.exports = {
     validatePostBooking,
     validateDeleteBooking,
     validateForgotPassword,
-    validateResetPassword
+    validateResetPassword,
+    validateConfirmEmail,
+    validateResendConfirmEmail
 }

@@ -47,10 +47,8 @@ export const UserLoginForm = () => {
           message: `Login Successful for ${user.user.email}`,
           severity: 'success'
           }
-        ))
-        if (history.location.pathname === '/') {
-          history.push('/select-facility')
-        }
+        ))  
+        history.push('/select-facility')
       } catch (err) {
         dispatch(showSnackbar({
           message: err.data?.error?.data || 'There was a server error',

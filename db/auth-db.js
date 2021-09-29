@@ -74,16 +74,12 @@ const createVerifyEmailTokenDb = async ({email, token, expiration}) => {
 }
 
 const findVerifyEmailTokenDb = async({email, token}) => {
-    console.log('In db findToken')
-    console.log('email ', email)
-    console.log('token', token)
     const text = `  SELECT * FROM verify_email_tokens
                     WHERE email = $1 AND
                     token = $2 AND
                     expiration::timestamptz > now()`;
     const values = [email, token];
     const res = await pool.query(text, values);
-    console.log[res.rows[0]]
     return res.rows[0];
 }
 

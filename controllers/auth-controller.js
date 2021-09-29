@@ -267,11 +267,35 @@ const resetPassword = async (req, res) => {
 const confirmEmail = async(req, res) => {
     const { email, token } = req.body
 
+    // Check if user is invalid or has already activated
+    const user = await fetchUserByEmail(email);
+    if (user == null) {
+        return res.json({
+            error: {
+                status: 403,
+                data:   { message: `User ${email} has not registered an account.`}
+                }
+            });
+    }
+    if (user.active) {
+        return res.json({
+            error: {
+                status: 403,
+                data: { message: `This user (${email}) has already been activated. Try loggin in.`}
+            }})
+    }
+
     // Check for a valid token/email combination
     const record = await findVerifyEmailToken({email, token});
     if (record == null) {
         return res.status(401).json({
-            error: { status: 401, data: 'Unexpired token not found. Please try the email verification process again.'}
+            error: {
+                status: 403,
+                data: {
+                    reason: 'no-token',
+                    message: 'Unexpired token not found. Please try the email verification process again.'
+                }
+            }
         });
     }
 
@@ -287,4 +311,30 @@ const confirmEmail = async(req, res) => {
     });
 }
 
-module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken, confirmEmail }
+const resendConfirmEmail = async(req, res) => {
+    const { email } = req.body
+    const user = await fetchUserByEmail(email);
+
+    if (user == null) {
+        return res.json({ error: {status: 403, data: `User ${email} has not registered an account.`}});
+    }
+    if (user.active) {
+        return res.json({ error: {status: 403, data: `This user (${email}) has already been activated. Try loggin in.`}})
+    }
+
+    const token = await createVerifyEmailToken(email);
+
+    // Send email if environment is not set to test
+    if (process.env.NODE_ENV !== 'test') {
+        await transport.sendMail({
+            from: 'info@matchtime.herokuapp.com',
+            to: email,
+            subject: `MatchTime - Account Activation`,
+            html:`<html><head></head><body><h1>MatchTime Account Activation</h1><p>To confirm this email and activate your account, please click <a href='${process.env.BASE_URL}/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>.</p></body></html>`
+            })
+    }
+
+    res.json({status: 'ok'})
+}
+
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken, confirmEmail, resendConfirmEmail }

@@ -29,6 +29,7 @@ const Account = React.lazy(() => import('./components/account/Account'))
 const PasswordForgot = React.lazy(() => import('./components/login/PasswordForgot'))
 const PasswordReset = React.lazy(() => import('./components/login/PasswordReset'))
 const ConfirmEmail = React.lazy(() => import('./components/login/ConfirmEmail'))
+const ResendConfirmEmail = React.lazy(() => import('./components/login/ResendConfirmEmail'))
 
 const useStyles = makeStyles({
   root: {
@@ -106,12 +107,11 @@ export const Routes = () => {
                           <Route component={LoginWelcome} />
                         </PrivateRoute>
 
-
                         <Route exact path="/password-forgot" component={PasswordForgot} />
                         <Route path="/password-reset/:email/:token" component={PasswordReset} />
                         <Route path="/confirm-email/:email/:token" component={ConfirmEmail} />
                         <Route path="/facilities/:id" component={FacilityLogin} />
-                      
+                        <Route path="/resend-confirm-email" component={ResendConfirmEmail} />
                       </Suspense>
 
                     </Switch>

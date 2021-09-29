@@ -77,6 +77,13 @@ export const api = createApi({
         body,
       }),
     }),
+    resendConfirmEmail: build.mutation({
+      query: (body) => ({
+        url: 'auth/resend_confirm_email',
+        method: 'POST',
+        body,
+      }),
+    }),
     getFacilitiesByUser: build.query({
       query: () => `facilities/by_user`,
       providesTags: ['Facilities']
@@ -178,6 +185,7 @@ export const {  useLoginMutation,
                 usePasswordForgotMutation,
                 usePasswordResetMutation,
                 useConfirmEmailMutation,
+                useResendConfirmEmailMutation,
                 useCreateUserMutation,
                 useGetFacilitiesByUserQuery,
                 useGetFacilityByIdQuery,
