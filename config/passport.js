@@ -28,6 +28,11 @@ passport.use(
         if (!match) {
           return done(null, false, { message: 'Incorrect email or password.' });
         }
+
+        if (!user.active) {
+          return done(null, false, { message: 'This email address has not been verified. Check your inbox for a welcome email and verification link.' });
+        }
+
         return done(null, user, { message: 'Logged in Successfully' });
 }))
 

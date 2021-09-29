@@ -65,7 +65,7 @@ const ManagerFacilityEdit = () => {
                     </Grid>
                     <Grid item>
                         <Typography variant="h6" >
-                            Club Login URL: http://localhost:3000/{facilityData.id}
+                            Club Login URL: { process.env.NODE_ENV === 'production' ? 'https://matchtime.herokuapp.com' : 'http://localhost:3000' }/facilities/{facilityData.id}
                         </Typography>              
                     </Grid>
                     <Grid item>

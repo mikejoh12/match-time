@@ -2,7 +2,15 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const { addHours } = require('date-fns');
 
-const { createUnregisteredFacilityInvitationDb, fetchInvitationsByFacilityIdDb, resetTokenUpdateUsedDb, resetTokenCreateDb, findValidResetTokenDb } = require('../db/auth-db')
+const { createUnregisteredFacilityInvitationDb,
+        fetchInvitationsByFacilityIdDb,
+        resetTokenUpdateUsedDb,
+        resetTokenCreateDb,
+        findValidResetTokenDb,
+        deleteVerifyEmailTokensDb,
+        createVerifyEmailTokenDb,
+        findVerifyEmailTokenDb
+      } = require('../db/auth-db')
 
 const getPwdHash = async pwd => {
     const hash = await bcrypt.hash(pwd, 10)
@@ -30,12 +38,32 @@ const createResetToken = async (email) => {
   return token
 }
 
+const createVerifyEmailToken = async (email) => {
+  // Delete old tokens for that email if any exist
+  await deleteVerifyEmailTokensDb(email);
+  const token = crypto.randomBytes(64).toString('base64');
+  // Token expires after one hour
+  let expireDate = addHours(new Date(), 1);
+
+  // Insert token into db
+  await createVerifyEmailTokenDb({
+    email,
+    expiration: expireDate,
+    token,
+  })
+  return token
+}
+
 const findValidResetToken = async (tokenInfo) => await findValidResetTokenDb(tokenInfo)
+
+const findVerifyEmailToken = async (tokenInfo) => await findVerifyEmailTokenDb(tokenInfo)
 
 module.exports = {
   getPwdHash,
   createUnregisteredFacilityInvitation,
   fetchInvitationsByFacilityId,
   createResetToken,
-  findValidResetToken
+  findValidResetToken,
+  createVerifyEmailToken,
+  findVerifyEmailToken
 }

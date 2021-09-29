@@ -57,6 +57,36 @@ const findValidResetTokenDb = async ({email, token}) => {
     return res.rows[0];
 }
 
+const deleteVerifyEmailTokensDb = async(email) => {
+    const text = `  DELETE FROM verify_email_tokens
+                    WHERE email = $1`
+    const values = [email]
+    const res = await pool.query(text, values);
+    return res.rows
+}
+
+const createVerifyEmailTokenDb = async ({email, token, expiration}) => {
+    const text = `INSERT INTO verify_email_tokens (email, token, expiration, created_at)
+                  VALUES($1, $2, $3, NOW()) RETURNING *`
+    const values = [email, token, expiration]
+    const res = await pool.query(text, values)
+    return res.rows[0]
+}
+
+const findVerifyEmailTokenDb = async({email, token}) => {
+    console.log('In db findToken')
+    console.log('email ', email)
+    console.log('token', token)
+    const text = `  SELECT * FROM verify_email_tokens
+                    WHERE email = $1 AND
+                    token = $2 AND
+                    expiration::timestamptz > now()`;
+    const values = [email, token];
+    const res = await pool.query(text, values);
+    console.log[res.rows[0]]
+    return res.rows[0];
+}
+
 module.exports = {
     createUnregisteredFacilityInvitationDb,
     removeUnregisteredFacilityInvitationDb,
@@ -64,5 +94,8 @@ module.exports = {
     fetchInvitationsByFacilityIdDb,
     resetTokenUpdateUsedDb,
     resetTokenCreateDb,
-    findValidResetTokenDb
+    findValidResetTokenDb,
+    deleteVerifyEmailTokensDb,
+    createVerifyEmailTokenDb,
+    findVerifyEmailTokenDb
 }

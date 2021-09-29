@@ -4,7 +4,8 @@ const { fetchUserByEmailDb,
         createUserDb,
         fetchManagerByIdDb,
         createFacilityMemberDb,
-        fetchMembersByFacilityIdDb }
+        fetchMembersByFacilityIdDb, 
+        activateUserDb}
         = require('../db/users-db')
 
 const fetchUserByEmail = async email => await fetchUserByEmailDb(email)
@@ -49,9 +50,12 @@ const createFacilityMember = async ({userId, facilityId}) => {
 
 const fetchMembersByFacilityId = async facilityId => await fetchMembersByFacilityIdDb(facilityId)
 
+const activateUser = async (email) => await activateUserDb(email);
+
 module.exports = {  fetchUserByEmail,
                     fetchUserById,
                     createUser,
                     fetchManagerById,
                     createFacilityMember,
-                    fetchMembersByFacilityId }
+                    fetchMembersByFacilityId,
+                    activateUser }

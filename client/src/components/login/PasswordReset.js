@@ -19,13 +19,14 @@ const PasswordReset = () => {
 
   const { email, token } = useParams();
   const decodedToken = decodeURIComponent(token);
+  const decodedEmail = decodeURIComponent(email);
   const [ passwordReset ] = usePasswordResetMutation();
 
   // Submit new password with the reset token obtained from path params
   const onSubmit = async (data) => {
     const { password } = data;
     try {
-      const response = await passwordReset({password, email, token: decodedToken}).unwrap()
+      const response = await passwordReset({password, email: decodedEmail, token: decodedToken}).unwrap()
       dispatch(showSnackbar({
         message: response.message,
         severity: 'success'

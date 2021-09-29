@@ -52,6 +52,14 @@ CREATE TABLE "reset_tokens" (
   "used" int NOT NULL DEFAULT '0'
 );
 
+CREATE TABLE "verify_email_tokens" (
+  "id" SERIAL PRIMARY KEY,
+  "email" varchar(255) UNIQUE DEFAULT NULL,
+  "token" varchar(255) DEFAULT NULL,
+  "expiration" timestamptz DEFAULT NULL,
+  "created_at" timestamptz NOT NULL
+);
+
 ALTER TABLE "resources" ADD FOREIGN KEY ("facilities_id") REFERENCES "facilities" ("id");
 
 ALTER TABLE "bookings" ADD FOREIGN KEY ("resources_id") REFERENCES "resources" ("id");

@@ -68,7 +68,13 @@ const fetchMembersByFacilityIdDb = async facilityId => {
     return res.rows
 }
 
-
+const activateUserDb = async(email) => {
+    const text = `  UPDATE users
+                    SET active = true WHERE email = $1`
+    values = [email]
+    const res = await pool.query(text, values)
+    return res.rows
+}
 
 module.exports = {  fetchUserByEmailDb,
                     fetchUserByIdDb,
@@ -78,4 +84,5 @@ module.exports = {  fetchUserByEmailDb,
                     fetchManagerByIdDb,
                     removeFacilityManagerDb,
                     createFacilityMemberDb,
-                    fetchMembersByFacilityIdDb }
+                    fetchMembersByFacilityIdDb,
+                    activateUserDb }

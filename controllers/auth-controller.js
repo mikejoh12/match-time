@@ -1,10 +1,10 @@
-const { fetchUserByEmail, createUser, createFacilityMember } = require('../services/users-service')
-const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId, createResetToken, findValidResetToken } = require('../services/auth-service')
+const { fetchUserByEmail, createUser, createFacilityMember, activateUser } = require('../services/users-service')
+const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId, createResetToken, findValidResetToken, createVerifyEmailToken, findVerifyEmailToken } = require('../services/auth-service')
 const { fetchFacilityInfo } = require('../services/facilities-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const { resetTokenUpdateUsedDb } = require('../db/auth-db');
+const { resetTokenUpdateUsedDb, deleteVerifyEmailTokensDb } = require('../db/auth-db');
 const { updateUserPwdDb } = require('../db/users-db');
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -47,9 +47,19 @@ const signUpUser = async (req, res, next) => {
         lastName,
         pwdHash,
         userRole: "customer",
-        active: true
+        active: false
     }
     const newUser = await createUser(user)
+    const token = await createVerifyEmailToken(email);
+    // Send email if environment is not set to test
+    if (process.env.NODE_ENV !== 'test') {
+        await transport.sendMail({
+            from: 'info@matchtime.herokuapp.com',
+            to: email,
+            subject: `MatchTime - Account Activation`,
+            html:`<html><head></head><body><h1>MatchTime Account Activation</h1><p>To confirm this email and activate your account, please click <a href='${process.env.BASE_URL}/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>.</p></body></html>`
+            })
+    }
 
     res.status(201).json({users_id: newUser.id})
 }
@@ -225,7 +235,7 @@ const forgotPassword = async (req, res) => {
             from: 'info@matchtime.herokuapp.com',
             to: email,
             subject: `MatchTime - Password Reset`,
-            html:`<html><head></head><body><h1>MatchTime Password Reset</h1><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${email}/${encodeURIComponent(token)}'>here</a>. This link is valid for 1 hr.</p></body></html>`
+            html:`<html><head></head><body><h1>MatchTime Password Reset</h1><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>. This link is valid for 1 hr.</p></body></html>`
             })
     }
 
@@ -254,4 +264,27 @@ const resetPassword = async (req, res) => {
     });
 }
 
-module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken }
+const confirmEmail = async(req, res) => {
+    const { email, token } = req.body
+
+    // Check for a valid token/email combination
+    const record = await findVerifyEmailToken({email, token});
+    if (record == null) {
+        return res.status(401).json({
+            error: { status: 401, data: 'Unexpired token not found. Please try the email verification process again.'}
+        });
+    }
+
+    // Activate user
+    await activateUser(email);
+
+    // Delete used token
+    await deleteVerifyEmailTokensDb(email)
+    
+    return res.json({
+        status: 'ok',
+        message: 'Email has been confirmed. Please login with your password.'
+    });
+}
+
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken, confirmEmail }
