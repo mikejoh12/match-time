@@ -56,6 +56,12 @@ export const api = createApi({
         body: credentials,
       }),
     }),
+    logoutClearCookie: build.mutation({
+      query: () => ({
+        url: 'auth/logout',
+        method: 'POST',
+      }),
+    }),
     passwordForgot: build.mutation({
       query: (email) => ({
         url: 'auth/password_forgot',
@@ -182,6 +188,7 @@ export const api = createApi({
 })
 
 export const {  useLoginMutation,
+                useLogoutClearCookieMutation,
                 usePasswordForgotMutation,
                 usePasswordResetMutation,
                 useConfirmEmailMutation,

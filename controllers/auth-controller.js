@@ -4,7 +4,7 @@ const { fetchFacilityInfo } = require('../services/facilities-service')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const { resetTokenUpdateUsedDb, deleteVerifyEmailTokensDb } = require('../db/auth-db');
+const { deleteResetTokensDb, deleteVerifyEmailTokensDb } = require('../db/auth-db');
 const { updateUserPwdDb } = require('../db/users-db');
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -95,9 +95,8 @@ const loginUser = async (req, res, next) => {
 
                     res.cookie('SB_REFR', refreshToken, {
                         httpOnly: true,
-                        sameSite: 'strict',
+                        sameSite: isProduction ? 'strict' : 'lax',
                         secure: isProduction ? true : false,
-                        path: '/api/auth/refresh_token'
                       })
 
                     return res.json({
@@ -116,6 +115,11 @@ const loginUser = async (req, res, next) => {
           }
         }
     )(req, res, next);
+}
+
+const logoutUser = (req, res, next) => {
+    res.clearCookie('SB_REFR')
+    return res.status(200).send()
 }
 
 const refreshToken = async (req, res, next) => {
@@ -149,7 +153,6 @@ const refreshToken = async (req, res, next) => {
                         httpOnly: true,
                         sameSite: 'strict',
                         secure: isProduction ? true : false,
-                        path: '/api/auth/refresh_token'
                       })
 
                     return res.json({
@@ -253,8 +256,8 @@ const resetPassword = async (req, res) => {
         });
     }
 
-    // Mark tokens associated with email as used
-    await resetTokenUpdateUsedDb(email);
+    // Delete reset tokens for email
+    await deleteResetTokensDb(email);
 
     const pwdHash = await getPwdHash(password);
     await updateUserPwdDb({email, pwdHash});
@@ -270,7 +273,7 @@ const confirmEmail = async(req, res) => {
     // Check if user is invalid or has already activated
     const user = await fetchUserByEmail(email);
     if (user == null) {
-        return res.json({
+        return res.status(403).json({
             error: {
                 status: 403,
                 data:   { message: `User ${email} has not registered an account.`}
@@ -278,7 +281,7 @@ const confirmEmail = async(req, res) => {
             });
     }
     if (user.active) {
-        return res.json({
+        return res.status(403).json({
             error: {
                 status: 403,
                 data: { message: `This user (${email}) has already been activated. Try loggin in.`}
@@ -288,7 +291,7 @@ const confirmEmail = async(req, res) => {
     // Check for a valid token/email combination
     const record = await findVerifyEmailToken({email, token});
     if (record == null) {
-        return res.status(401).json({
+        return res.status(403).json({
             error: {
                 status: 403,
                 data: {
@@ -334,7 +337,7 @@ const resendConfirmEmail = async(req, res) => {
             })
     }
 
-    res.json({status: 'ok'})
+    return res.json({status: 'ok'})
 }
 
-module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken, confirmEmail, resendConfirmEmail }
+module.exports = { signUpUser, loginUser, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, refreshToken, confirmEmail, resendConfirmEmail, logoutUser }

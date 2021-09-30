@@ -2,7 +2,7 @@ const passport = require('passport')
 const Router = require('express-promise-router')
 
 const { getFacilityInfo, postFacility, getFacilitesByUser, deleteFacility } = require('../controllers/facilities-controller.js')
-const { signUpUser, loginUser, refreshToken, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, confirmEmail, resendConfirmEmail } = require('../controllers/auth-controller.js')
+const { signUpUser, loginUser, refreshToken, inviteUser, getInvitationsByFacilityId, forgotPassword, resetPassword, confirmEmail, resendConfirmEmail, logoutUser } = require('../controllers/auth-controller.js')
 const { getBookingsByFacility, getBookingsByUser, postBooking, deleteBooking } = require('../controllers/bookings-controller.js')
 const { validateGetFacilityInfo,
         validatePostFacility,
@@ -36,6 +36,7 @@ router
 
     .post('/auth/signup', validateSignUpUser, signUpUser)
     .post('/auth/login', validateLoginUser, loginUser)
+    .post('/auth/logout', logoutUser)
     .post('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false, failWithError: true}), inviteUser)
     .get('/auth/invite/:facilityId', passport.authenticate('jwt-manager', {session: false, failWithError: true}), getInvitationsByFacilityId)
     .post('/auth/password_forgot', validateForgotPassword, forgotPassword)

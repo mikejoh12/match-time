@@ -3,14 +3,16 @@ import { useParams } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DoneIcon from '@material-ui/icons/Done';
 import { useConfirmEmailMutation } from '../../services/api';
 import { useHistory } from 'react-router-dom';
 
 const ConfirmEmail = () => {
-  const [ confirmEmail, { data, isLoading, isSuccess, error } ] = useConfirmEmailMutation();
+  const [ confirmEmail, { data, isLoading, isSuccess, isError, error } ] = useConfirmEmailMutation();
   const { email, token } = useParams();
   const history = useHistory();
-  
+
   const handleResendEmailClick = () => history.push('/resend-confirm-email');
 
   useEffect(() => {
@@ -28,39 +30,38 @@ const ConfirmEmail = () => {
                     Email Confirmation
                 </Typography>
             </Grid>
-            { isLoading &&
-            <Grid item>
-                Loading...
-            </Grid>
-            }
-            { isSuccess &&
-            <Grid item>
-                <Typography variant="body1" align="center">
-                    {data?.message}
-                </Typography>
-            </Grid>
-            }
-            { error &&
-            <Grid   item container
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    spacing={2} >
-                    <Grid item>
-                        <Typography variant="body1" align="center">
-                            { error?.data?.error?.data.message }
-                        </Typography>
-                    </Grid>
+            { isError ? (
+            <>
+                <Grid item>
+                    <Typography variant="body1" align="center">
+                        { error?.data?.error?.data.message }
+                    </Typography>
+                </Grid>
 
-                    { error?.data?.error?.data?.reason === 'no-token' &&
-                    <Grid item>
-                        <Button onClick={handleResendEmailClick} color="primary" variant="contained">
-                            Resend Confirmation Email
-                        </Button>
-                    </Grid>
-                    }
+                { error?.data?.error?.data?.reason === 'no-token' &&
+                <Grid item>
+                    <Button onClick={handleResendEmailClick} color="primary" variant="contained">
+                        Resend Confirmation Email
+                    </Button>
+                </Grid>
+                }
+            </>
+            ) : isLoading ? (
+            <Grid item container justifyContent="center">
+                <CircularProgress />
             </Grid>
-            }
+            ) : isSuccess ? (
+            <>
+                <Grid item>
+                    <DoneIcon fontSize="large"/>
+                </Grid>
+                <Grid item>
+                    <Typography variant="body1" align="center">
+                        {data?.message}
+                    </Typography>
+                </Grid>
+            </>
+            ) : null }
         </Grid>
   );
 }

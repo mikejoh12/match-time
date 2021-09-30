@@ -4,7 +4,7 @@ const { addHours } = require('date-fns');
 
 const { createUnregisteredFacilityInvitationDb,
         fetchInvitationsByFacilityIdDb,
-        resetTokenUpdateUsedDb,
+        deleteResetTokensDb,
         resetTokenCreateDb,
         findValidResetTokenDb,
         deleteVerifyEmailTokensDb,
@@ -22,8 +22,8 @@ const createUnregisteredFacilityInvitation = async (invitation) => await createU
 const fetchInvitationsByFacilityId = async (facilityId) => await fetchInvitationsByFacilityIdDb(facilityId);
 
 const createResetToken = async (email) => {
-  // Mark old tokens for that email as used
-  await resetTokenUpdateUsedDb(email);
+  // Delete old reset tokens for email
+  await deleteResetTokensDb(email);
   const token = crypto.randomBytes(64).toString('base64');
   // Token expires after one hour
   let expireDate = addHours(new Date(), 1);

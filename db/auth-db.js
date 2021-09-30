@@ -29,9 +29,8 @@ const fetchInvitationsByFacilityIdDb = async (facilityId) => {
     return res.rows
 }
 
-const resetTokenUpdateUsedDb = async (email) => {
-    const text = `  UPDATE reset_tokens
-                    SET used = 1, updated_at = NOW()
+const deleteResetTokensDb = async (email) => {
+    const text = `  DELETE FROM reset_tokens
                     WHERE email = $1`
     values = [email]
     const res = await pool.query(text, values)
@@ -88,7 +87,7 @@ module.exports = {
     removeUnregisteredFacilityInvitationDb,
     fetchInvitationsByEmailDb,
     fetchInvitationsByFacilityIdDb,
-    resetTokenUpdateUsedDb,
+    deleteResetTokensDb,
     resetTokenCreateDb,
     findValidResetTokenDb,
     deleteVerifyEmailTokensDb,

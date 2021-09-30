@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth'
 import { openLoginDialog, openRegisterDialog, showSnackbar } from '../../features/ui/uiSlice';
 import { Grid } from '@material-ui/core';
+import { useLogoutClearCookieMutation } from '../../services/api';
 
 const font = "'Rubik', sans-serif;";
 
@@ -55,6 +56,8 @@ export const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
+    const [ logoutClearCookie ] = useLogoutClearCookieMutation()
+
     const handleOpenUserRegister = () => {
       dispatch(openRegisterDialog());
       setAnchorEl(null);
@@ -71,6 +74,7 @@ export const Header = () => {
 
     const handleUserLogout = () => {
       dispatch(logout())
+      logoutClearCookie()
       dispatch(showSnackbar({
         message: `User has been logged out`,
         severity: 'success'
