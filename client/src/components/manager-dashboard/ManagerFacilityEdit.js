@@ -49,22 +49,22 @@ const ManagerFacilityEdit = () => {
                 alignItems="center"
                 justifyContent="center">
                     <Grid item>
-                        <Typography variant="h5" >
+                        <Typography variant="h5" align="center">
                             Edit Facility
                         </Typography>              
                     </Grid>
                     <Grid item>
-                        <Typography variant="h6" >
+                        <Typography variant="h6" align="center">
                             Name: {facilityData.name}
                         </Typography>              
                     </Grid>
                     <Grid item>
-                        <Typography variant="h6" >
+                        <Typography variant="body1" align="center">
                             Description: {facilityData.description}
                         </Typography>              
                     </Grid>
                     <Grid item>
-                        <Typography variant="h6" >
+                        <Typography variant="body1" align="center">
                             Club Login URL: { process.env.NODE_ENV === 'production' ? 'https://matchtime.herokuapp.com' : 'http://localhost:3000' }/facilities/{facilityData.id}
                         </Typography>              
                     </Grid>
