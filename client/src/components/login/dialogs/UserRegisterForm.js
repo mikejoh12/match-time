@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { useCreateUserMutation } from '../../../services/api';
 import { useForm, Controller } from "react-hook-form";
 import { showSnackbar, closeRegisterDialog } from '../../../features/ui/uiSlice';
@@ -23,6 +24,9 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(2),
     },
   },
+  emailNote: {
+    maxWidth: 400
+  }
 }));
 
 export const UserRegisterForm = () => {
@@ -62,7 +66,15 @@ export const UserRegisterForm = () => {
 
   return (
     <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-      
+     
+      <Typography variant="h6" align="center">
+        Create a MatchTime account
+      </Typography>
+
+      <Typography className={classes.emailNote} variant="body1" align="center">
+        A confirmation email will be sent to you after registering. Please use the link in the email to activate your account.
+      </Typography>
+
       <Controller
         name="firstName"
         control={control}
