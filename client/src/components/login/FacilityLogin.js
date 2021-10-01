@@ -52,7 +52,7 @@ const FacilityLogin = () => {
                             justifyContent="center"
                             direction="column"
                             alignItems="center"
-                            spacing={2}>
+                            spacing={4}>
                         <Grid item>
                             <Typography variant="h4" >
                                 {facilityData.name}

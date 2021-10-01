@@ -1,4 +1,4 @@
-const { fetchUserByEmail, createUser, createFacilityMember, activateUser } = require('../services/users-service')
+const { fetchUserByEmail, createUser, createFacilityMember, activateUser, fetchUserById } = require('../services/users-service')
 const { getPwdHash, createUnregisteredFacilityInvitation, fetchInvitationsByFacilityId, createResetToken, findValidResetToken, createVerifyEmailToken, findVerifyEmailToken } = require('../services/auth-service')
 const { fetchFacilityInfo } = require('../services/facilities-service')
 const passport = require('passport')
@@ -57,7 +57,7 @@ const signUpUser = async (req, res, next) => {
             from: 'info@matchtime.herokuapp.com',
             to: email,
             subject: `MatchTime - Account Activation`,
-            html:`<html><head></head><body><h1>MatchTime Account Activation</h1><p>To confirm this email and activate your account, please click <a href='${process.env.BASE_URL}/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>.</p></body></html>`
+            html:`<html><head></head><body><h1>MatchTime Account Activation</h1><p>To confirm this email and activate your account, please click <a href='${process.env.BASE_URL}/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>.</p><p>Note: The app used to send this email (matchtime.herokuapp.com) is still under development and only in demo mode</p></body></html>`
             })
     }
 
@@ -182,7 +182,7 @@ const inviteUser = async (req, res, next) => {
         })
     }
     const user = await fetchUserByEmail(inviteEmail)
-    
+
     if (!user) {
         // If there is no current user with the email, add the email and facility_id to invitations table in db.
         // When the user later registers, the user will become a member of the associated facility.
@@ -191,12 +191,15 @@ const inviteUser = async (req, res, next) => {
                 facilityId
             })
 
+        const managerUser = await fetchUserById(req.user.id)
+        const inviteLink = `${process.env.BASE_URL}/facilities/${facilityId}`
+
         let info = await transport.sendMail({
-            from: 'info@matchtime.herokuapp.com',
-            to: inviteEmail,
-            subject: `You are invited to our club: ${facilityInfo.name}`,
-            text: `Go to ${process.env.BASE_URL}/facilities/${facilityId} and create an account with MatchTime to access the club scheduling features.`
-            })
+        from: 'info@matchtime.herokuapp.com',
+        to: inviteEmail,
+        subject: `You are invited to our club: ${facilityInfo.name}`,
+        html: `<p>The user with email ${managerUser.email} has invited you to join the facility they are managing on MatchTime. Go to <a href="${inviteLink}">${inviteLink}</a> and create an account with MatchTime to access the club scheduling features.</p><p>Note: The app used to send this email (matchtime.herokuapp.com) is still under development and only in demo mode</p>`
+        })
         console.log(`Message sent: ${info.messageId}`);
 
         return res.status(200).json({message: 'Email address is not registered. Added invitation to facility so that user has access to it upon registration.'})
@@ -238,7 +241,7 @@ const forgotPassword = async (req, res) => {
             from: 'info@matchtime.herokuapp.com',
             to: email,
             subject: `MatchTime - Password Reset`,
-            html:`<html><head></head><body><h1>MatchTime Password Reset</h1><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>. This link is valid for 1 hr.</p></body></html>`
+            html:`<html><head></head><body><h1>MatchTime Password Reset</h1><p>To reset your password, please click <a href='${process.env.BASE_URL}/password-reset/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>. This link is valid for 1 hr.</p><p>Note: The app used to send this email (matchtime.herokuapp.com) is still under development and only in demo mode</p></body></html>`
             })
     }
 
@@ -333,7 +336,7 @@ const resendConfirmEmail = async(req, res) => {
             from: 'info@matchtime.herokuapp.com',
             to: email,
             subject: `MatchTime - Account Activation`,
-            html:`<html><head></head><body><h1>MatchTime Account Activation</h1><p>To confirm this email and activate your account, please click <a href='${process.env.BASE_URL}/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>.</p></body></html>`
+            html:`<html><head></head><body><h1>MatchTime Account Activation</h1><p>To confirm this email and activate your account, please click <a href='${process.env.BASE_URL}/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}'>here</a>.</p><p>Note: The app used to send this email (matchtime.herokuapp.com) is still under development and only in demo mode</p></body></html>`
             })
     }
 

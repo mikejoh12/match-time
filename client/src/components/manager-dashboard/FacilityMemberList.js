@@ -45,7 +45,7 @@ const FacilityMemberList = () => {
                             Facility Members
                         </Typography>              
                     </Grid>
-                    <Grid item xs={12} md={6} className={classes.root}>
+                    <Grid item xs={12} md={8} className={classes.root}>
                         { usersData.length ?
                         <TableContainer component={Paper}>
                             <Table className={classes.table} aria-label="simple table">
@@ -102,7 +102,7 @@ const FacilityMemberList = () => {
                             </Table>
                         </TableContainer>
                         :
-                        <Typography variant="h6" >
+                        <Typography variant="body1" >
                             No users found.
                         </Typography>     
                         }
