@@ -230,6 +230,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Login'
 
+  /api/auth/logout:
+    post:
+      tags:
+      - auth
+      description: Logs a user out and removed refresh JWT
+      responses:
+        200:
+          description: Clears the refresh JWT 
+
   /api/auth/refresh_token:
     post:
       tags:
@@ -249,6 +258,24 @@ paths:
                 $ref: '#/components/schemas/Login'
 
   /api/auth/invite/{facilityId}:
+    get:
+      tags:
+      - auth
+      description: Returns all the outstanding invitations for a facility
+      parameters:
+        - in: path
+          name: facilityId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the facility
+      responses:
+        200:
+          description: An array of objects representing the invitations for a facility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitations'        
     post:
       tags:
       - auth
@@ -317,6 +344,47 @@ paths:
       responses:
         200:
           description: Ok
+
+  /api/auth/confirm_email:
+    post:
+      tags:
+      - auth
+      description: Activates a user account when receiving a token that was email to user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - token
+              properties:
+                email:
+                  type: string
+                token:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Sends a message upon successful email/token confirmation.
+
+  /api/auth/resend_confirm_email:
+    post:
+      tags:
+      - auth
+      description: Resends email to verify account if user exists and is not activated.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: Will send a new activation email.
 
   /api/bookings/by_facility/{id}:
     get:
@@ -464,6 +532,19 @@ components:
         user:
           type: object
           $ref: '#/components/schemas/User'
+    Invitations:
+      type: array
+      items:
+        type: object
+        $ref: '#/components/schemas/Invitation'
+    Invitation:
+      type: object
+      properties:
+        email:
+          type: string
+        facilities_id:
+          type: integer
+        
     Bookings:
       type: array
       items:
