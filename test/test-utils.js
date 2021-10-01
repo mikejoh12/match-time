@@ -63,6 +63,15 @@ const createDbTables = async() => {
           "used" int NOT NULL DEFAULT '0'
         )`
       )
+      await pool.query(
+        `CREATE TABLE "verify_email_tokens" (
+          "id" SERIAL PRIMARY KEY,
+          "email" varchar(255) UNIQUE DEFAULT NULL,
+          "token" varchar(255) DEFAULT NULL,
+          "expiration" timestamptz DEFAULT NULL,
+          "created_at" timestamptz NOT NULL
+        );`
+      )
     }
 
 const removeDbTables = async() => {
@@ -73,6 +82,7 @@ const removeDbTables = async() => {
     await pool.query(`DROP TABLE bookings`)
     await pool.query(`DROP TABLE users_facilities`)
     await pool.query(`DROP TABLE reset_tokens`)
+    await pool.query(`DROP TABLE verify_email_tokens`)
 }
 
 const createUser = async(email, password) => {
@@ -80,6 +90,9 @@ const createUser = async(email, password) => {
       .post('/api/auth/signup')
       .send({email, password, firstName: 'first', lastName: 'last'})
       .set('Accept', 'application/json')
+    
+    // Manually activate user through DB-call to simplify testing
+    await pool.query(`UPDATE users SET active = true WHERE email='newuser@gmail.com'`)
 }
 
 const loginGetToken = async(email, password) => {

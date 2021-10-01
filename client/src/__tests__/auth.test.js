@@ -21,6 +21,9 @@ export const handlers = [
       }
     }), ctx.delay(150))
   }),
+  rest.post('/api/auth/logout', (req, res, ctx) => {
+    return res(ctx.json({}), ctx.delay(150))
+  }),
   rest.get('/api/facilities/by_user', (req, res, ctx) => {
     return res(ctx.json([
       {

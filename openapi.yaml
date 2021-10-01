@@ -349,7 +349,7 @@ paths:
     post:
       tags:
       - auth
-      description: Activates a user account when receiving a token that was email to user.
+      description: Activates a user account when receiving a token that was emailed to user.
       requestBody:
         content:
           application/json:
