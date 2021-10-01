@@ -1,7 +1,7 @@
-const { pool } = require('../config/config.js')
+const db = require('../config/db.js')
 
 const fetchBookingsByFacilityDb = async id => {
-    const res = await pool.query(
+    const res = await db.query(
         `SELECT bookings.id AS bookings_id, resources_id, organizer_id, start_time, end_time,
          facilities_id, resources.name AS resources_name, first_name, last_name
          FROM bookings
@@ -13,7 +13,7 @@ const fetchBookingsByFacilityDb = async id => {
 }
 
 const fetchBookingsByUserDb = async id => {
-    const res = await pool.query(
+    const res = await db.query(
         `SELECT bookings.id AS bookings_id, resources_id, organizer_id, start_time, end_time,
          facilities_id, resources.name AS resources_name
          FROM bookings
@@ -35,7 +35,7 @@ const checkConflictBookingDb = async ({ resourceId, startTime, endTime }) => {
                     ($3 > start_time AND $3 <= end_time)
                     )` 
     const values = [resourceId, startTime, endTime]
-    const res = await pool.query(text, values)
+    const res = await db.query(text, values)
     return res.rows
 }
 
@@ -43,22 +43,22 @@ const createBookingDb = async ({resourceId, organizerId, startTime, endTime}) =>
     const text = `INSERT INTO bookings(resources_id, organizer_id, start_time, end_time)
                   VALUES($1, $2, $3, $4) RETURNING *`
     const values = [resourceId, organizerId, startTime, endTime]
-    const res = await pool.query(text, values)
+    const res = await db.query(text, values)
     return res.rows[0]
 }
 
 const removeBookingDb = async bookingId => {
-    const res = await pool.query('DELETE FROM bookings WHERE id = $1', [bookingId])
+    const res = await db.query('DELETE FROM bookings WHERE id = $1', [bookingId])
     return res.rows
 }
 
 const removeBookingsByResourceIdDb = async id => {
-    const res = await pool.query('DELETE FROM bookings WHERE resources_id = $1', [id])
+    const res = await db.query('DELETE FROM bookings WHERE resources_id = $1', [id])
     return res.rows
 }
 
 const fetchBookingByIdDb = async id => {
-    const res = await pool.query('SELECT * FROM bookings WHERE id = $1', [id])
+    const res = await db.query('SELECT * FROM bookings WHERE id = $1', [id])
     return res.rows[0]
 }
 

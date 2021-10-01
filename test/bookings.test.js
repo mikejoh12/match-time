@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { pool } = require('../config/config.js')
+const db = require('../config/db.js')
 const { createDbTables, removeDbTables, createUser, loginGetToken } = require('./test-utils')
 let token = null;
 
@@ -8,10 +8,10 @@ describe('/api/bookings', () => {
 
   before(async() => {
     await createDbTables()
-    await pool.query(
+    await db.query(
       `INSERT INTO facilities (name, description) VALUES ('Smash Tennis Club', 'A private tennis club with well maintened indoor courts, hard courts, clay courts, and padel courts.')`
     )
-    await pool.query(
+    await db.query(
       `INSERT INTO bookings (resources_id, organizer_id, start_time, end_time) VALUES (1, 1, '2021-06-02T10:00:00.000Z', '2021-06-02T11:00:00.000Z');`
     )
     await createUser('newuser@gmail.com', 'password')

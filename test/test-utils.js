@@ -1,9 +1,9 @@
-const { pool } = require('../config/config.js')
+const db = require('../config/db.js')
 const request = require('supertest')
 const app = require('../app')
 
 const createDbTables = async() => {
-    await pool.query(
+    await db.query(
         `CREATE TABLE "users" (
           "id" SERIAL PRIMARY KEY,
           "email" varchar(100) UNIQUE NOT NULL,
@@ -15,20 +15,20 @@ const createDbTables = async() => {
           "user_role" varchar(100)
         );`
       )
-      await pool.query(`
+      await db.query(`
       CREATE TABLE "invitations" (
         "email" varchar(100) NOT NULL,
         "facilities_id" int,
         PRIMARY KEY("email", "facilities_id")
         )`
       )
-      await pool.query(
+      await db.query(
         `CREATE TABLE "facilities" (
         "id" SERIAL PRIMARY KEY,
         "name" varchar(100) NOT NULL,
         "description" varchar(1000))`
       )
-      await pool.query(
+      await db.query(
         `CREATE TABLE "resources" (
           "id" SERIAL PRIMARY KEY,
           "facilities_id" int,
@@ -36,7 +36,7 @@ const createDbTables = async() => {
           "description" varchar(100)
         );`
       )
-      await pool.query(
+      await db.query(
         `CREATE TABLE "bookings" (
           "id" SERIAL PRIMARY KEY,
           "resources_id" int NOT NULL,
@@ -45,14 +45,14 @@ const createDbTables = async() => {
           "end_time" timestamptz NOT NULL
         );`
       )
-      await pool.query(
+      await db.query(
         `CREATE TABLE "users_facilities" (
           "users_id" int,
           "facilities_id" int,
           "is_admin" boolean NOT NULL
         );`
       )
-      await pool.query(
+      await db.query(
         `CREATE TABLE "reset_tokens" (
           "id" SERIAL PRIMARY KEY,
           "email" varchar(255) DEFAULT NULL,
@@ -63,7 +63,7 @@ const createDbTables = async() => {
           "used" int NOT NULL DEFAULT '0'
         )`
       )
-      await pool.query(
+      await db.query(
         `CREATE TABLE "verify_email_tokens" (
           "id" SERIAL PRIMARY KEY,
           "email" varchar(255) UNIQUE DEFAULT NULL,
@@ -75,14 +75,14 @@ const createDbTables = async() => {
     }
 
 const removeDbTables = async() => {
-    await pool.query(`DROP TABLE users`)
-    await pool.query(`DROP TABLE invitations`)
-    await pool.query(`DROP TABLE facilities`)
-    await pool.query(`DROP TABLE resources`)
-    await pool.query(`DROP TABLE bookings`)
-    await pool.query(`DROP TABLE users_facilities`)
-    await pool.query(`DROP TABLE reset_tokens`)
-    await pool.query(`DROP TABLE verify_email_tokens`)
+    await db.query(`DROP TABLE users`)
+    await db.query(`DROP TABLE invitations`)
+    await db.query(`DROP TABLE facilities`)
+    await db.query(`DROP TABLE resources`)
+    await db.query(`DROP TABLE bookings`)
+    await db.query(`DROP TABLE users_facilities`)
+    await db.query(`DROP TABLE reset_tokens`)
+    await db.query(`DROP TABLE verify_email_tokens`)
 }
 
 const createUser = async(email, password) => {
@@ -92,7 +92,7 @@ const createUser = async(email, password) => {
       .set('Accept', 'application/json')
     
     // Manually activate user through DB-call to simplify testing
-    await pool.query(`UPDATE users SET active = true WHERE email='newuser@gmail.com'`)
+    await db.query(`UPDATE users SET active = true WHERE email=$1`, [email])
 }
 
 const loginGetToken = async(email, password) => {

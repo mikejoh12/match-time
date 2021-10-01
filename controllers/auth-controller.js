@@ -195,7 +195,7 @@ const inviteUser = async (req, res, next) => {
             from: 'info@matchtime.herokuapp.com',
             to: inviteEmail,
             subject: `You are invited to our club: ${facilityInfo.name}`,
-            text: `Go to ${process.env.BASE_URL}/${facilityId} and create an account with MatchTime to access the club scheduling features.`
+            text: `Go to ${process.env.BASE_URL}/facilities/${facilityId} and create an account with MatchTime to access the club scheduling features.`
             })
         console.log(`Message sent: ${info.messageId}`);
 

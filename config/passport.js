@@ -18,22 +18,26 @@ passport.use(
         passwordField: 'password'
     },
     async (email, password, done) => {
-        const user = await fetchUserByEmail(email);
-        if (!user) {
-          return done(null, false, { message: 'Incorrect email or password.' });
+        try {
+          const user = await fetchUserByEmail(email);
+          if (!user) {
+            return done(null, false, { message: 'Incorrect email or password.' });
+          }
+
+          const match = await bcrypt.compare(password, user.pwd_hash)
+
+          if (!match) {
+            return done(null, false, { message: 'Incorrect email or password.' });
+          }
+
+          if (!user.active) {
+            return done(null, false, { message: 'This email address has not been verified. Check your inbox for a welcome email and verification link.' });
+          }
+
+          return done(null, user, { message: 'Logged in Successfully' });
+        } catch(err) {
+            return done(null, false, { message: 'There was a problem logging in.' });          
         }
-
-        const match = await bcrypt.compare(password, user.pwd_hash)
-
-        if (!match) {
-          return done(null, false, { message: 'Incorrect email or password.' });
-        }
-
-        if (!user.active) {
-          return done(null, false, { message: 'This email address has not been verified. Check your inbox for a welcome email and verification link.' });
-        }
-
-        return done(null, user, { message: 'Logged in Successfully' });
 }))
 
 passport.use(

@@ -129,8 +129,8 @@ export const Header = () => {
               { `${user.email} - `} { facility?.name ? facility?.name : 'No facility selected'} 
             </Typography>
           :    
-            <Typography variant="subtitle1" align="center" className={classes.topMsg}>
-              Log in to gain access to club manager/member features
+            <Typography variant="subtitle2" align="center" className={classes.topMsg}>
+              Log in to gain access to manager/member features
             </Typography>
             }
           </Grid>

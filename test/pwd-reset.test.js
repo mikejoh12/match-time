@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { pool } = require('../config/config.js')
+const db = require('../config/db.js')
 const { addHours } = require('date-fns');
 const { createDbTables, removeDbTables, createUser } = require('./test-utils')
 
@@ -11,7 +11,7 @@ describe('password reset', () => {
     await createUser('testuser@gmail.com', 'password')
 
     let expireDate = addHours(new Date(), 1);
-    const res = await pool.query(
+    const res = await db.query(
       `INSERT INTO reset_tokens
        (email, token, expiration, created_at, updated_at, used)
        VALUES ('testuser@gmail.com', 'test-token', $1, now(), now(), 0) RETURNING *;`

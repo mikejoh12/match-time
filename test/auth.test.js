@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { pool } = require('../config/config.js')
+const db = require('../config/db.js')
 const { createDbTables, removeDbTables } = require('./test-utils')
 
 describe('/api/auth/signup', () => {
@@ -28,7 +28,7 @@ describe('/api/auth/signup', () => {
     it('should login an activated user and receive a token with correct credentials', async() => {
       
       // Manually activate user through DB-call to simplify testing
-      await pool.query(`UPDATE users SET active = true WHERE email='newuser@gmail.com'`)
+      await db.query(`UPDATE users SET active = true WHERE email='newuser@gmail.com'`)
       
       const res = await request(app)
         .post('/api/auth/login')

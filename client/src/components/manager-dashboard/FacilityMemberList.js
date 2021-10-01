@@ -80,7 +80,7 @@ const FacilityMemberList = () => {
                             Invited Emails
                         </Typography>
                         <Typography variant="body1" align="center">
-                            These email address have gotten an invite but have not established an account with Calendar-Booking.
+                            These emails have gotten an invite but have not established an account with MatchTime.
                         </Typography> 
                     </Grid>
                     <Grid item xs={12} md={6} className={classes.root}>
