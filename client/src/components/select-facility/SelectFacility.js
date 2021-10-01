@@ -67,7 +67,7 @@ export const SelectFacility = () => {
                                 direction="column"
                                 alignItems="center"
                                 justifyContent="center">
-                            <form onSubmit={handleSubmit} align="center">
+                            <form onSubmit={handleSubmit}>
                                 <FormControl className={classes.formControl}>
                                 <InputLabel id="choose-label" className={classes.chooseLabel}>Choose a club:</InputLabel>
                                     <Select
@@ -82,13 +82,15 @@ export const SelectFacility = () => {
                                         }
                                     </Select>
                                 </FormControl>
-                                <Grid item>
-                                    <Button data-testid='login-as-member' variant="contained" color="secondary" type="submit">Login as a member</Button>
+                                <Grid container direction="column" spacing={2} alignItems="center">
+                                    <Grid item>
+                                        <Button data-testid='login-as-member' variant="contained" color="secondary" type="submit">Login as a member</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button variant="contained" color="secondary" onClick={handleRegisterClick}>Manage Facilities</Button>
+                                    </Grid>
                                 </Grid>
                             </form>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="contained" color="secondary" onClick={handleRegisterClick}>Manage Facilities</Button>
                         </Grid>
                     </Grid>
                     :

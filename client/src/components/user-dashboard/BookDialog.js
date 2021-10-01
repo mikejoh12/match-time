@@ -141,12 +141,18 @@ export const BookDialog = ({ handleClickOpen, handleClose }) => {
             </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary" variant="contained">
-            Cancel
-          </Button>
-          <Button data-testid='book-court-submit' onClick={handleCloseBook} color="secondary" variant="contained">
-            Book Court
-          </Button>
+        <Grid container spacing={2} justifyContent="center">
+            <Grid item>
+              <Button onClick={handleClose} color="secondary" variant="contained">
+                Cancel
+              </Button>             
+            </Grid>
+            <Grid item>
+              <Button data-testid='book-court-submit' onClick={handleCloseBook} color="secondary" variant="contained">
+                Book Court
+              </Button>                
+            </Grid>
+        </Grid>
         </DialogActions>
       </Dialog>
     </div>
