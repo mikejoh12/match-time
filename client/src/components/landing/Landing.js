@@ -13,6 +13,8 @@ import { ImageCard } from "./ImageCard";
 import tennisImage from '../../images/deva-darshan-b2ET6ZIDFBo-unsplash.jpg'
 import courtsImage from '../../images/leslie-wong-yoIt3Wxe0sI-unsplash.jpg'
 import { SelectFacility } from "../select-facility/SelectFacility";
+import { Link as RouterLink } from "react-router-dom";
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles(theme => ({
     hero: {
@@ -48,6 +50,10 @@ const Landing = () => {
     const theme = useTheme();
     const showSecondImg = useMediaQuery(theme.breakpoints.up('md'))
 
+    const baseURL = process.env.NODE_ENV === 'production' ? 'https://matchtime.herokuapp.com' : 'http://localhost:3000'
+    const demoLinkPath = process.env.NODE_ENV === 'production' ? '/facilities/1' : '/facilities/2'
+
+    
     return (
             <>
                 <Grid
@@ -90,6 +96,43 @@ const Landing = () => {
                                     <Grid   item
                                             container
                                             direction="column">
+
+                                        <Grid item>
+                                            <Typography variant="h6" align="center">
+                                                Facility Members:
+                                            </Typography>
+                                        </Grid>
+
+                                        <Grid item>
+                                            <List aria-label="member features">
+                                                <ListItem>
+                                                    <ListItemIcon>
+                                                        <CheckIcon className={classes.icons} />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary="Users who are members of a facility can book online and cancel bookings." />
+                                                </ListItem>
+
+                                                <ListItem>
+                                                    <ListItemIcon>
+                                                        <CheckIcon className={classes.icons} />
+                                                    </ListItemIcon>
+                                                    <Grid>
+                                                        <ListItemText primary="All platform accounts have user access to the demo facility. Access the landing page: "/>
+                                                        <Link component={RouterLink} to={demoLinkPath}>
+                                                          {`${baseURL}${demoLinkPath}`}
+                                                        </Link>
+                                                    </Grid>
+                                                </ListItem>
+
+                                                <ListItem>
+                                                    <ListItemIcon>
+                                                        <CheckIcon className={classes.icons} />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary="You can be a member of multiple facilities while at the same time being a manager of facilities where you have management access." />
+                                                </ListItem>
+                                            </List>
+                                        </Grid>
+
                                         <Grid item>
                                             <Typography variant="h6" align="center">
                                                 Managers:
@@ -119,28 +162,6 @@ const Landing = () => {
                                             </List>
                                         </Grid>
 
-                                        <Grid item>
-                                            <Typography variant="h6" align="center">
-                                                Club Members:
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <List aria-label="member features">
-                                                <ListItem>
-                                                    <ListItemIcon>
-                                                        <CheckIcon className={classes.icons} />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="Users who are members of the facility can book online and cancel bookings." />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon>
-                                                        <CheckIcon className={classes.icons} />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary="You can be a member of facilities while at the same time being a managing of facilities where you have management access." />
-                                                </ListItem>
-                                            </List>
-                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Paper>
