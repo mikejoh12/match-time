@@ -50,10 +50,8 @@ const Landing = () => {
     const theme = useTheme();
     const showSecondImg = useMediaQuery(theme.breakpoints.up('md'))
 
-    const baseURL = process.env.NODE_ENV === 'production' ? 'https://matchtime.herokuapp.com' : 'http://localhost:3000'
     const demoLinkPath = process.env.NODE_ENV === 'production' ? '/facilities/1' : '/facilities/2'
 
-    
     return (
             <>
                 <Grid
