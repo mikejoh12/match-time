@@ -119,7 +119,7 @@ const Landing = () => {
                                                     <Grid>
                                                         <ListItemText primary="All platform accounts have user access to the demo facility. Access the landing page: "/>
                                                         <Link component={RouterLink} to={demoLinkPath}>
-                                                          {`${baseURL}${demoLinkPath}`}
+                                                          Smash Racquet Club
                                                         </Link>
                                                     </Grid>
                                                 </ListItem>
