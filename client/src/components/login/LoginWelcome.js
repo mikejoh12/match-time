@@ -13,6 +13,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAuth } from '../../hooks/useAuth'
 import { SelectFacility } from '../select-facility/SelectFacility';
 import { useGetFacilitiesByUserQuery } from '../../services/api'
+import { currentResourceUpdated } from '../../features/current-facility/currentFacilitySlice';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -31,8 +33,12 @@ const LoginWelcome = () => {
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const classes = useStyles()
     const history = useHistory()
+    const dispatch = useDispatch()
 
-    const handleRowClick = (event, facilityId) => history.push(`/facilities/${facilityId}`)
+    const handleRowClick = (event, facilityId) => {
+        dispatch(currentResourceUpdated(''))
+        history.push(`/facilities/${facilityId}`)
+    }
 
     return (
         <>

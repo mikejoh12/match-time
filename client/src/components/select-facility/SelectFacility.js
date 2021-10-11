@@ -9,7 +9,9 @@ import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetFacilitiesByUserQuery } from '../../services/api'
+import { currentResourceUpdated } from '../../features/current-facility/currentFacilitySlice';
 import { Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -31,7 +33,8 @@ export const SelectFacility = () => {
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const classes = useStyles()
     const [clubId, setClubId] = useState('')
-    const history = useHistory() 
+    const history = useHistory()
+    const dispatch = useDispatch()
 
     // Set default facility to view once facilities are loaded
     useEffect(() => {
@@ -43,6 +46,7 @@ export const SelectFacility = () => {
     const handleChange = event => setClubId(event.target.value)
     
     const handleSubmit = event => {
+        dispatch(currentResourceUpdated(''))
         history.push(`/facilities/${clubId}`)
         event.preventDefault()
     }

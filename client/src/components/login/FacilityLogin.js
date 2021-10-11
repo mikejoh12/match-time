@@ -16,6 +16,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { showSnackbar } from '../../features/ui/uiSlice';
 
 const useStyles = makeStyles({
     table: {
@@ -43,8 +44,15 @@ const FacilityLogin = () => {
     const handleUserLogin = () => history.push(`/user-dashboard`)
 
     const handleRowClick = (event, resourceId) => {
-        dispatch(currentResourceUpdated(resourceId))
-        history.push(`/user-dashboard`)
+        if (user) {
+            dispatch(currentResourceUpdated(resourceId))
+            history.push(`/user-dashboard`)
+        } else {
+            dispatch(showSnackbar({
+                message: 'Please log in to access schedules',
+                severity: 'error'
+              }))
+        }
     }
 
     return (
