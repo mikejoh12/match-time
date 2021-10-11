@@ -71,12 +71,12 @@ const UserDashboard = () => {
               })
       }
 
-    // Set default calendar resource to view once resources are loaded
+    // Set default calendar resource to view once resources are loaded and no resource selected
     useEffect(() => {
-      if (resourcesData?.length) {
+      if (resourcesData?.length && !currentResource) {
       dispatch(currentResourceUpdated(resourcesData[0].id))
       }
-    }, [resourcesData, dispatch])
+    }, [resourcesData, currentResource, dispatch])
 
     const handleChange = event => dispatch(currentResourceUpdated(event.target.value))
 

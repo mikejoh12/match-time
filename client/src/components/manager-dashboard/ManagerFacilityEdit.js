@@ -14,7 +14,7 @@ import { AddResourceDialog } from './dialogs/AddResourceDialog';
 import { InviteMembersDialog } from './dialogs/InviteMembersDialog';
 import { DeleteFacilityDialog } from './dialogs/DeleteFacilityDialog';
 import { useGetFacilityByIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api'
-import { facilityUpdated } from '../../features/current-facility/currentFacilitySlice';
+import { facilityUpdated, currentResourceUpdated } from '../../features/current-facility/currentFacilitySlice';
 import { useDispatch } from 'react-redux';
 import { openDeleteResourceDialog } from '../../features/ui/uiSlice';
 import { DeleteResourceDialog } from './dialogs/DeleteResourceDialog';
@@ -29,6 +29,7 @@ const ManagerFacilityEdit = () => {
 
     useEffect(() => {
         dispatch(facilityUpdated(facilityData))
+        dispatch(currentResourceUpdated(''))
     }, [facilityData, dispatch])
 
     const handleDeleteClick = async event => dispatch(openDeleteResourceDialog(event.currentTarget.value))

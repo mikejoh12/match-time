@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useGetFacilityByIdQuery, useGetResourcesByFacilityIdQuery } from '../../services/api';
-import { facilityUpdated } from '../../features/current-facility/currentFacilitySlice';
+import { facilityUpdated, currentResourceUpdated } from '../../features/current-facility/currentFacilitySlice';
 import { useAuth } from '../../hooks/useAuth'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,6 +20,9 @@ import Paper from '@material-ui/core/Paper';
 const useStyles = makeStyles({
     table: {
         minWidth: 300,
+    },
+    tableRow: {
+        cursor: 'pointer',
     }
 });
 
@@ -38,6 +41,11 @@ const FacilityLogin = () => {
     }, [facilityData, dispatch])
 
     const handleUserLogin = () => history.push(`/user-dashboard`)
+
+    const handleRowClick = (event, resourceId) => {
+        dispatch(currentResourceUpdated(resourceId))
+        history.push(`/user-dashboard`)
+    }
 
     return (
         <div>
@@ -63,7 +71,9 @@ const FacilityLogin = () => {
                                 {facilityData.description}
                             </Typography>
                         </Grid>
+
                         <Grid item>
+                        { resourcesData.length ?
                             <TableContainer component={Paper}>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableHead>
@@ -74,7 +84,7 @@ const FacilityLogin = () => {
                                     </TableHead>
                                     <TableBody>
                                     {resourcesData.map((resource) => (
-                                        <TableRow key={resource.id}>
+                                        <TableRow className={classes.tableRow} key={resource.id} onClick={event => handleRowClick(event, resource.id)}>
                                             <TableCell align="center">{resource.name}</TableCell>
                                             <TableCell align="center">{resource.description}</TableCell>
                                         </TableRow>
@@ -82,7 +92,13 @@ const FacilityLogin = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                        :
+                            <Typography variant="body1" align="center">
+                                This facility does not have any resources.
+                            </Typography>
+                        }
                         </Grid>
+                        
                         <Grid item>
                             { user ?
                             <Button data-testid='go-to-scheduling' variant="contained" color="secondary" onClick={handleUserLogin}>Go To Scheduling</Button>
