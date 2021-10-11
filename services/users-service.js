@@ -24,8 +24,8 @@ const createUser = async user => {
             userId: newUser.id,
             facilityId: invite.facilities_id
         })
-        return await removeUnregisteredFacilityInvitationDb({
-            email: newUser.email,
+        await removeUnregisteredFacilityInvitationDb({
+            email: user.email,
             facilityId: invite.facilities_id
         })
     }))

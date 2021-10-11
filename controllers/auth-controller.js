@@ -183,6 +183,16 @@ const inviteUser = async (req, res, next) => {
     }
     const user = await fetchUserByEmail(inviteEmail)
 
+    const managerUser = await fetchUserById(req.user.id)
+    const inviteLink = `${process.env.BASE_URL}/facilities/${facilityId}`
+
+    await transport.sendMail({
+    from: 'info@matchtime.herokuapp.com',
+    to: inviteEmail,
+    subject: `You are invited to our club: ${facilityInfo.name}`,
+    html: `<p>The user with email ${managerUser.email} has invited you to join the facility they are managing on MatchTime. Go to <a href="${inviteLink}">${inviteLink}</a> to access the club scheduling features.</p><p>Note: The app used to send this email (matchtime.herokuapp.com) is still under development and only in demo mode</p>`
+    })
+
     if (!user) {
         // If there is no current user with the email, add the email and facility_id to invitations table in db.
         // When the user later registers, the user will become a member of the associated facility.
@@ -190,18 +200,6 @@ const inviteUser = async (req, res, next) => {
                 email: inviteEmail,
                 facilityId
             })
-
-        const managerUser = await fetchUserById(req.user.id)
-        const inviteLink = `${process.env.BASE_URL}/facilities/${facilityId}`
-
-        let info = await transport.sendMail({
-        from: 'info@matchtime.herokuapp.com',
-        to: inviteEmail,
-        subject: `You are invited to our club: ${facilityInfo.name}`,
-        html: `<p>The user with email ${managerUser.email} has invited you to join the facility they are managing on MatchTime. Go to <a href="${inviteLink}">${inviteLink}</a> and create an account with MatchTime to access the club scheduling features.</p><p>Note: The app used to send this email (matchtime.herokuapp.com) is still under development and only in demo mode</p>`
-        })
-        console.log(`Message sent: ${info.messageId}`);
-
         return res.status(200).json({message: 'Email address is not registered. Added invitation to facility so that user has access to it upon registration.'})
     }
     
