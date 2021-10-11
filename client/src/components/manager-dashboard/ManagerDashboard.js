@@ -16,7 +16,7 @@ const ManagerDashboard = () => {
 
     const managerFacilities = facilitiesData?.filter(facility => facility.is_admin).map(facility => 
         <ListItem key={facility.id} button value={facility.id} onClick={handleFacilityClick} divider>
-            <ListItemText primary={facility.name} />
+            <ListItemText primary={`Id: ${facility.id} - ${facility.name}`} />
         </ListItem>)
 
     return (

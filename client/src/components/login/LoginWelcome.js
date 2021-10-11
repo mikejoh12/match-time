@@ -1,5 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     },
     tableContainer: {
         margin: theme.spacing(2)
+    },
+    tableRow: {
+        cursor: 'pointer',
     }
 }));
 
@@ -26,6 +30,9 @@ const LoginWelcome = () => {
     const { user } = useAuth()
     const { data: facilitiesData, isError, isLoading } = useGetFacilitiesByUserQuery()
     const classes = useStyles()
+    const history = useHistory()
+
+    const handleRowClick = (event, facilityId) => history.push(`/facilities/${facilityId}`)
 
     return (
         <>
@@ -65,7 +72,7 @@ const LoginWelcome = () => {
                         </TableHead>
                         <TableBody>
                         {facilitiesData.map((facility) => (
-                            <TableRow key={facility.id}>
+                            <TableRow className={classes.tableRow} key={facility.id} onClick={event => handleRowClick(event, facility.id)}>
                                 <TableCell align="left">{facility.name}</TableCell>
                                 <TableCell align="left">{facility.description}</TableCell>
                             </TableRow>
