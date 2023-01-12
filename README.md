@@ -5,7 +5,7 @@ It also allows members to register and book resources in facilities. Users can b
 Email confirmation and password reset via email link is implemented.
 
 ## Status
-The project is deployed as a demo at https://matchtime.herokuapp.com/
+The project is no longer deployed.
 
 ### Technologies used
 The main stack is Postgres, Express, React and Node.js. Passport, jsonwebtoken, and bcrypt are used for authentication/authorization.
