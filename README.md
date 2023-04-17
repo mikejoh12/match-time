@@ -1,11 +1,10 @@
 # match-time
+This project is now archived and read-only.
 
-This project is a sports scheduling platform for facilties such as tennis-clubs. It allows users to create sports facilities, resources and invite members by email.
-It also allows members to register and book resources in facilities. Users can both be a member and manager of facilities so there are 2 different roles.
-Email confirmation and password reset via email link is implemented.
+This project is a sports scheduling platform for facilties such as tennis-clubs. It allows users to create sports facilities, resources and invite members by email. It also allows members to register and book resources in facilities. Users can both be a member and manager of facilities so there are 2 different roles. Email confirmation and password reset via email link is implemented.
 
 ## Status
-The project is no longer deployed.
+The project is archived and no longer deployed.
 
 ### Technologies used
 The main stack is Postgres, Express, React and Node.js. Passport, jsonwebtoken, and bcrypt are used for authentication/authorization.
